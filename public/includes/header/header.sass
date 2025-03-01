@@ -1,0 +1,84 @@
+@use '../../css/const'
+
+header
+  width: 100%
+  background-color: const.$secondary-color
+
+.header-navbar
+  width: 80%
+  margin: 0 auto
+  display: flex
+  justify-content: space-between
+  align-items: center
+  padding: 2em 0
+
+.nav-logo
+  img
+    width: 200px
+  a
+    color: #fff
+    font-size: 24px
+    letter-spacing: 5px
+    font-weight: bold
+
+.nav-links
+  width: 60%
+  ul
+    display: flex
+    justify-content: space-around
+  li
+    list-style-type: none
+  a
+    color: #fff
+    font-size: 18px
+    padding-bottom: 0.5em
+    background-image: linear-gradient(#fff,#fff)
+    background-size: 0 0.1em
+    background-position-y: 100%
+    background-position-x: 50%
+    background-repeat: no-repeat
+    transition: background-size ease-in-out 0.3s
+    &:hover
+      background-size: 100% 0.15em
+
+.responsive-nav-links
+  display: none
+
+.fa-bars
+  font-size: 30px
+  color: #fff
+  position: absolute
+  top: 1em
+  right: 2em
+  cursor: pointer
+  display: none
+  &::before
+    display: none
+
+@media screen and (max-width: 960px)
+  .nav-links
+    display: none
+
+  .nav-logo, .responsive-nav-links li
+    width: 100%
+    text-align: center
+  .responsive-nav-links
+    li
+      padding: 0.5em
+    a
+      color: #fff
+      font-size: 18px
+      font-weight: bold
+      padding-bottom: 0.5em
+      background-image: linear-gradient(#fff,#fff)
+      background-size: 0 0.1em
+      background-position-y: 100%
+      background-position-x: 50%
+      background-repeat: no-repeat
+      transition: background-size ease-in-out 0.3s
+      &:hover
+        background-size: 100% 0.15em
+  .fa-bars
+    display: block
+    &::before
+      display: block
