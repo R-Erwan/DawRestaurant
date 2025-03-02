@@ -13,6 +13,7 @@ header
   padding: 2em 0
 
 .nav-logo
+  border-bottom: const.$third-color solid 3px
   img
     width: 200px
   a
@@ -58,7 +59,8 @@ header
 @media screen and (max-width: 960px)
   .nav-links
     display: none
-
+  .nav-logo
+    border-bottom: transparent solid 3px
   .nav-logo, .responsive-nav-links li
     width: 100%
     text-align: center

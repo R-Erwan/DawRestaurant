@@ -1,3 +1,45 @@
 @use "reset"
 @use "const"
 @use "../includes/header/header"
+@use "../includes/card-menu/card-menu"
+
+.cards-container
+  display: flex
+  flex-direction: row
+  align-items: center
+  justify-content: center
+  width: 100%
+  flex-wrap: wrap
+  padding: 10px 10px
+
+
+.section-title h2
+  margin: 10px 0 0 0
+  position: relative
+  font-weight: 300
+  font-size: 28px
+  color: #080808
+  text-align: center
+  text-transform: uppercase
+  padding-bottom: 5px
+
+  &:before
+    width: 28px
+    height: 5px
+    display: block
+    content: ""
+    position: absolute
+    bottom: 3px
+    left: 50%
+    margin-left: -14px
+    background-color: const.$secondary-color-dark
+  &:after
+    width: 100px
+    height: 1px
+    display: block
+    content: ""
+    position: relative
+    margin-top: 25px
+    left: 50%
+    margin-left: -50px
+    background-color: const.$secondary-color-dark

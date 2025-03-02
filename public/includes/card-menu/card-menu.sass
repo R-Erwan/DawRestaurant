@@ -1,0 +1,85 @@
+@use '../../css/const'
+
+.card-hover
+  $root: &
+  width: 250px
+  height: 350px
+  position: relative
+  overflow: hidden
+  margin: 8px 8px
+  box-shadow: 0px 10px 15px -3px rgba(0,0,0,0.1)
+  border-radius: 15px
+
+  &:hover
+    #{$root}
+      &__content
+        background-color: const.$primary-color-light
+        bottom: 100%
+        transform: translateY(100%)
+        padding: 35px 40px
+        transition: all 0.35s cubic-bezier(.1,.72,.4,.97)
+
+    img
+      transform: scale(1)
+      transition: 0.35s 0.1s transform cubic-bezier(.1,.72,.4,.97)
+
+  &__content
+    width: 100%
+    text-align: center
+    background-color: const.$primary-color
+    padding: 0 40px 35px
+    position: absolute
+    bottom: 0
+    left: 0
+    transform: translateY(0)
+    transition: all 0.35s 0.35s cubic-bezier(.1,.72,.4,.97)
+    will-change: bottom, background-color, transform, padding
+    z-index: 1
+
+    &::before,
+    &::after
+      content: ''
+      width: 100%
+      height: 80px
+      background-color: inherit
+      position: absolute
+      left: 0
+      z-index: -1
+
+
+    &::before
+      top: -60px
+      clip-path: ellipse(60% 80px at bottom center)
+
+
+    &::after
+      bottom: -60px
+      clip-path: ellipse(60% 80px at top center)
+
+
+
+  &__title
+    font-size: 1rem
+    margin-bottom: 0.7em
+
+    span
+      color: const.$secondary-color
+
+
+  &__text
+    font-size: 0.6rem
+
+  img
+    position: absolute
+    top: 0
+    left: 0
+    width: 100%
+    height: 100%
+    object-fit: cover
+    object-position: center
+    z-index: -1
+    transform: scale(1.2)
+    transition: 0.35s 0.35s transform cubic-bezier(.1,.72,.4,.97)
+
+
+
