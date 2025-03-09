@@ -46,4 +46,4 @@
     </div>
 </div>
 <script src="https://kit.fontawesome.com/c4155bf45a.js" crossorigin="anonymous"></script>
-<script type="module" src="/public/includes/login-form/login-ui.js"></script>
+<script type="module" src="includes/login-form/login-ui.js"></script>
