@@ -1,0 +1,284 @@
+/* RESET CSS */
+/* 1. Use a more-intuitive box-sizing model */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+/* 2. Remove default margin */
+* {
+  font-family: system-ui, sans-serif;
+  margin: 0;
+}
+
+html, body {
+  width: 100%;
+}
+
+body {
+  /* 3. Add accessible line-height */
+  line-height: 1.5;
+  /* 4. Improve text rendering */
+  -webkit-font-smoothing: antialiased;
+}
+
+/* 5. Improve media defaults */
+img, picture, video, canvas, svg {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* 6. Inherit fonts for form controls */
+input, button, textarea, select {
+  font: inherit;
+}
+
+/* 7. Avoid text overflows */
+p, h1, h2, h3, h4, h5, h6 {
+  overflow-wrap: break-word;
+}
+
+/* 8. Improve line wrapping */
+p {
+  text-wrap: pretty;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  text-wrap: balance;
+}
+
+/* 9. Create a root stacking context */
+#root, #__next {
+  isolation: isolate;
+}
+
+li {
+  list-style: none;
+}
+
+header {
+  width: 100%;
+  background-color: #dda15e;
+}
+
+.header-navbar {
+  width: 80%;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2em 0;
+}
+
+.nav-logo {
+  border-bottom: #fefae0 solid 3px;
+}
+.nav-logo img {
+  width: 200px;
+}
+.nav-logo a {
+  color: #fff;
+  font-size: 24px;
+  letter-spacing: 5px;
+  font-weight: bold;
+}
+
+.nav-links {
+  width: 60%;
+}
+.nav-links ul {
+  display: flex;
+  justify-content: space-around;
+}
+.nav-links li {
+  list-style-type: none;
+}
+.nav-links a {
+  color: #fff;
+  font-size: 18px;
+  padding-bottom: 0.5em;
+  background-image: linear-gradient(#fff, #fff);
+  background-size: 0 0.1em;
+  background-position-y: 100%;
+  background-position-x: 50%;
+  background-repeat: no-repeat;
+  transition: background-size ease-in-out 0.3s;
+}
+.nav-links a:hover {
+  background-size: 100% 0.15em;
+}
+
+.responsive-nav-links {
+  display: none;
+}
+
+.fa-bars {
+  font-size: 30px;
+  color: #fff;
+  position: absolute;
+  top: 1em;
+  right: 2em;
+  cursor: pointer;
+  display: none;
+}
+.fa-bars::before {
+  display: none;
+}
+
+@media screen and (max-width: 960px) {
+  .nav-links {
+    display: none;
+  }
+  .nav-logo {
+    border-bottom: transparent solid 3px;
+  }
+  .nav-logo, .responsive-nav-links li {
+    width: 100%;
+    text-align: center;
+  }
+  .responsive-nav-links li {
+    padding: 0.5em;
+  }
+  .responsive-nav-links a {
+    color: #fff;
+    font-size: 18px;
+    font-weight: bold;
+    padding-bottom: 0.5em;
+    background-image: linear-gradient(#fff, #fff);
+    background-size: 0 0.1em;
+    background-position-y: 100%;
+    background-position-x: 50%;
+    background-repeat: no-repeat;
+    transition: background-size ease-in-out 0.3s;
+  }
+  .responsive-nav-links a:hover {
+    background-size: 100% 0.15em;
+  }
+  .fa-bars {
+    display: block;
+  }
+  .fa-bars::before {
+    display: block;
+  }
+}
+.card-hover {
+  width: 250px;
+  height: 350px;
+  position: relative;
+  overflow: hidden;
+  margin: 8px 8px;
+  box-shadow: 0px 10px 15px -3px rgba(0, 0, 0, 0.1);
+  border-radius: 15px;
+}
+.card-hover:hover .card-hover__content {
+  background-color: #DEE8C2;
+  bottom: 100%;
+  transform: translateY(100%);
+  padding: 35px 40px;
+  transition: all 0.35s cubic-bezier(0.1, 0.72, 0.4, 0.97);
+}
+.card-hover:hover img {
+  transform: scale(1);
+  transition: 0.35s 0.1s transform cubic-bezier(0.1, 0.72, 0.4, 0.97);
+}
+.card-hover__content {
+  width: 100%;
+  text-align: center;
+  background-color: #86B971;
+  padding: 0 40px 35px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  transform: translateY(0);
+  transition: all 0.35s 0.35s cubic-bezier(0.1, 0.72, 0.4, 0.97);
+  will-change: bottom, background-color, transform, padding;
+  z-index: 1;
+}
+.card-hover__content::before, .card-hover__content::after {
+  content: "";
+  width: 100%;
+  height: 80px;
+  background-color: inherit;
+  position: absolute;
+  left: 0;
+  z-index: -1;
+}
+.card-hover__content::before {
+  top: -60px;
+  clip-path: ellipse(60% 80px at bottom center);
+}
+.card-hover__content::after {
+  bottom: -60px;
+  clip-path: ellipse(60% 80px at top center);
+}
+.card-hover__title {
+  font-size: 1rem;
+  margin-bottom: 0.7em;
+}
+.card-hover__title span {
+  color: #dda15e;
+}
+.card-hover__text {
+  font-size: 0.6rem;
+}
+.card-hover img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  z-index: -1;
+  transform: scale(1.2);
+  transition: 0.35s 0.35s transform cubic-bezier(0.1, 0.72, 0.4, 0.97);
+}
+
+.cards-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  flex-wrap: wrap;
+  padding: 10px 10px;
+}
+
+.section-title h2 {
+  margin: 10px 0 0 0;
+  position: relative;
+  font-weight: 300;
+  font-size: 28px;
+  color: #080808;
+  text-align: center;
+  text-transform: uppercase;
+  padding-bottom: 5px;
+}
+.section-title h2:before {
+  width: 28px;
+  height: 5px;
+  display: block;
+  content: "";
+  position: absolute;
+  bottom: 3px;
+  left: 50%;
+  margin-left: -14px;
+  background-color: #bc6c25;
+}
+.section-title h2:after {
+  width: 100px;
+  height: 1px;
+  display: block;
+  content: "";
+  position: relative;
+  margin-top: 25px;
+  left: 50%;
+  margin-left: -50px;
+  background-color: #bc6c25;
+}
+
+/*# sourceMappingURL=menu.css.map */
