@@ -1,6 +1,12 @@
 @use "reset"
 @use "const"
 @use "../includes/header/header"
+@use "../includes/footer/footer"
+
+body
+  display: flex
+  flex-direction: column
+  align-items: center
 
 .contact-title
   display: flex
@@ -39,8 +45,17 @@
   background: const.$secondary-color
   margin: 60px auto
 
+.horizontal-bar-L
+  @extend .horizontal-bar
+  width: 75%
+
+.horizontal-bar-XL
+  @extend .horizontal-bar
+  margin: 10px auto
+  width: 100%
+
 .contact-container
-  margin: 50px 0
+  margin: 20px 0
   display: flex
   flex-direction: row
   justify-content: space-around
@@ -66,6 +81,24 @@
     &:hover
       transform: scale(1.1)
       color: const.$secondary-color-light
+
+.contact-sidebar
+  h2
+    margin: 20px 0 10px 0
+    color: const.$secondary-color
+
+.contact-schedules
+  display: flex
+  flex-direction: column
+  justify-content: center
+  align-items: flex-start
+  width: 100%
+  span.contact-day
+    color: const.$secondary-color-light
+    font-weight: 700
+    text-align: left
+
+
 
 .contact-form
   display: flex
@@ -103,7 +136,7 @@
       margin: auto
       padding: 10px
       border: none
-      border-radius: 10px
+      border-radius: 5px
       cursor: pointer
       background-color: const.$primary-color
       color: #fff
@@ -128,6 +161,18 @@
   label
     font-size: 1.1rem
     font-weight: 300
+
+.contact-maps
+  width: 70%
+  iframe
+    width: 100%
+    border-radius: 15px
+    box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22)
+  h1
+    margin: 20px
+    text-align: center
+    font-size: 3rem
+    color: const.$secondary-color-light
 
 
 
