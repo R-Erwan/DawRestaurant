@@ -67,6 +67,38 @@ body {
   min-height: 100vh;
 }
 
+.horizontal-bar, .horizontal-bar-XL, .horizontal-bar-L {
+  width: 50%;
+  height: 3px;
+  background: #dda15e;
+  margin: 60px auto;
+}
+
+.horizontal-bar-L {
+  width: 75%;
+}
+
+.horizontal-bar-XL {
+  margin: 10px auto;
+  width: 100%;
+}
+
+.vertical-bar, .vertical-bar-XL, .vertical-bar-L {
+  width: 3px;
+  height: 5vh;
+  background: #FFF;
+}
+
+.vertical-bar-L {
+  width: 3px;
+  height: 10vh;
+}
+
+.vertical-bar-XL {
+  width: 3px;
+  height: 100vh;
+}
+
 header {
   width: 100%;
   background-color: #dda15e;
@@ -181,20 +213,94 @@ footer {
   left: 0;
   bottom: 0;
   width: 100%;
+  margin-top: 5vh;
 }
 
 .footer-container {
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
   width: 100%;
+  background-color: #dda15e;
+  color: #fff;
+  padding: 20px 0;
 }
 
-.footer-container {
+/* CONTACT */
+.footer-contact {
   display: flex;
   flex-direction: row;
+  justify-content: center;
   align-items: center;
   width: 100%;
+  padding: 10px 10px 20px 10px;
+}
+
+.footer-info {
+  width: 33%;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+}
+.footer-info i {
+  font-size: 1.5rem;
+  margin: 1rem;
+}
+
+/* CONTENT */
+.footer-content {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  background-color: #dfa96d;
+  padding: 20px;
+}
+.footer-content div {
+  width: 33%;
+  text-align: center;
+}
+
+.footer-logo {
+  font-size: 2rem;
+}
+.footer-logo .l-green {
+  color: #86B971;
+  font-size: 6rem;
+}
+
+.footer-nav li {
+  transition: all 0.2s ease-in-out;
+}
+.footer-nav li:hover {
+  transform: scale(1.1);
+  font-weight: bold;
+}
+
+.footer-social-media {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+}
+.footer-social-media i {
+  font-size: 5rem;
+  transition: all 0.2s ease-in-out;
+}
+.footer-social-media i:hover {
+  transform: scale(1.1);
+  color: #DEE8C2;
+  cursor: pointer;
+}
+
+.footer-copyright {
+  margin-top: 1rem;
+}
+.footer-copyright .footer-names {
+  font-weight: bold;
 }
 
 body {
@@ -235,22 +341,6 @@ body {
 }
 .contact-title:hover h1 {
   transform: translate(0, 4rem);
-}
-
-.horizontal-bar, .horizontal-bar-XL, .horizontal-bar-L {
-  width: 50%;
-  height: 3px;
-  background: #dda15e;
-  margin: 60px auto;
-}
-
-.horizontal-bar-L {
-  width: 75%;
-}
-
-.horizontal-bar-XL {
-  margin: 10px auto;
-  width: 100%;
 }
 
 .contact-container {

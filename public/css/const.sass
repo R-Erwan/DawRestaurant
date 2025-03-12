@@ -7,3 +7,33 @@ $secondary-color-light: #cfad89
 $third-color: #fefae0
 
 
+.horizontal-bar
+  width: 50%
+  height: 3px
+  background: $secondary-color
+  margin: 60px auto
+
+.horizontal-bar-L
+  @extend .horizontal-bar
+  width: 75%
+
+.horizontal-bar-XL
+  @extend .horizontal-bar
+  margin: 10px auto
+  width: 100%
+
+.vertical-bar
+  width: 3px
+  height: 5vh
+  background: #FFF
+
+.vertical-bar-L
+  @extend .vertical-bar
+  width: 3px
+  height: 10vh
+
+.vertical-bar-XL
+  @extend .vertical-bar
+  width: 3px
+  height: 100vh
+

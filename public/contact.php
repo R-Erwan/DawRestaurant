@@ -2,8 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>DawRestaurant</title>
+    <title>Les contacts & accès </title>
     <link rel="stylesheet" href="./css/contact.css">
+    <link rel="icon" type="image/png" href=" ./resources/images/favicon.png">
 </head>
 <body>
     <?php include_once "includes/header/header.php"?>
@@ -16,6 +17,19 @@
 
     <div class="contact-container">
         <aside class="contact-sidebar">
+
+            <div class="contact-infos">
+                <h2>Informations de contact </h2>
+                <span>9 Av. Alain Savary, <br> 21000 Dijon</span>
+                <span>Téléphone : <span class="telNumber">03 80 39 50 04</span> </span>
+                <div class="social-media">
+                    <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+
+            <div class="horizontal-bar-XL"></div>
+
 
             <div class="contact-schedules">
                 <h2>Nos horaires</h2>
@@ -30,18 +44,6 @@
                 </ul>
             </div>
 
-
-            <div class="contact-infos">
-                <h2>Informations de contact </h2>
-                <span>9 Av. Alain Savary, <br> 21000 Dijon</span>
-                <span>Téléphone : <span class="telNumber">03 80 39 50 04</span> </span>
-                <div class="social-media">
-                    <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#" class="social"><i class="fab fa-instagram"></i></a>
-                </div>
-            </div>
-
-            <div class="horizontal-bar-XL"></div>
         </aside>
 
         <div class="contact-form">

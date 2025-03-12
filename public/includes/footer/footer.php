@@ -1,25 +1,33 @@
 <footer>
     <div class="footer-container">
         <div class="footer-contact">
-            <div class="footer-adresse">
+            <div class="footer-info">
                 <i class="fa-solid fa-location-dot"></i>
-                <h3>Adresse</h3>
-                <span>9 Av. Alain Savary, 21000 Dijon</span>
+                <div class="footer-contact-text">
+                    <h3>Adresse</h3>
+                    <span>9 Av. Alain Savary, 21000 Dijon</span>
+                </div>
             </div>
-            <div class="footer-tel">
+            <div class="vertical-bar"></div>
+            <div class="footer-info">
                 <i class="fa-solid fa-phone-flip"></i>
-                <h3>Téléphone</h3>
-                <span>03 80 39 50 04</span>
+                <div class="footer-contact-text">
+                    <h3>Téléphone</h3>
+                    <span>03 80 39 50 04</span>
+                </div>
             </div>
-            <div class="footer-email">
+            <div class="vertical-bar"></div>
+            <div class="footer-info">
                 <i class="fa-solid fa-envelope"></i>
-                <h3>Mail</h3>
-                <span>contact@leresto..com</span>
+                <div class="footer-contact-text">
+                    <h3>Mail</h3>
+                    <span>contact@leresto..com</span>
+                </div>
             </div>
         </div>
         <div class="footer-content">
             <div class="footer-logo">
-                <h2>Le <span>Resto</span> </h2>
+                <h2> Le<span class="l-green">R</span>esto</h2>
             </div>
             <div class="footer-nav">
                 <h2>Navigation</h2>
@@ -37,8 +45,8 @@
                 <i class="fa-brands fa-facebook"></i>
             </div>
         </div>
-        <div class="copiright">
-
+        <div class="footer-copyright">
+            <span>Copyright © 2025. Tous droits réservés </span> <span class="footer-names">Erwan - Auréline - Samuel</span>
         </div>
     </div>
 </footer>

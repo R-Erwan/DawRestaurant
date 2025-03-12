@@ -2,8 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>DawRestaurant</title>
+    <title>Le Resto</title>
     <link rel="stylesheet" href="./css/index.css">
+    <link rel="icon" type="image/png" href=" ./resources/images/favicon.png">
 </head>
 <body>
     <?php include_once "includes/header/header.php" ?>
