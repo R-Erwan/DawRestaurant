@@ -325,7 +325,7 @@ header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 2em 0;
+  padding: 1em 0;
 }
 
 .nav-logo {
@@ -339,6 +339,10 @@ header {
   font-size: 24px;
   letter-spacing: 5px;
   font-weight: bold;
+}
+.nav-logo .l-green {
+  color: #86B971;
+  font-size: 2rem;
 }
 
 .nav-links {

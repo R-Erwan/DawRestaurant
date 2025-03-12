@@ -1,7 +1,7 @@
 <header>
     <nav class="header-navbar">
         <div class="nav-logo">
-            <a href="/DawRestaurant/public/index.php">Le RestO</a>
+            <a href="/DawRestaurant/public/index.php">Le<span class="l-green">R</span>esto</a>
         </div>
         <div class="nav-links">
             <ul>
