@@ -26,9 +26,6 @@
             <iframe src="https://www.google.com/maps/embed?pb=!1m16!1m12!1m3!1d1912.7774139342628!2d5.071819747920001!3d47.31285846274087!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!2m1!1sufr%20sciences%20et%20techniques!5e0!3m2!1sfr!2sfr!4v1741609164024!5m2!1sfr!2sfr" width="300" height="400" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
         </aside>
         <div class="contact-form">
-            <div class="form-title">
-                <h1>Envoyez-nous un message !</h1>
-            </div>
             <form class="contact-form-content" action="">
                 <div class="input-contact-form">
                     <label for="input-firstName">Prénom</label>
@@ -66,3 +63,4 @@
 <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 </body>
 </html>
+
