@@ -1,0 +1,103 @@
+:root {
+    --size-width: 100%;
+    --size-height: 900px;
+}
+
+.carousel-wrapper {
+    width: var(--size-width);
+    height: var(--size-height);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 20px;
+}
+
+.carousel-container {
+    width: var(--size-width);
+    height: var(--size-height);
+    overflow: hidden;
+    margin: 0 auto;
+}
+
+.carousel {
+    display: flex;
+    width: var(--size-width);
+    animation: sliding 12s infinite;
+}
+
+.carousel div {
+    width: var(--size-width);
+    height: var(--size-height);
+    background-size: cover;
+    background-position: center;
+}
+
+.carousel div:hover {
+    animation-play-state: paused;
+}
+
+.carousel .image-one {
+    background-image: url("resources/images/interior.jpg");
+}
+
+.carousel .image-two {
+    background-image: url("resources/images/food.jpg");
+}
+
+.carousel .image-three {
+    background-image: url("resources/images/food2.jpg");
+}
+
+@keyframes sliding {
+    30% {
+        transform: translateX(0);
+    }
+    35% {
+        transform: translateX(-100%);
+    }
+    65% {
+        transform: translateX(-100%);
+    }
+    70% {
+        transform: translateX(-200%);
+    }
+    98% {
+        transform: translateX(-200%);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+
+@media screen and (max-width: 768px) {
+    :root {
+        --size-width: 240px;
+        --size-height: 150px;
+    }
+
+    .carousel-wrapper {
+        width: calc(var(--size-width) * 1.3);
+        height: calc(var(--size-height) * 1.4);
+    }
+
+    .carousel-container {
+        width: var(--size-width);
+        height: var(--size-height);
+    }
+
+    .carousel {
+        width: calc(var(--size-width) * 3);
+    }
+
+    .carousel > div {
+        width: var(--size-width);
+        height: var(--size-height);
+    }
+}
+
+
+
+
+/*# sourceMappingURL=home-page.css.map */
+
+

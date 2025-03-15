@@ -1,0 +1,23 @@
+<div class="carousel-container">
+    <div class="carousel-slides">
+        <div class="carousel-slide">
+            <img src="resources/images/interior.jpg" alt="Slide 1">
+            <div class="carousel-text">Texte pour la premiere image</div>
+        </div>
+        <div class="carousel-slide">
+            <img src="resources/images/food.jpg" alt="Slide 2">
+            <div class="carousel-text">Texte pour la deuxième image</div>
+        </div>
+        <div class="carousel-slide">
+            <img src="resources/images/food2.jpg" alt="Slide 3">
+            <div class="carousel-text">Texte pour la troisième image</div>
+        </div>
+        <!-- Ne pas enlever pour éviter l'effet coupure -->
+        <div class="carousel-slide">
+            <img src="resources/images/interior.jpg" alt="Slide 3">
+            <div class="carousel-text">Texte pour la premiere image</div>
+        </div>
+    </div>
+</div>
+
+<script src="https://kit.fontawesome.com/c4155bf45a.js" crossorigin="anonymous"></script>
