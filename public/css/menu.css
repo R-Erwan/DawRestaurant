@@ -70,7 +70,7 @@ body {
 .horizontal-bar, .horizontal-bar-XL, .horizontal-bar-L {
   width: 50%;
   height: 3px;
-  background: #dda15e;
+  background: #fab369;
   margin: 60px auto;
 }
 
@@ -101,7 +101,7 @@ body {
 
 header {
   width: 100%;
-  background-color: #dda15e;
+  background-color: #fab369;
   position: sticky;
   top: 0;
   z-index: 1000;
@@ -266,7 +266,7 @@ header {
   margin-bottom: 0.7em;
 }
 .card-hover__title span {
-  color: #dda15e;
+  color: #fab369;
 }
 .card-hover__text {
   font-size: 0.6rem;
@@ -290,7 +290,6 @@ footer {
   left: 0;
   bottom: 0;
   width: 100%;
-  margin-top: 5vh;
 }
 
 .footer-container {
@@ -299,7 +298,7 @@ footer {
   justify-content: center;
   align-items: center;
   width: 100%;
-  background-color: #dda15e;
+  background-color: #fab369;
   color: #fff;
   padding: 20px 0;
 }

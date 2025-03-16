@@ -34,7 +34,7 @@
                 <nav>
                     <ul>
                         <li><a href="/DawRestaurant/public/menu.php">Notre carte</a></li>
-                        <li><a href="#">Reserver</a></li>
+                        <li><a href="#">Réservation</a></li>
                         <li><a href="/DawRestaurant/public/contact.php">Contact</a></li>
                         <li><a href="/DawRestaurant/public/login.php">Connexion</a></li>
                     </ul>

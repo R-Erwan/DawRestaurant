@@ -70,7 +70,7 @@ body {
 .horizontal-bar, .horizontal-bar-XL, .horizontal-bar-L {
   width: 50%;
   height: 3px;
-  background: #dda15e;
+  background: #fab369;
   margin: 60px auto;
 }
 
@@ -247,8 +247,8 @@ input {
 
 .overlay {
   background: #cfad89;
-  background: -webkit-linear-gradient(to right, #cfad89, #dda15e);
-  background: linear-gradient(to right, #cfad89, #dda15e);
+  background: -webkit-linear-gradient(to right, #cfad89, #fab369);
+  background: linear-gradient(to right, #cfad89, #fab369);
   background-repeat: no-repeat;
   background-size: cover;
   background-position: 0 0;
@@ -313,7 +313,7 @@ input {
 
 header {
   width: 100%;
-  background-color: #dda15e;
+  background-color: #fab369;
   position: sticky;
   top: 0;
   z-index: 1000;
@@ -429,7 +429,6 @@ footer {
   left: 0;
   bottom: 0;
   width: 100%;
-  margin-top: 5vh;
 }
 
 .footer-container {
@@ -438,7 +437,7 @@ footer {
   justify-content: center;
   align-items: center;
   width: 100%;
-  background-color: #dda15e;
+  background-color: #fab369;
   color: #fff;
   padding: 20px 0;
 }
