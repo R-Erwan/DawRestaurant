@@ -70,7 +70,7 @@ body {
 .horizontal-bar, .horizontal-bar-XL, .horizontal-bar-L {
   width: 50%;
   height: 3px;
-  background: #dda15e;
+  background: #fab369;
   margin: 60px auto;
 }
 
@@ -101,7 +101,7 @@ body {
 
 header {
   width: 100%;
-  background-color: #dda15e;
+  background-color: #fab369;
   position: sticky;
   top: 0;
   z-index: 1000;
@@ -218,7 +218,6 @@ footer {
   left: 0;
   bottom: 0;
   width: 100%;
-  margin-top: 5vh;
 }
 
 .footer-container {
@@ -227,7 +226,7 @@ footer {
   justify-content: center;
   align-items: center;
   width: 100%;
-  background-color: #dda15e;
+  background-color: #fab369;
   color: #fff;
   padding: 20px 0;
 }
@@ -384,7 +383,7 @@ body {
 
 .contact-sidebar h2 {
   margin: 20px 0 10px 0;
-  color: #dda15e;
+  color: #fab369;
 }
 
 .contact-schedules {
@@ -469,6 +468,7 @@ body {
 
 .contact-maps {
   width: 70%;
+  margin-bottom: 10vh;
 }
 .contact-maps iframe {
   width: 100%;

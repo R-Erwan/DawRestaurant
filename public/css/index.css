@@ -70,7 +70,7 @@ body {
 .horizontal-bar, .horizontal-bar-XL, .horizontal-bar-L {
   width: 50%;
   height: 3px;
-  background: #dda15e;
+  background: #fab369;
   margin: 60px auto;
 }
 
@@ -101,7 +101,7 @@ body {
 
 header {
   width: 100%;
-  background-color: #dda15e;
+  background-color: #fab369;
   position: sticky;
   top: 0;
   z-index: 1000;
@@ -218,7 +218,6 @@ footer {
   left: 0;
   bottom: 0;
   width: 100%;
-  margin-top: 5vh;
 }
 
 .footer-container {
@@ -227,7 +226,7 @@ footer {
   justify-content: center;
   align-items: center;
   width: 100%;
-  background-color: #dda15e;
+  background-color: #fab369;
   color: #fff;
   padding: 20px 0;
 }
@@ -306,6 +305,203 @@ footer {
 }
 .footer-copyright .footer-names {
   font-weight: bold;
+}
+
+main {
+  background-color: #cfad89;
+  min-height: 100vh;
+  width: 100vw;
+}
+
+.carousel-container {
+  width: 100vw;
+  height: 50vh;
+  position: relative;
+  overflow: hidden;
+  background: #86B971;
+}
+
+.carousel-slides {
+  width: 400%;
+  height: 100%;
+  display: flex;
+  animation: slide 15s ease-in-out infinite;
+}
+
+.carousel-slide {
+  width: 25%;
+  height: 100%;
+  flex-shrink: 0;
+  position: relative;
+  transition: transform 0.5s ease;
+}
+
+.carousel-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: blur(1px) brightness(0.9);
+  transition: filter 0.3s ease;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.carousel-slide:hover img {
+  filter: blur(0) brightness(0.8);
+}
+
+.carousel-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 2.5rem;
+  color: #fefae0;
+  font-weight: 700;
+  text-align: center;
+  padding: 15px 25px;
+  border-radius: 8px;
+  max-width: 80%;
+  font-family: "Arial", sans-serif;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+  transition: background 0.3s ease;
+}
+
+@keyframes slide {
+  0% {
+    transform: translateX(0);
+  }
+  20% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-25%);
+  }
+  45% {
+    transform: translateX(-25%);
+  }
+  50% {
+    transform: translateX(-50%);
+  }
+  70% {
+    transform: translateX(-50%);
+  }
+  75% {
+    transform: translateX(-75%);
+  }
+  100% {
+    transform: translateX(-75%);
+  }
+}
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-column-gap: 2rem;
+  grid-row-gap: 3rem;
+  padding: 4rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  height: 100%;
+  background-color: #dfa96d;
+}
+
+.div1 {
+  grid-area: 1/1/2/2;
+}
+
+.div2 {
+  grid-area: 1/2/2/3;
+}
+
+.div3 {
+  grid-area: 2/1/3/2;
+}
+
+.div4 {
+  grid-area: 2/2/3/3;
+}
+
+.div5 {
+  grid-area: 3/1/4/2;
+}
+
+.div6 {
+  grid-area: 3/2/4/3;
+}
+
+.div1, .div2, .div3, .div4, .div5, .div6 {
+  background: #fefae0;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  padding: 25px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.div1 .div2, .div3, .div4, .div5 .div6 {
+  position: relative;
+  overflow: hidden;
+  height: auto;
+}
+
+.div1:hover, .div2:hover, .div3:hover, .div4:hover, .div5:hover, .div6:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+}
+
+.div1 h3, .div4 h3, .div5 h3 {
+  font-family: "Arial", sans-serif;
+  font-size: 1.8rem;
+  color: #2c3e50;
+  margin-bottom: 30px;
+  font-weight: 700;
+  position: relative;
+  padding-bottom: 10px;
+}
+.div1 h3::after, .div4 h3::after, .div5 h3::after {
+  content: "";
+  position: absolute;
+  width: 50px;
+  height: 3px;
+  background: #86B971;
+  bottom: 0;
+  left: 0;
+}
+.div1 p, .div4 p, .div5 p {
+  font-family: "Arial", sans-serif;
+  font-size: 17.5px;
+  color: #7f8c8d;
+  line-height: 1.7;
+  margin: 10px 0 0;
+}
+
+.div2 img, .div3 img, .div6 img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 8px;
+  transition: transform 0.3s ease;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.div2:hover img, .div3:hover img, .div6:hover img {
+  transform: scale(1.05);
+}
+
+@media (max-width: 768px) {
+  .grid-container {
+    grid-template-columns: 1fr;
+    padding: 20px;
+  }
+  .grid-container .div1, .grid-container .div2, .grid-container .div3, .grid-container .div4, .grid-container .div5, .grid-container .div6 {
+    grid-area: auto;
+  }
+  .carousel-text {
+    font-size: 1.5rem;
+  }
+  .carousel-container {
+    height: 300px;
+  }
 }
 
 /*# sourceMappingURL=index.css.map */
