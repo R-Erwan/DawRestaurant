@@ -1,0 +1,71 @@
+@use "reset"
+@use "const"
+
+.container
+  height: 100vh
+  width: 100%
+
+/* Aside Menu */
+
+.menu-container
+  height: 100%
+  width: 20%
+  position: fixed
+  z-index: 1
+  top: 0
+  left: 0
+  overflow-x: hidden
+  background-color: #fff
+
+.logo
+  border-bottom: #aaa solid 1px
+  text-align: center
+  padding: 10px 0
+  a
+    color: #000
+    font-size: 24px
+  .l-green
+    color: const.$primary-color
+    font-size: 2rem
+
+.menu-container
+  nav
+    display: flex
+    flex-direction: column
+    align-items: flex-start
+    justify-content: center
+    padding: 3em 0 0 3em
+    font-size: 0.9rem
+
+.nav-item
+  font-weight: 600
+  transition: all 0.2s ease-in-out
+  cursor: pointer
+  margin: 2px 0
+  &:hover
+    color: const.$secondary-color
+    transform: scale(1.02)
+
+.nav-cat
+  margin-top: 40px
+  font-weight: 200
+  text-transform: uppercase
+
+.active-nav
+  color: const.$secondary-color
+  &:before
+    content: ""
+    display: inline-block
+    width: 10px
+    height: 10px
+    border-radius: 50%
+    background-color: const.$secondary-color
+    transform: translateX(-20px)
+
+/* Reservation container */
+.reservation-container
+  margin-left: 20%
+  height: 100vh
+  width: 70%
+  background-color: #f6f6f6
+  padding: 3em

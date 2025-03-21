@@ -1,8 +1,107 @@
-.card-menu {
-  width: 5em;
-  height: 5em;
+/* @deprecated */
+.horizontal-bar, .horizontal-bar-XL, .horizontal-bar-L {
+  width: 50%;
+  height: 3px;
+  background: #fab369;
+  margin: 60px auto;
+}
+
+.horizontal-bar-L {
+  width: 75%;
+}
+
+.horizontal-bar-XL {
+  margin: 10px auto;
+  width: 100%;
+}
+
+.vertical-bar, .vertical-bar-XL, .vertical-bar-L {
+  width: 3px;
+  height: 5vh;
+  background: #FFF;
+}
+
+.vertical-bar-L {
+  width: 3px;
+  height: 10vh;
+}
+
+.vertical-bar-XL {
+  width: 3px;
+  height: 100vh;
+}
+
+.card-hover {
+  width: 250px;
+  height: 350px;
+  position: relative;
   overflow: hidden;
-  box-shadow: 0 0 32px -10px rgba(0, 0, 0, 0.08);
+  margin: 8px 8px;
+  box-shadow: 0px 10px 15px -3px rgba(0, 0, 0, 0.1);
+  border-radius: 15px;
+}
+.card-hover:hover .card-hover__content {
+  background-color: #DEE8C2;
+  bottom: 100%;
+  transform: translateY(100%);
+  padding: 35px 40px;
+  transition: all 0.35s cubic-bezier(0.1, 0.72, 0.4, 0.97);
+}
+.card-hover:hover img {
+  transform: scale(1);
+  transition: 0.35s 0.1s transform cubic-bezier(0.1, 0.72, 0.4, 0.97);
+}
+.card-hover__content {
+  width: 100%;
+  text-align: center;
+  background-color: #86B971;
+  padding: 0 40px 35px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  transform: translateY(0);
+  transition: all 0.35s 0.35s cubic-bezier(0.1, 0.72, 0.4, 0.97);
+  will-change: bottom, background-color, transform, padding;
+  z-index: 1;
+}
+.card-hover__content::before, .card-hover__content::after {
+  content: "";
+  width: 100%;
+  height: 80px;
+  background-color: inherit;
+  position: absolute;
+  left: 0;
+  z-index: -1;
+}
+.card-hover__content::before {
+  top: -60px;
+  clip-path: ellipse(60% 80px at bottom center);
+}
+.card-hover__content::after {
+  bottom: -60px;
+  clip-path: ellipse(60% 80px at top center);
+}
+.card-hover__title {
+  font-size: 1rem;
+  margin-bottom: 0.7em;
+}
+.card-hover__title span {
+  color: #fab369;
+}
+.card-hover__text {
+  font-size: 0.6rem;
+}
+.card-hover img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  z-index: -1;
+  transform: scale(1.2);
+  transition: 0.35s 0.35s transform cubic-bezier(0.1, 0.72, 0.4, 0.97);
 }
 
 /*# sourceMappingURL=card-menu.css.map */
