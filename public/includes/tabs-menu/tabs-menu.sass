@@ -1,0 +1,71 @@
+@use "../../css/const"
+
+.menu-container
+  display: flex
+  flex-direction: column
+  align-items: center
+  justify-content: center
+
+.tabs-menu
+  width: 100%
+  display: flex
+  flex-direction: row
+  justify-content: center
+  align-items: center
+  margin: 20px 0
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)
+  padding: 10px
+
+.tabs-button
+  padding: 10px 30px
+  font-size: 1.2em
+  border: none
+  background-color: #fff
+  transition: 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)
+  cursor: pointer
+  i
+    color: const.$primary-color
+    margin-right: 5px
+    transition: 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)
+  &:hover
+    transform: scale(1.2)
+    //i
+    //  color: const.$secondary-color-dark
+
+.tabs-selected
+  transform: scale(1.2)
+  i
+    color: const.$secondary-color-dark
+
+.tabs-content
+  min-height: 50vh
+  max-height: 80vh
+  overflow: auto
+  width: 70%
+  display: flex
+  flex-direction: column
+  .tabs-item-title
+    font-size: 1.4em
+    color: const.$secondary-color
+    font-weight: 700
+
+.tab-item
+  width: 95%
+  margin: 10px 0
+  padding: 20px
+  border-radius: 1rem
+  box-shadow: 0px 10px 10px -7px rgba(0,0,0,0.1)
+  transition: all .3s
+  .title
+    font-size: 1em
+    font-weight: 500
+  .price
+    float: right
+  &:hover
+    transform: scale(1.02)
+    cursor: pointer
+
+@media screen and (max-width: 700px)
+  .tabs-content
+    width: 100%
+    padding: 20px
