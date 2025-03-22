@@ -1,3 +1,4 @@
+<?php $type = isset($_GET['type']) ? $_GET['type'] : 'current'?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,32 +14,47 @@
             <a href="/DawRestaurant/public/index.php">Le<span class="l-green">R</span>esto</a>
         </div>
         <nav>
-            <div class="nav-item active-nav">Vue d'ensemble</div>
             <div class="nav-cat">Réservations</div>
-            <div class="nav-item">Mes réservations</div>
-            <div class="nav-item">Historique</div>
+            <div class="nav-item <?php echo ($type == 'current') ? "active-nav" : "" ?>"><a href="client.php?type=current">Mes réservations</a></div>
+            <div class="nav-item <?php echo ($type == 'history') ? "active-nav" : "" ?>"><a href="client.php?type=history">Historique</a></div>
             <div class="nav-cat">Paramètres</div>
-            <div class="nav-item">Compte</div>
-            <div class="nav-item">Confidentialité</div>
+            <div class="nav-item <?php echo ($type == 'account') ? "active-nav" : "" ?> "  ><a href="client.php?type=account">Compte</a></div>
+            <div class="nav-item <?php echo ($type == 'privacy') ? "active-nav" : "" ?> "  ><a href="client.php?type=privacy">Confidentialité</a></div>
             <div class="nav-cat"></div>
             <div class="nav-item">Déconnexion</div>
         </nav>
+        <div class="question-container">
+            <i class="fa-solid fa-gear"></i>
+            <h2>Questions ?</h2>
+            <div>On est la pour vous renseigné, envoyer nous un message.</div>
+            <h3>Contacter nous <i class="fa-solid fa-arrow-right"></i> </h3>
+        </div>
     </aside>
-    <div class="reservation-container">
+    <div class="page-container">
         <div class="header">
-            <h2>
-
-            </h2>
+            <div class="header-left">
+                <h2>Votre page personnel</h2>
+                <div class="page-desc">Regarder vos réservations, gérer votre compte et vos donnée personnel</div>
+            </div>
+            <div class="header-right">
+                <img src="/public/resources/images/pp1.jpg" alt="profil pic" class="profile-picture">
+                <div class="user-info">
+                    <span class="username">Toto</span>
+                    <span class="email">toto@gmail.com</span>
+                </div>
+            </div>
         </div>
-        <div class="tabs-menu">
-            <button class="tabs-button tabs-selected" id="tabs-next">Prochaines réservations</button>
-            <button class="tabs-button" id="tabs-old">Anciennes réservations </button>
-        </div>
-        <div class="tabs-content">
-            <?php include_once "includes/client-page/reservation-list/reservation-list.php" ?>
+        <div class="content">
+<!--            Dynamique -->
+            <?php if($type == 'current' | $type == 'history') {
+                include_once "includes/client-page/reservation-list/reservation-list.php";
+            } else echo "Not developed";
+            ?>
         </div>
     </div>
 </div>
 
 </body>
+<script src="https://kit.fontawesome.com/c4155bf45a.js" crossorigin="anonymous"></script>
+
 </html>

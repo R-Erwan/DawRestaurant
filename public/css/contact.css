@@ -369,7 +369,7 @@ body {
   margin: 10px 0;
 }
 .contact-infos .telNumber {
-  color: #cfad89;
+  color: #ededed;
 }
 .contact-infos i {
   font-size: 32px;
@@ -378,7 +378,7 @@ body {
 }
 .contact-infos i:hover {
   transform: scale(1.1);
-  color: #cfad89;
+  color: #ededed;
 }
 
 .contact-sidebar h2 {
@@ -394,7 +394,7 @@ body {
   width: 100%;
 }
 .contact-schedules span.contact-day {
-  color: #cfad89;
+  color: #ededed;
   font-weight: 700;
   text-align: left;
 }
@@ -479,7 +479,7 @@ body {
   margin: 20px;
   text-align: center;
   font-size: 3rem;
-  color: #cfad89;
+  color: #ededed;
 }
 
 /*# sourceMappingURL=contact.css.map */
