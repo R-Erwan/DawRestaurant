@@ -19,7 +19,7 @@
             <div class="nav-item <?php echo ($type == 'history') ? "active-nav" : "" ?>"><a href="client.php?type=history">Historique</a></div>
             <div class="nav-cat">Paramètres</div>
             <div class="nav-item <?php echo ($type == 'account') ? "active-nav" : "" ?> "  ><a href="client.php?type=account">Compte</a></div>
-            <div class="nav-item <?php echo ($type == 'privacy') ? "active-nav" : "" ?> "  ><a href="client.php?type=privacy">Confidentialité</a></div>
+<!--            <div class="nav-item --><?php //echo ($type == 'privacy') ? "active-nav" : "" ?><!-- "  ><a href="client.php?type=privacy">Confidentialité</a></div>-->
             <div class="nav-cat"></div>
             <div class="nav-item">Déconnexion</div>
         </nav>
@@ -27,7 +27,7 @@
             <i class="fa-solid fa-gear"></i>
             <h2>Questions ?</h2>
             <div>On est la pour vous renseigné, envoyer nous un message.</div>
-            <h3>Contacter nous <i class="fa-solid fa-arrow-right"></i> </h3>
+            <a href="contact.php"><h3>Contacter nous <i class="fa-solid fa-arrow-right"></i> </h3></a>
         </div>
     </aside>
     <div class="page-container">
@@ -48,6 +48,8 @@
 <!--            Dynamique -->
             <?php if($type == 'current' | $type == 'history') {
                 include_once "includes/client-page/reservation-list/reservation-list.php";
+            } else if($type == 'account') {
+                include_once "includes/client-page/settings-account/settings-account.php";
             } else echo "Not developed";
             ?>
         </div>
