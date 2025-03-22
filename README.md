@@ -16,6 +16,8 @@ sa pourrais tourner sur un arduino le bordel.
 
 ### Accéder aux services
 - le site : localhost
+
+Le container apache est monté sur public, donc pour les redirection de page, les chemins commence depuis le répertoire public/
 - adminer (IHM pour gérer la bd) : localhost:8081
 - La bd écoute sur 5432
 

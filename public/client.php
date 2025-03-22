@@ -11,7 +11,7 @@
 <div class="container">
     <aside class="menu-container">
         <div class="logo">
-            <a href="/DawRestaurant/public/index.php">Le<span class="l-green">R</span>esto</a>
+            <a href="/index.php">Le<span class="l-green">R</span>esto</a>
         </div>
         <nav>
             <div class="nav-cat">Réservations</div>
@@ -37,7 +37,7 @@
                 <div class="page-desc">Regarder vos réservations, gérer votre compte et vos donnée personnel</div>
             </div>
             <div class="header-right">
-                <img src="/public/resources/images/pp1.jpg" alt="profil pic" class="profile-picture">
+                <img src="./resources/images/pp1.jpg" alt="profil pic" class="profile-picture">
                 <div class="user-info">
                     <span class="username">Toto</span>
                     <span class="email">toto@gmail.com</span>
