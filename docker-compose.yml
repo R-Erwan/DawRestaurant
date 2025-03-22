@@ -1,0 +1,54 @@
+version: '3.8'
+
+services:
+  # Front-end (serveur Apache + PHP)
+  front-end:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: front-end
+    ports:
+      - "8080:80" # Lien avec le port 8080 de ta machine
+    volumes:
+      - ./public:/var/www/html
+    networks:
+      - daw_network
+
+  # API (serveur Apache + PHP pour l'API)
+  api:
+    image: php:8.2-apache
+    container_name: api
+    ports:
+      - "8000:80" # Lien avec le port 8000 de ta machine
+    volumes:
+      - ./api:/var/www/html
+    networks:
+      - daw_network
+    environment:
+      - VIRTUAL_HOST=api.localhost
+
+  # Base de données PostgreSQL
+  db:
+    image: postgres:13
+    container_name: db
+    environment:
+      POSTGRES_DB: daw_db
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+    ports:
+      - "5432:5432" # Port pour se connecter à la base depuis ta machine
+    networks:
+      - daw_network
+
+  # Adminer (Interface pour gérer PostgreSQL)
+  adminer:
+    image: adminer
+    container_name: adminer
+    ports:
+      - "8081:8080" # Port pour accéder à Adminer
+    networks:
+      - daw_network
+
+networks:
+  daw_network:
+    driver: bridge
