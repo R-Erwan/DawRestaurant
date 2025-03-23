@@ -9,6 +9,7 @@ signInButton.addEventListener('click', () => {
     loginContainer.classList.remove("right-panel-active");
 });
 
+// Login
 const loginForm = document.getElementById("login-form");
 loginForm.addEventListener('submit', async function (e) {
     e.preventDefault();
@@ -34,3 +35,6 @@ loginForm.addEventListener('submit', async function (e) {
         //TODO popup erreur
     }
 });
+
+// Signing
+

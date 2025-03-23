@@ -29,4 +29,23 @@ class AuthService {
         }
         return null; // Authentication failed
     }
+
+    /**
+     * @throws \Exception
+     */
+    public function register($email, $password, $name){
+        if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
+            throw new \Exception('Invalid email format');
+        }
+
+        if(strlen($password) < 6){
+            throw new \Exception('Password must be at least 6 characters long');
+        }
+
+        if( $this->user->findByEmail($email)){
+            throw new \Exception('Email already in use');
+        }
+
+        return $this->user->create($name, $email, $password);
+    }
 }

@@ -21,5 +21,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_GET['action'] === 'login') {
     $authController->login($input['email'], $input['password']);
     exit;
 }
+// Create User
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_GET['action'] === 'register') {
+    $input = json_decode(file_get_contents('php://input'), true);
+
+    $authController->register($input);
+    exit;
+}
 
 
