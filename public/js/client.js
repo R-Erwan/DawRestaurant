@@ -1,4 +1,4 @@
-window.onload = function () {
+document.addEventListener("DOMContentLoaded", function() {
     const token = localStorage.getItem("jwt");
     if (!token) {
         window.location.href = "login.php";
@@ -7,6 +7,5 @@ window.onload = function () {
     document.getElementById("logout").addEventListener("click", function () {
         localStorage.removeItem('jwt');
         window.location.href = "login.php";
-    })
-}
-
+    });
+});
