@@ -15,5 +15,10 @@ export function headerMenuHandler() {
 }
 
 document.addEventListener("DOMContentLoaded", function() {
+    const token = localStorage.getItem('jwt');
+    if (token) {
+        document.getElementById("login-links").classList.toggle("hidden");
+        document.getElementById("client-links").classList.toggle("hidden");
+    }
     headerMenuHandler();
 });
