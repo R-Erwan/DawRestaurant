@@ -1,13 +1,19 @@
 export function headerMenuHandler() {
-    $(".fa-bars").click(function(){
-        $(".responsive-nav-links").fadeToggle(300);
+    const menuButton = document.querySelector(".fa-bars");
+    const navLinks = document.querySelector(".responsive-nav-links");
+    const navItems = document.querySelectorAll(".responsive-nav-links li");
+
+    menuButton.addEventListener("click", function() {
+        navLinks.classList.toggle("visible");
     });
 
-    $(".responsive-nav-links li").click(function(){
-        $(".responsive-nav-links").fadeToggle(300);
+    navItems.forEach(item => {
+        item.addEventListener("click", function() {
+            navLinks.classList.toggle("visible");
+        });
     });
 }
 
-$(document).ready(function(){
+document.addEventListener("DOMContentLoaded", function() {
     headerMenuHandler();
-})
+});
