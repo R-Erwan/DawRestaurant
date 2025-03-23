@@ -58,7 +58,7 @@ docker exec -i <container_name_or_id> psql -U <postgres_user> -d <database_name>
 docker exec -i db psql -U admin -d daw_db < db/seed.sql
 ```
 
-**command_utils.sql** 
+**command_utils.sql.txt** 
 
 Contient des query utiles pour fetch des donné dans la bd. Ce n'est pas un fichier a éxécuter directement
 juste un mémo.
