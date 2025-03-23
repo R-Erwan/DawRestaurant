@@ -12,7 +12,10 @@ sa pourrais tourner sur un arduino le bordel.
 - Installer docker sur votre système
 - 2 fichiers de configurations : **Dockerfile** et **docker-compose.yml**
 - 1 Fichier de config pour apache dans **config/000-default.conf**
-- Lancer Docker **docker-compose up -d --build**
+- Lancer Docker
+```bash
+  docker-compose up -d --build
+```
 
 ### Accéder aux services
 - le site : localhost
@@ -41,3 +44,21 @@ En bas a gauche de l'IDE il y a un onglet Services, il doit y avoir Docker et
 Docker-compose: dawrestaurant.
 
 
+## Database Postgresql
+Une fois le docker lancer.
+La DB écoute sur le port 5433 de votre machine
+### Scripts initialisation
+- **init.sql** Pour créer les tables au démarrage du container docker
+- **seed.sql** Injecte des données de test dans labd
+- Pour éxécuter un script alors que le container est lancé : 
+```bash
+
+docker ps
+docker exec -i <container_name_or_id> psql -U <postgres_user> -d <database_name> -f /path/to/your/init.sql
+docker exec -i db psql -U admin -d daw_db < db/seed.sql
+```
+
+**command_utils.sql** 
+
+Contient des query utiles pour fetch des donné dans la bd. Ce n'est pas un fichier a éxécuter directement
+juste un mémo.
