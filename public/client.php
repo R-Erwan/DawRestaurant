@@ -57,6 +57,7 @@
 </div>
 
 </body>
+<script type="module" src="js/client.js"></script>
 <script src="https://kit.fontawesome.com/c4155bf45a.js" crossorigin="anonymous"></script>
 
 </html>
