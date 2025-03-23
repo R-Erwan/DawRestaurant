@@ -10,7 +10,8 @@ sa pourrais tourner sur un arduino le bordel.
 
 ### Config
 - Installer docker sur votre système
-- 2 fichiers de configurations : **Dockerfile** et **docker-compose.yml**
+- 2 fichiers de configurations : **Dockerfile** et **DockerfileApi** pour configurer les images
+- **docker-compose.yml**
 - 1 Fichier de config pour apache dans **config/000-default.conf**
 - Lancer Docker
 ```bash

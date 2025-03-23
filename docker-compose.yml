@@ -16,7 +16,9 @@ services:
 
   # API (serveur Apache + PHP pour l'API)
   api:
-    image: php:8.2-apache
+    build:
+      context: .
+      dockerfile: DockerfileApi
     container_name: api
     ports:
       - "8000:80" # Lien avec le port 8000 de ta machine
