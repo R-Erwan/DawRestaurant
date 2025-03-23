@@ -36,5 +36,39 @@ loginForm.addEventListener('submit', async function (e) {
     }
 });
 
-// Signing
+// Sign in
+const registerForm = document.getElementById("register-form");
+registerForm.addEventListener('submit', async function (e) {
+    e.preventDefault();
+    const email = document.getElementById("register-email").value;
+    const password = document.getElementById("register-password").value;
+    const name = document.getElementById("register-name").value;
+    try {
+        const response = await fetch("http://localhost:8000?action=register", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                email: email,
+                password: password,
+                name: name,
+            })
+        });
+        const data = await response.json();
+        if(response.ok) {
+            window.location.reload();
+            //TODO popup validation
+        } else {
+            alert(data.message || 'Une erreur est survenue');
+            loginForm.reset();
+            //TODO popup erreur
+        }
+    } catch (error) {
+        console.error(error);
+    }
+
+})
+
+
 
