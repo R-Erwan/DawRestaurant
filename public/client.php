@@ -21,7 +21,7 @@
             <div class="nav-item <?php echo ($type == 'account') ? "active-nav" : "" ?> "  ><a href="client.php?type=account">Compte</a></div>
 <!--            <div class="nav-item --><?php //echo ($type == 'privacy') ? "active-nav" : "" ?><!-- "  ><a href="client.php?type=privacy">Confidentialité</a></div>-->
             <div class="nav-cat"></div>
-            <div class="nav-item">Déconnexion</div>
+            <div class="nav-item" id="logout">Déconnexion</div>
         </nav>
         <div class="question-container">
             <i class="fa-solid fa-gear"></i>
