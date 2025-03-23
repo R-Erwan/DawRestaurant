@@ -21,6 +21,7 @@ RUN composer install --no-dev --prefer-dist
 
 # Activer les modules Apache nécessaires
 RUN a2enmod rewrite
+RUN a2enmod headers
 
 # Exposer le port 80 pour le serveur Apache
 EXPOSE 80

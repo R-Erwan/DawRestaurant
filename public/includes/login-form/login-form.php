@@ -16,7 +16,7 @@
             </form>
         </div>
         <div class="form-container sign-in-container">
-            <form action="#">
+            <form action="#" id="login-form">
                 <h1>Se connecter</h1>
                 <div class="social-container">
                     <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
@@ -24,8 +24,8 @@
                     <a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
                 </div>
                 <span>ou utiliser votre compte</span>
-                <input type="email" placeholder="Email" name="email" />
-                <input type="password" placeholder="Mot de passe" name="password" />
+                <input type="email" placeholder="Email" name="email" id="login-email" required/>
+                <input type="password" placeholder="Mot de passe" name="password" id="login-password" required/>
                 <a href="#">Mot de passe oublié ?</a>
                 <button>Se connecter</button>
             </form>

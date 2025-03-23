@@ -1,7 +1,8 @@
 # DawRestaurant
 
 ## Lancement avec docker 
-
+### Requis :
+    Docker
 **WARNING** Si il y a des pb pour lancer docker ect, modifié pas les fichiers de config
 ou alors fait le bien sur une branche (c'est chiant a faire les config docker)
 
@@ -13,6 +14,7 @@ sa pourrais tourner sur un arduino le bordel.
 - 2 fichiers de configurations : **Dockerfile** et **DockerfileApi** pour configurer les images
 - **docker-compose.yml**
 - 1 Fichier de config pour apache dans **config/000-default.conf**
+- .htaccess pour autoriser les headers CROS pour apache
 - Lancer Docker
 ```bash
   docker-compose up -d --build
