@@ -62,3 +62,13 @@ docker exec -i db psql -U admin -d daw_db < db/seed.sql
 
 Contient des query utiles pour fetch des donné dans la bd. Ce n'est pas un fichier a éxécuter directement
 juste un mémo.
+
+# API structure
+- **/config** Ce dossier contient toute la configuration nécessaire à l'application (connexion à la base de données, variables d'environnement, etc.)
+- **/controllers**  Les contrôleurs sont responsables de la gestion des requêtes HTTP entrantes. Chaque contrôleur va gérer une ressource spécifique de l'API 
+- **/models** Les modèles représentent les entités de la base de données et sont responsables de l'accès aux données. Ils contiennent généralement des méthodes pour récupérer ou modifier les données dans la base de données
+- **/services**  Les services contiennent la logique métier de l'application. Ce sont des classes intermédiaires qui coordonnent les opérations entre les contrôleurs et les modèles
+- **/routes** Le fichier de routes (souvent un fichier central api.php) contient la logique qui lie les URL aux méthodes des contrôleurs. C'est ici qu'on définit les routes HTTP comme GET, POST, PUT, DELETE et leur associes les méthodes des contrôleurs correspondants.
+- **/middleware** Gèrent des opérations avant ou après la gestion d'une requête. Par exemple, un middleware d'authentification pourrait vérifier si l'utilisateur est connecté avant d'exécuter certaines actions.
+- **/utils** Classes utilitaires comme un gestionnaire d'erreurs ou un validateur de données.
+- **index.php**  Le point d'entrée de l'API, qui récupère la requête HTTP, appelle le contrôleur approprié et envoie une réponse.
