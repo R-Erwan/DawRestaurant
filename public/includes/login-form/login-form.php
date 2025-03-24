@@ -1,3 +1,5 @@
+<?php include_once "includes/popup/popup.php"?>
+
 <div class="login-main-container">
     <div class="login-container" id="login-container">
         <div class="form-container sign-up-container">

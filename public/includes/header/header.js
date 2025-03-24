@@ -4,12 +4,12 @@ export function headerMenuHandler() {
     const navItems = document.querySelectorAll(".responsive-nav-links li");
 
     menuButton.addEventListener("click", function() {
-        navLinks.classList.toggle("visible");
+        navLinks.classList.toggle("visibleLink");
     });
 
     navItems.forEach(item => {
         item.addEventListener("click", function() {
-            navLinks.classList.toggle("visible");
+            navLinks.classList.toggle("visibleLink");
         });
     });
 }

@@ -1,3 +1,4 @@
+import {showBanner} from "../popup/popup";
 const signUpButton = document.getElementById("signUp");
 const signInButton = document.getElementById("signIn");
 const loginContainer = document.getElementById("login-container");
@@ -29,10 +30,10 @@ loginForm.addEventListener('submit', async function (e) {
     if(response.ok && data.token) {
         localStorage.setItem('jwt', data.token);
         window.location.href ='client.php'
-        //TODO popup validation
+        showBanner('success',data.message);
     } else {
         loginForm.reset();
-        //TODO popup erreur
+        showBanner('error', data.message);
     }
 });
 
@@ -57,12 +58,11 @@ registerForm.addEventListener('submit', async function (e) {
         });
         const data = await response.json();
         if(response.ok) {
-            window.location.reload();
-            //TODO popup validation
+            registerForm.reset();
+            showBanner('success',data.message + " - Connecter vous pour avoir accès a votre espace !");
         } else {
-            alert(data.message || 'Une erreur est survenue');
-            loginForm.reset();
-            //TODO popup erreur
+            registerForm.reset();
+            showBanner('error',data.message || 'Une erreur est survenue');
         }
     } catch (error) {
         console.error(error);
