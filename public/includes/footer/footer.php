@@ -33,10 +33,11 @@
                 <h2>Navigation</h2>
                 <nav>
                     <ul>
-                        <li><a href="/DawRestaurant/public/menu.php">Notre carte</a></li>
+                        <li><a href="menu.php">Notre carte</a></li>
                         <li><a href="#">Réservation</a></li>
-                        <li><a href="/DawRestaurant/public/contact.php">Contact</a></li>
-                        <li><a href="/DawRestaurant/public/login.php">Connexion</a></li>
+                        <li><a href="contact.php">Contact</a></li>
+                        <li id="footer-login-links"><a href="login.php">Connexion</a></li>
+                        <li id="footer-client-links" class="hidden"><a href="client.php">Mon espace</a></li>
                     </ul>
                 </nav>
             </div>
@@ -51,5 +52,6 @@
     </div>
 </footer>
 <script src="https://kit.fontawesome.com/c4155bf45a.js" crossorigin="anonymous"></script>
+<script src="includes/footer/footer.js" type="module"></script>
 
 
