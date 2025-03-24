@@ -32,7 +32,7 @@ class UserService{
         }
 
         if($password && strlen($password) < 8){
-            throw new \Exception('Password must be at least 6 characters long');
+            throw new \Exception('Password must be at least 8 characters long');
         }
 
         $regex = "/^\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}$/";

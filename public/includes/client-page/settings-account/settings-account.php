@@ -25,10 +25,6 @@
         <form action="" name="update-password" id="form-password">
             <div class="form-content">
                 <div>
-                    <label for="old-password">Ancien mot de passe *</label>
-                    <input type="password" name="old-password" id="old-password" required>
-                </div>
-                <div>
                     <label for="new-password">Nouveau mot de passe *</label>
                     <input type="password" name="new-password" id="new-password" required>
                 </div>

@@ -44,7 +44,7 @@ class AuthService {
         }
 
         if(strlen($password) < 8){
-            throw new \Exception('Password must be at least 6 characters long');
+            throw new \Exception('Password must be at least 8 characters long');
         }
 
         if( $this->user->findByEmail($email)){

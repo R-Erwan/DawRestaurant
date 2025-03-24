@@ -1,9 +1,9 @@
-const token = localStorage.getItem('token');
+const token = localStorage.getItem('jwt');
 if (token) {
     const decoded = JSON.parse(atob(token.split('.')[1])); // Décoder le JWT
     const currentTime = Math.floor(Date.now() / 1000); // Temps actuel en secondes
     if (decoded.exp < currentTime) {
         // Token expiré, supprimer du localStorage
-        localStorage.removeItem('token');
+        localStorage.removeItem('jwt');
     }
 }

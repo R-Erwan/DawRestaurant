@@ -2,12 +2,6 @@
 import {fetchUserData, parseJwt} from "../../../js/utils";
 import {showBanner} from "../../popup/popup";
 /* UI */
-let data = {
-    "first_name": null,
-    "name": null,
-    "email": null,
-    "phone_number": null,
-}
 
 function toggleUpdateForm(){
     const updateInput = document.querySelectorAll('.box > input')
@@ -20,7 +14,6 @@ function toggleUpdateForm(){
     document.querySelector('#firstName').focus();
 }
 
-
 function displayUserInfo(data) {
     document.getElementById('firstName').value = data.first_name ?? "";
     document.getElementById('lastName').value = data.name ?? "";
@@ -28,11 +21,8 @@ function displayUserInfo(data) {
     document.getElementById('phone').value = data.phone_number ?? "";
 }
 
-/* API calls and Forms */
-
 // Contact form
-const formContact = document.querySelector('#form-contact');
-formContact.addEventListener('submit', async function (e) {
+async function formContactSubmit(e){
     e.preventDefault();
     const firstName = document.getElementById("firstName").value ?? null;
     const lastName = document.getElementById("lastName").value;
@@ -61,14 +51,59 @@ formContact.addEventListener('submit', async function (e) {
     } else {
         showBanner('error', data.message || "Une erreur est survenu");
     }
-})
+}
 
+// Password form
+async function formPasswordSubmit(e,data) {
+    e.preventDefault();
+    const newPass = document.getElementById("new-password");
+    const confirmPass = document.getElementById("confirm-password");
+    const jwt = localStorage.getItem("jwt");
+    const id = parseJwt(jwt).user_id;
+
+    // Check both input equals
+    if(newPass.value !== confirmPass.value) {
+        showBanner('error', "Les mots de passes ne sont pas identiques");
+        document.querySelector('#form-password').reset();
+        newPass.focus();
+        return;
+    }
+
+    const response = await fetch(`http://localhost:8000/user?id=${id}`, {
+        method: "PUT",
+        headers: {
+            'Content-Type': 'application/json',
+            "Authorization": `Bearer ${jwt}`,
+        },
+        body: JSON.stringify({
+            email: data.email,
+            name: data.name,
+            password: confirmPass.value,
+        })
+    });
+    const dataR = await response.json();
+    if(response.ok ) {
+        showBanner('success', dataR.message);
+    } else {
+        showBanner('error', dataR.message || "Une erreur est survenu");
+    }
+    document.querySelector('#form-password').reset();
+
+}
 
 document.addEventListener('DOMContentLoaded', async () => {
     const dataUser = await fetchUserData();
-    data = dataUser.user
+    let data = dataUser.user
     displayUserInfo(data);
     // Bouton modifier
     document.querySelector('#toggle-update').addEventListener('click', toggleUpdateForm);
-    document.querySelector('#cancel-button').addEventListener('click', toggleUpdateForm);
+    // Cancel button
+    document.querySelector('#cancel-button').addEventListener('click', () => {
+        toggleUpdateForm();
+        displayUserInfo(data);
+    });
+    document.querySelector('#form-contact').addEventListener('submit', formContactSubmit);
+    document.querySelector('#form-password').addEventListener('submit', (e) => {
+        formPasswordSubmit(e,data)
+    });
 })
