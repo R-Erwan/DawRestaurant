@@ -9,7 +9,7 @@ require_once 'models/User.php';
 require_once 'config/config.php';
 
 class AuthService {
-    private $user;
+    private User $user;
 
     public function __construct($pdo) {
         $this->user = new User($pdo);
@@ -18,7 +18,8 @@ class AuthService {
     /**
      * @throws \Exception
      */
-    public function login($email, $password) {
+    public function login($email, $password): array
+    {
         $user = $this->user->findByEmail($email);
         if ($user && password_verify($password, $user['password'])) {
             $payload = [

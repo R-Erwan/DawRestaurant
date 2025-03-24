@@ -6,13 +6,13 @@ use services\AuthService;
 require_once 'services/AuthService.php';
 
 class AuthController {
-    private $authService;
+    private AuthService $authService;
 
     public function __construct($pdo) {
         $this->authService = new AuthService($pdo);
     }
 
-    public function login($input) {
+    public function login($input): void {
         if (!isset($input['email']) || !isset($input['password'])) {
             http_response_code(400);
             echo json_encode(['message' => 'Email and password are required']);
@@ -31,7 +31,7 @@ class AuthController {
         }
     }
 
-    public function register($data) {
+    public function register($data): void {
         if(!isset($data['email']) || !isset($data['password']) || !isset($data['name'])) {
             http_response_code(400);
             echo json_encode(['message' => "Missing required fields"]);
