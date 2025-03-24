@@ -1,0 +1,103 @@
+@use "../../css/const"
+
+main
+  background: const.$third-color
+  padding: 40px 0
+
+.container
+  max-width: 600px
+  margin: 0 auto
+  padding: 30px
+  background: white
+  border-radius: 10px
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1)
+
+h1
+  color: const.$title-color
+  text-align: center
+  margin-bottom: 40px
+  font-size: 2.5rem
+  position: relative
+
+  &:after
+    content: ''
+    position: absolute
+    bottom: -15px
+    left: 50%
+    transform: translateX(-50%)
+    width: 60px
+    height: 3px
+    background: const.$accent-color
+
+form
+  display: flex
+  flex-direction: column
+  gap: 20px
+
+label
+  color: const.$title-color
+  font-weight: 600
+  margin-bottom: 5px
+  display: block
+
+input, select
+  width: 100%
+  padding: 12px 15px
+  border: 2px solid const.$primary-color-light
+  border-radius: 5px
+  font-size: 1rem
+  transition: all 0.3s ease
+
+  &:focus
+    border-color: const.$primary-color
+    outline: none
+    box-shadow: 0 0 5px rgba(const.$primary-color, 0.3)
+
+input[type="number"]
+  -moz-appearance: textfield
+
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button
+    -webkit-appearance: none
+    margin: 0
+
+select
+  background: white
+  color: const.$title-color
+
+  option
+    color: const.$title-color
+
+button[type="submit"]
+  background: const.$primary-color
+  color: white
+  padding: 12px 20px
+  border: none
+  border-radius: 5px
+  font-size: 1.1rem
+  font-weight: 600
+  cursor: pointer
+  transition: all 0.3s ease
+  margin-top: 20px
+
+  &:hover
+    background: const.$primary-color-dark
+    transform: translateY(-2px)
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1)
+
+  &:active
+    transform: translateY(0)
+
+.error-message
+  color: const.$accent-color
+  font-size: 12px
+  margin-top: 5px
+
+
+@media (max-width: 768px)
+  .container
+    margin: 0 20px
+    padding: 20px
+
+  h1
+    font-size: 2rem
