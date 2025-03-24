@@ -36,6 +36,18 @@ class User {
         $stmt->execute([$email]);
         return $stmt->fetch();
     }
+
+    public function emailExistsExceptCurrentUser($email, $id) {
+        // Requête SQL pour vérifier si un autre utilisateur avec cet email existe
+        $sql = "SELECT COUNT(*) FROM users WHERE email = ? AND id != ?";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([$email, $id]);
+
+        // Si le compte est supérieur à 0, cela signifie qu'il y a déjà un utilisateur avec cet email
+        return $stmt->fetchColumn() > 0;
+    }
+
+
     public function findById($id) {
         $sql = "SELECT * FROM users WHERE id = ?";
         $stmt = $this->pdo->prepare($sql);
@@ -50,5 +62,45 @@ class User {
         $role = $stmt->fetch();
         return $role ? $role['id'] : null;
     }
+
+    public function updateById($id, $name, $email, $firstName = null,  $password = null, $phone = null, $role = 'user') {
+        // Préparation des parties de la requête
+        $fields = [];
+        $params = [];
+
+        // Obligatoire : mise à jour du nom et de l'email
+        $fields[] = "name = ?";
+        $fields[] = "email = ?";
+        $params[] = $name;
+        $params[] = $email;
+
+        // Optionnel : mise à jour du prénom si fourni
+        if ($firstName !== null) {
+            $fields[] = "first_name = ?";
+            $params[] = $firstName;
+        }
+
+        // Optionnel : mise à jour du mot de passe si fourni
+        if ($password !== null) {
+            $fields[] = "password = ?";
+            $params[] = password_hash($password, PASSWORD_BCRYPT); // On hache le mot de passe
+        }
+
+        // Optionnel : mise à jour du téléphone si fourni
+        if ($phone !== null) {
+            $fields[] = "phone_number = ?";
+            $params[] = password_hash($password, PASSWORD_BCRYPT); // On hache le mot de passe
+        }
+
+
+        // Assemblage de la requête
+        $sql = "UPDATE users SET " . implode(', ', $fields) . " WHERE id = ?";
+        $params[] = $id;  // Ajout de l'ID de l'utilisateur pour la condition WHERE
+
+        // Exécution de la requête préparée
+        $stmt = $this->pdo->prepare($sql);
+        return $stmt->execute($params);
+    }
+
 
 }
