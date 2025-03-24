@@ -6,7 +6,7 @@
         <div class="nav-links">
             <ul>
                 <li><a href="/DawRestaurant/public/menu.php">Notre carte</a></li>
-                <li><a href="#">Réservation</a></li>
+                <li><a href="/DawRestaurant/public/reservation.php">Réservation</a></li>
                 <li><a href="/DawRestaurant/public/contact.php">Contact</a></li>
                 <li><a href="/DawRestaurant/public/login.php">Connexion</a></li>
             </ul>
@@ -16,7 +16,7 @@
     <div class="responsive-nav-links">
         <ul>
             <li><a href="/DawRestaurant/public/menu.php">Notre carte</a></li>
-            <li><a href="#">Réservation</a></li>
+            <li><a href="/DawRestaurant/public/reservation.php">Réservation</a></li>
             <li><a href="/DawRestaurant/public/contact.php">Contact</a></li>
             <li><a href="/DawRestaurant/public/login.php">Connexion</a></li>
         </ul>

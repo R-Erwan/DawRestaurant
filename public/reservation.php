@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Le menu</title>
+    <title>Réservation</title>
     <link rel="stylesheet" href="css/reservation.css">
     <link rel="icon" type="image/png" href=" ./resources/images/favicon.png">
 </head>
