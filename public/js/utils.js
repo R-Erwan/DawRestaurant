@@ -7,3 +7,32 @@ export function parseJwt (token) {
 
     return JSON.parse(jsonPayload);
 }
+
+export async function fetchUserData() {
+    const token = localStorage.getItem('jwt');
+
+    if(!token) {
+        throw new Error('Not authenticated.')
+    }
+
+    try {
+        const decoded = parseJwt(token);
+        // Fetch data
+        const response = await fetch(`http://localhost:8000/user?id=${decoded.user_id}`, {
+            method: "GET",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token,
+            }
+        });
+        const dataJson = await response.json();
+        if(response.ok) {
+            return dataJson;
+            // showBanner('success',data.message);
+        } else {
+            // showBanner('error', data.message || "Une erreur est survenu");
+        }
+    } catch (e) {
+        console.error(e);
+    }
+}

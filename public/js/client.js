@@ -1,4 +1,5 @@
-document.addEventListener("DOMContentLoaded", function() {
+import {fetchUserData} from "./utils";
+document.addEventListener("DOMContentLoaded", async function () {
     const token = localStorage.getItem("jwt");
     if (!token) {
         window.location.href = "login.php";
@@ -8,4 +9,10 @@ document.addEventListener("DOMContentLoaded", function() {
         localStorage.removeItem('jwt');
         window.location.href = "login.php";
     });
+
+    const data = await fetchUserData();
+    if (data) {
+        document.getElementById("header-username").innerText = data.user.name;
+        document.getElementById("header-email").innerText = data.user.email;
+    }
 });

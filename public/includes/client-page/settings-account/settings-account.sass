@@ -38,6 +38,15 @@
       color: #fff
       transform: scale(1.1)
 
+    &.cancel
+      margin-left: 2rem
+      border: 2px solid const.$secondary-color-dark
+      color: const.$secondary-color-dark
+      &:hover
+        background-color: const.$secondary-color-dark
+        color: white
+
+
 /* Password update */
 
 .account-password
@@ -79,3 +88,6 @@ input[type=submit]
     background-color: const.$primary-color
     color: #fff
     transform: scale(1.1)
+
+.hidden
+  display: none

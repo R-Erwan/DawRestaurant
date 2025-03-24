@@ -39,8 +39,8 @@
             <div class="header-right">
                 <img src="./resources/images/pp1.jpg" alt="profil pic" class="profile-picture">
                 <div class="user-info">
-                    <span class="username">Toto</span>
-                    <span class="email">toto@gmail.com</span>
+                    <span class="username" id="header-username">Toto</span>
+                    <span class="email" id="header-email">toto@gmail.com</span>
                 </div>
             </div>
         </div>

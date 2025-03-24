@@ -89,7 +89,7 @@ class User {
         // Optionnel : mise à jour du téléphone si fourni
         if ($phone !== null) {
             $fields[] = "phone_number = ?";
-            $params[] = password_hash($password, PASSWORD_BCRYPT); // On hache le mot de passe
+            $params[] = $phone; // On hache le mot de passe
         }
 
 

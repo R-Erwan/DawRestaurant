@@ -35,8 +35,8 @@ class UserService{
             throw new \Exception('Password must be at least 6 characters long');
         }
 
-        $regex = "/^\+?\d{1,4}?\s?\(?\d{1,4}?\)?\s?\d{1,4}[\s-]?\d{1,4}[\s-]?\d{1,4}$/";
-        if($phone && filter_var($phone, FILTER_VALIDATE_REGEXP,array("options" => array("regexp" => $regex)))){
+        $regex = "/^\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}$/";
+        if($phone && !filter_var($phone, FILTER_VALIDATE_REGEXP,array("options" => array("regexp" => $regex)))){
             throw new \Exception('Invalid phone number format');
         }
 
