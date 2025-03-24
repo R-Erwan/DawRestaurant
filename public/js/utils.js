@@ -8,6 +8,18 @@ export function parseJwt (token) {
     return JSON.parse(jsonPayload);
 }
 
+export function checkToken() {
+    const token = localStorage.getItem('jwt');
+    if (token) {
+        const decoded = JSON.parse(atob(token.split('.')[1])); // Décoder le JWT
+        const currentTime = Math.floor(Date.now() / 1000); // Temps actuel en secondes
+        if (decoded.exp < currentTime) {
+            // Token expiré, supprimer du localStorage
+            localStorage.removeItem('jwt');
+        }
+    }
+}
+
 export async function fetchUserData() {
     const token = localStorage.getItem('jwt');
 

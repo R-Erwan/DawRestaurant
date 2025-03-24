@@ -1,5 +1,6 @@
-import {fetchUserData} from "./utils";
+import {checkToken, fetchUserData} from "./utils";
 document.addEventListener("DOMContentLoaded", async function () {
+    checkToken();
     const token = localStorage.getItem("jwt");
     if (!token) {
         window.location.href = "login.php";

@@ -1,8 +1,9 @@
 # DawRestaurant
 
 ## Lancement avec docker 
-### Requis :
+### Requis local :
     Docker
+    Composer
 **WARNING** Si il y a des pb pour lancer docker ect, modifié pas les fichiers de config
 ou alors fait le bien sur une branche (c'est chiant a faire les config docker)
 
