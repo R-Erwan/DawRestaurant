@@ -16,7 +16,7 @@ loginForm.addEventListener('submit', async function (e) {
     e.preventDefault();
     const email = document.getElementById("login-email").value;
     const password = document.getElementById("login-password").value;
-    const response = await fetch("http://localhost:8000?action=login", {
+    const response = await fetch("http://localhost:8000/auth?action=login", {
         method: "POST",
         headers: {
             'Content-Type': 'application/json',
@@ -33,7 +33,7 @@ loginForm.addEventListener('submit', async function (e) {
         showBanner('success',data.message);
     } else {
         loginForm.reset();
-        showBanner('error', data.message);
+        showBanner('error', data.message || "Une erreur est survenu");
     }
 });
 
@@ -45,7 +45,7 @@ registerForm.addEventListener('submit', async function (e) {
     const password = document.getElementById("register-password").value;
     const name = document.getElementById("register-name").value;
     try {
-        const response = await fetch("http://localhost:8000?action=register", {
+        const response = await fetch("http://localhost:8000/auth?action=register", {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json',

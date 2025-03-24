@@ -15,6 +15,9 @@ class AuthService {
         $this->user = new User($pdo);
     }
 
+    /**
+     * @throws \Exception
+     */
     public function login($email, $password) {
         $user = $this->user->findByEmail($email);
         if ($user && password_verify($password, $user['password'])) {
@@ -27,7 +30,8 @@ class AuthService {
             $token = JWT::encode($payload, JWT_SECRET, 'HS256');
             return ["token" => $token];
         }
-        return null; // Authentication failed
+
+        throw new \Exception("Invalid credentials");
     }
 
     /**

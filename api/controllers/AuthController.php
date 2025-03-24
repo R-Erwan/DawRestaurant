@@ -12,16 +12,22 @@ class AuthController {
         $this->authService = new AuthService($pdo);
     }
 
-    public function login($email, $password) {
-        $authData = $this->authService->login($email, $password);
-        if ($authData) {
+    public function login($input) {
+        if (!isset($input['email']) || !isset($input['password'])) {
+            http_response_code(400);
+            echo json_encode(['message' => 'Email and password are required']);
+            exit;
+        }
+        try {
+            $result = $this->authService->login($input['email'], $input['password']);
+            http_response_code(200);
             echo json_encode([
                 'message' => 'Logged in successfully',
-                'token' => $authData['token']
+                'token' => $result['token']
             ]);
-        } else {
+        } catch (\Exception $e){
             http_response_code(401);
-            echo json_encode(['message' => "Invalid credentials"]);
+            echo json_encode(['message' => $e->getMessage()]);
         }
     }
 
@@ -31,7 +37,6 @@ class AuthController {
             echo json_encode(['message' => "Missing required fields"]);
             return;
         }
-
         try {
             $result = $this->authService->register($data['email'], $data['password'], $data['name']);
             echo json_encode(['message' => 'User created successfully']);

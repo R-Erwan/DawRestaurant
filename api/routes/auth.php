@@ -12,13 +12,7 @@ $authController = new AuthController($pdo);
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_GET['action'] === 'login') {
     $input = json_decode(file_get_contents('php://input'), true);
 
-    if (!isset($input['email']) || !isset($input['password'])) {
-        http_response_code(400);
-        echo json_encode(['message' => 'Email and password are required']);
-        exit;
-    }
-
-    $authController->login($input['email'], $input['password']);
+    $authController->login($input);
     exit;
 }
 // Create User
@@ -28,5 +22,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_GET['action'] === 'register') {
     $authController->register($input);
     exit;
 }
+
 
 

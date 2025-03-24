@@ -8,15 +8,15 @@ require_once 'config/config.php';
 
 class AuthMiddleware {
     public static function verifyToken() {
-        $headers = getallheaders();
+        $authHeader = $_SERVER['HTTP_AUTHORIZATION'] ?? getallheaders()['Authorization'] ?? null;
 
-        if (!isset($headers['Authorization'])) {
+        if (!$authHeader) {
             http_response_code(401);
-            echo json_encode(["message" => "Authorization token missing"]);
+            echo json_encode(["message" => "Authorization header missing"]);
             exit;
         }
 
-        $token = str_replace("Bearer ", "", $headers['Authorization']);
+        $token = str_replace("Bearer ", "", $authHeader);
 
         try {
             $decoded = JWT::decode($token, new Key(JWT_SECRET, 'HS256'));
