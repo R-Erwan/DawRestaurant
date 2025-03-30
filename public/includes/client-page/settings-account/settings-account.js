@@ -1,9 +1,10 @@
 // import {showBanner} from "../../popup/popup";
 import {fetchUserData, parseJwt} from "../../../js/utils";
 import {showBanner} from "../../popup/popup";
+
 /* UI */
 
-function toggleUpdateForm(){
+function toggleUpdateForm() {
     const updateInput = document.querySelectorAll('.box > input')
     updateInput.forEach(el => {
         el.disabled = !el.disabled
@@ -22,7 +23,7 @@ function displayUserInfo(data) {
 }
 
 // Contact form
-async function formContactSubmit(e){
+async function formContactSubmit(e) {
     e.preventDefault();
     const firstName = document.getElementById("firstName").value ?? null;
     const lastName = document.getElementById("lastName").value;
@@ -45,16 +46,16 @@ async function formContactSubmit(e){
         })
     });
     const data = await response.json();
-    if(response.ok ) {
+    if (response.ok) {
         toggleUpdateForm();
-        showBanner('success',data.message);
+        showBanner('success', data.message);
     } else {
         showBanner('error', data.message || "Une erreur est survenu");
     }
 }
 
 // Password form
-async function formPasswordSubmit(e,data) {
+async function formPasswordSubmit(e, data) {
     e.preventDefault();
     const newPass = document.getElementById("new-password");
     const confirmPass = document.getElementById("confirm-password");
@@ -62,7 +63,7 @@ async function formPasswordSubmit(e,data) {
     const id = parseJwt(jwt).user_id;
 
     // Check both input equals
-    if(newPass.value !== confirmPass.value) {
+    if (newPass.value !== confirmPass.value) {
         showBanner('error', "Les mots de passes ne sont pas identiques");
         document.querySelector('#form-password').reset();
         newPass.focus();
@@ -82,7 +83,7 @@ async function formPasswordSubmit(e,data) {
         })
     });
     const dataR = await response.json();
-    if(response.ok ) {
+    if (response.ok) {
         showBanner('success', dataR.message);
     } else {
         showBanner('error', dataR.message || "Une erreur est survenu");
@@ -104,6 +105,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
     document.querySelector('#form-contact').addEventListener('submit', formContactSubmit);
     document.querySelector('#form-password').addEventListener('submit', (e) => {
-        formPasswordSubmit(e,data)
+        formPasswordSubmit(e, data)
     });
 })

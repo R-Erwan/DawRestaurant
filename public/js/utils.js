@@ -1,7 +1,7 @@
-export function parseJwt (token) {
+export function parseJwt(token) {
     let base64Url = token.split('.')[1];
     let base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-    let jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function(c) {
+    let jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function (c) {
         return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
     }).join(''));
 
@@ -23,7 +23,7 @@ export function checkToken() {
 export async function fetchUserData() {
     const token = localStorage.getItem('jwt');
 
-    if(!token) {
+    if (!token) {
         throw new Error('Not authenticated.')
     }
 
@@ -38,7 +38,7 @@ export async function fetchUserData() {
             }
         });
         const dataJson = await response.json();
-        if(response.ok) {
+        if (response.ok) {
             return dataJson;
             // showBanner('success',data.message);
         } else {

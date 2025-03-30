@@ -3,20 +3,24 @@
 
 namespace services;
 
-use models\User;
+use Exception;
 use Firebase\JWT\JWT;
+use models\User;
+
 require_once 'models/User.php';
 require_once 'config/config.php';
 
-class AuthService {
+class AuthService
+{
     private User $user;
 
-    public function __construct($pdo) {
+    public function __construct($pdo)
+    {
         $this->user = new User($pdo);
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function login($email, $password): array
     {
@@ -32,23 +36,24 @@ class AuthService {
             return ["token" => $token];
         }
 
-        throw new \Exception("Invalid credentials");
+        throw new Exception("Invalid credentials");
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
-    public function register($email, $password, $name){
-        if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
-            throw new \Exception('Invalid email format');
+    public function register($email, $password, $name)
+    {
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            throw new Exception('Invalid email format');
         }
 
-        if(strlen($password) < 8){
-            throw new \Exception('Password must be at least 8 characters long');
+        if (strlen($password) < 8) {
+            throw new Exception('Password must be at least 8 characters long');
         }
 
-        if( $this->user->findByEmail($email)){
-            throw new \Exception('Email already in use');
+        if ($this->user->findByEmail($email)) {
+            throw new Exception('Email already in use');
         }
 
         return $this->user->create($name, $email, $password);

@@ -18,36 +18,42 @@ header
 .nav-logo
   border-bottom: const.$third-color solid 3px
   margin-right: 50px
+
   img
     width: 200px
+
   a
     color: #fff
     font-size: 24px
     letter-spacing: 5px
     font-weight: bold
+
   .l-green
     color: const.$primary-color
     font-size: 2rem
 
 
-
 .nav-links
   width: 60%
+
   ul
     display: flex
     justify-content: space-around
+
   li
     list-style-type: none
+
   a
     color: #fff
     font-size: 18px
     padding-bottom: 0.5em
-    background-image: linear-gradient(#fff,#fff)
+    background-image: linear-gradient(#fff, #fff)
     background-size: 0 0.1em
     background-position-y: 100%
     background-position-x: 50%
     background-repeat: no-repeat
     transition: background-size ease-in-out 0.3s
+
     &:hover
       background-size: 100% 0.15em
 
@@ -67,6 +73,7 @@ header
   right: 2em
   cursor: pointer
   display: none
+
   &::before
     display: none
 
@@ -84,21 +91,24 @@ header
   .responsive-nav-links
     li
       padding: 0.5em
+
     a
       color: #fff
       font-size: 18px
       font-weight: bold
       padding-bottom: 0.5em
-      background-image: linear-gradient(#fff,#fff)
+      background-image: linear-gradient(#fff, #fff)
       background-size: 0 0.1em
       background-position-y: 100%
       background-position-x: 50%
       background-repeat: no-repeat
       transition: background-size ease-in-out 0.3s
+
       &:hover
         background-size: 100% 0.15em
   .fa-bars
     display: block
+
     &::before
       display: block
 

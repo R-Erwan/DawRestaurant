@@ -8,7 +8,7 @@
 </head>
 <body>
 <?php include_once "includes/header/header.php" ?>
-<?php include_once "includes/reservation-page/reservation-page.php"?>
-<?php include_once "includes/footer/footer.php"?>
+<?php include_once "includes/reservation-page/reservation-page.php" ?>
+<?php include_once "includes/footer/footer.php" ?>
 </body>
 </html>

@@ -3,16 +3,20 @@
 namespace controllers;
 
 use services\AuthService;
+
 require_once 'services/AuthService.php';
 
-class AuthController {
+class AuthController
+{
     private AuthService $authService;
 
-    public function __construct($pdo) {
+    public function __construct($pdo)
+    {
         $this->authService = new AuthService($pdo);
     }
 
-    public function login($input): void {
+    public function login($input): void
+    {
         if (!isset($input['email']) || !isset($input['password'])) {
             http_response_code(400);
             echo json_encode(['message' => 'Email and password are required']);
@@ -25,14 +29,15 @@ class AuthController {
                 'message' => 'Logged in successfully',
                 'token' => $result['token']
             ]);
-        } catch (\Exception $e){
+        } catch (\Exception $e) {
             http_response_code(401);
             echo json_encode(['message' => $e->getMessage()]);
         }
     }
 
-    public function register($data): void {
-        if(!isset($data['email']) || !isset($data['password']) || !isset($data['name'])) {
+    public function register($data): void
+    {
+        if (!isset($data['email']) || !isset($data['password']) || !isset($data['name'])) {
             http_response_code(400);
             echo json_encode(['message' => "Missing required fields"]);
             return;
@@ -40,7 +45,7 @@ class AuthController {
         try {
             $result = $this->authService->register($data['email'], $data['password'], $data['name']);
             echo json_encode(['message' => 'User created successfully']);
-        } catch (\Exception $e){
+        } catch (\Exception $e) {
             http_response_code(400);
             echo json_encode(['message' => $e->getMessage()]);
         }

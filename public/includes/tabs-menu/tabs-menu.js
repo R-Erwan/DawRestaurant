@@ -162,20 +162,20 @@ const tabsMainFood = document.querySelector("#tabs-mainFood")
 const tabsDesserts = document.querySelector("#tabs-desserts")
 const tabsDrinks = document.querySelector("#tabs-drinks")
 
-tabsStarters.onclick = function(){
-    displayTabs("starters",data);
+tabsStarters.onclick = function () {
+    displayTabs("starters", data);
 }
-tabsMainFood.onclick = function(){
-    displayTabs("mainFood",data);
+tabsMainFood.onclick = function () {
+    displayTabs("mainFood", data);
 }
-tabsDesserts.onclick = function(){
-    displayTabs("desserts",data);
+tabsDesserts.onclick = function () {
+    displayTabs("desserts", data);
 }
-tabsDrinks.onclick = function(){
-    displayTabs("drinks",data);
+tabsDrinks.onclick = function () {
+    displayTabs("drinks", data);
 }
 
-function displayTabs(category,data){
+function displayTabs(category, data) {
     const tabsContent = document.querySelector(".tabs-content");
     const tabsButtons = document.querySelectorAll(".tabs-button");
 
@@ -188,7 +188,7 @@ function displayTabs(category,data){
         activeButton.classList.add("tabs-selected");
     }
 
-    if(!data[category]){
+    if (!data[category]) {
         console.error("Category not found");
         return;
     }
@@ -220,4 +220,5 @@ function displayTabs(category,data){
         });
     });
 }
-displayTabs("starters",data);
+
+displayTabs("starters", data);

@@ -3,15 +3,20 @@
 namespace controllers;
 
 use services\UserService;
+
 require_once 'services/UserService.php';
 
-class UserController{
+class UserController
+{
     private UserService $userService;
-    public function __construct(\PDO $pdo){
+
+    public function __construct(\PDO $pdo)
+    {
         $this->userService = new UserService($pdo);
     }
 
-    public function getUserInfoById($id): void{
+    public function getUserInfoById($id): void
+    {
         try {
             $result = $this->userService->getById($id);
             http_response_code(200);
@@ -19,7 +24,7 @@ class UserController{
                 'message' => 'User found',
                 'user' => $result
             ]);
-        } catch (\Exception $e){
+        } catch (\Exception $e) {
             http_response_code(404);
             echo json_encode(["message" => $e->getMessage()]);
         }
@@ -42,7 +47,7 @@ class UserController{
                 $input['phone_number'] ?? null
             );
             echo json_encode(["message" => "User updated successfully"]);
-        } catch (\Exception $e){
+        } catch (\Exception $e) {
             http_response_code(404);
             echo json_encode(["message" => $e->getMessage()]);
         }

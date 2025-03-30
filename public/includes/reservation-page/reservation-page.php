@@ -1,10 +1,13 @@
 <main>
     <div class="container">
         <h1>Réservation</h1>
-        <form id="reservation-form">
+        <form id="reservation-form" action="#">
             <label for="name">Nom</label>
             <input type="text" id="name" name="name">
             <div id="name-error" class="error-message"></div>
+            <label for="email">Email</label>
+            <input type="text" id="email" name="email">
+            <div id="email-error" class="error-message"></div>
             <label for="date">Date</label>
             <input type="date" name="date" id="date">
             <div id="date-error" class="error-message"></div>

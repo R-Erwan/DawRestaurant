@@ -4,10 +4,13 @@ namespace middleware;
 
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
+
 require_once 'config/config.php';
 
-class AuthMiddleware {
-    public static function verifyToken() {
+class AuthMiddleware
+{
+    public static function verifyToken()
+    {
         $authHeader = $_SERVER['HTTP_AUTHORIZATION'] ?? getallheaders()['Authorization'] ?? null;
 
         if (!$authHeader) {
@@ -20,7 +23,7 @@ class AuthMiddleware {
 
         try {
             $decoded = JWT::decode($token, new Key(JWT_SECRET, 'HS256'));
-            return (array) $decoded;
+            return (array)$decoded;
         } catch (\Exception $e) {
             http_response_code(401);
             echo json_encode(["message" => "Invalid or expired token"]);

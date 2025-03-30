@@ -47,7 +47,8 @@
             </div>
         </div>
         <div class="footer-copyright">
-            <span>Copyright © 2025 ? Bof... Faites-en ce que vous voulez, mais si ça plante, c’est pas mon problème.  </span> <span class="footer-names">Erwan - Auréline - Samuel</span>
+            <span>Copyright © 2025 ? Bof... Faites-en ce que vous voulez, mais si ça plante, c’est pas mon problème.  </span>
+            <span class="footer-names">Erwan - Auréline - Samuel</span>
         </div>
     </div>
 </footer>

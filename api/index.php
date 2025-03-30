@@ -22,6 +22,9 @@ switch ($requestUri) {
     case '/user':
         require_once 'routes/user.php';
         break;
+    case '/reservation':
+        require_once 'routes/reservation.php';
+        break;
     default:
         http_response_code(404);
         echo json_encode(['error' => 'Invalid request']);

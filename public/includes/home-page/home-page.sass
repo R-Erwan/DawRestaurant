@@ -128,6 +128,7 @@ main
     font-weight: 700
     position: relative
     padding-bottom: 10px
+
     &::after
       content: ''
       position: absolute
@@ -136,6 +137,7 @@ main
       background: const.$primary-color
       bottom: 0
       left: 0
+
   p
     font-family: 'Arial', sans-serif
     font-size: 17.5px
@@ -154,11 +156,13 @@ main
 
 .div2:hover img, .div3:hover img, .div6:hover img
   transform: scale(1.05)
+
 @media (max-width: 768px)
 
   .grid-container
     grid-template-columns: 1fr
     padding: 20px
+
     .div1, .div2, .div3, .div4, .div5, .div6
       grid-area: auto
   .carousel-text

@@ -1,4 +1,5 @@
 import {checkToken, fetchUserData} from "./utils";
+
 document.addEventListener("DOMContentLoaded", async function () {
     checkToken();
     const token = localStorage.getItem("jwt");

@@ -1,7 +1,7 @@
 <?php
 
 global $pdo;
-use controllers\AuthController;
+
 use controllers\UserController;
 use middleware\AuthMiddleware;
 
@@ -20,19 +20,19 @@ if (!isset($_GET['id']) || !ctype_digit($_GET['id'])) {
 
 $requestedUserId = intval($_GET['id']);
 
-if($authUser['user_id'] !== $requestedUserId) {
+if ($authUser['user_id'] !== $requestedUserId) {
     http_response_code(403);
     echo json_encode(["message" => "Unauthorized"]);
     exit;
 }
 
 /* Routes */
-if($_SERVER['REQUEST_METHOD'] === 'GET') {
+if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $userController->getUserInfoById($requestedUserId);
     exit;
 }
 
-if($_SERVER['REQUEST_METHOD'] === 'PUT'){
+if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
     $input = json_decode(file_get_contents('php://input'), true);
 
     $userController->updateUserById($requestedUserId, $input);

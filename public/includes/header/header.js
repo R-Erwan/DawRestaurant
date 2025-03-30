@@ -3,18 +3,18 @@ export function headerMenuHandler() {
     const navLinks = document.querySelector(".responsive-nav-links");
     const navItems = document.querySelectorAll(".responsive-nav-links li");
 
-    menuButton.addEventListener("click", function() {
+    menuButton.addEventListener("click", function () {
         navLinks.classList.toggle("visibleLink");
     });
 
     navItems.forEach(item => {
-        item.addEventListener("click", function() {
+        item.addEventListener("click", function () {
             navLinks.classList.toggle("visibleLink");
         });
     });
 }
 
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
     const token = localStorage.getItem('jwt');
     if (token) {
         document.getElementById("login-links").classList.toggle("hidden");

@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
     const token = localStorage.getItem('jwt');
     if (token) {
         document.getElementById("footer-login-links").classList.toggle("hidden");
