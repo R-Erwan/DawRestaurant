@@ -11,7 +11,7 @@
 <div class="container">
     <aside class="menu-container">
         <div class="logo">
-            <a href="/DawRestaurant/public/index.php">Le<span class="l-green">R</span>esto</a>
+            <a href="/index.php">Le<span class="l-green">R</span>esto</a>
         </div>
         <nav>
             <div class="nav-cat">Réservations</div>
@@ -21,7 +21,7 @@
             <div class="nav-item <?php echo ($type == 'account') ? "active-nav" : "" ?> "  ><a href="client.php?type=account">Compte</a></div>
 <!--            <div class="nav-item --><?php //echo ($type == 'privacy') ? "active-nav" : "" ?><!-- "  ><a href="client.php?type=privacy">Confidentialité</a></div>-->
             <div class="nav-cat"></div>
-            <div class="nav-item">Déconnexion</div>
+            <div class="nav-item" id="logout">Déconnexion</div>
         </nav>
         <div class="question-container">
             <i class="fa-solid fa-gear"></i>
@@ -37,7 +37,7 @@
                 <div class="page-desc">Regarder vos réservations, gérer votre compte et vos donnée personnel</div>
             </div>
             <div class="header-right">
-                <img src="/public/resources/images/pp1.jpg" alt="profil pic" class="profile-picture">
+                <img src="./resources/images/pp1.jpg" alt="profil pic" class="profile-picture">
                 <div class="user-info">
                     <span class="username">Toto</span>
                     <span class="email">toto@gmail.com</span>
@@ -58,5 +58,6 @@
 
 </body>
 <script src="https://kit.fontawesome.com/c4155bf45a.js" crossorigin="anonymous"></script>
+<script type="module" src="js/client.js"></script>
 
 </html>

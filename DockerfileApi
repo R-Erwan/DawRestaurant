@@ -1,0 +1,27 @@
+FROM php:8.2-apache
+
+# Installer Composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+# Installer les bibliothèques de développement PostgreSQL
+RUN apt-get update && apt-get install -y libpq-dev
+
+# Installer les extensions PHP nécessaires
+RUN docker-php-ext-install pdo pdo_pgsql
+
+# Copier le fichier de configuration Apache
+COPY ./config/000-default.conf /etc/apache2/sites-available/000-default.conf
+
+# Copier le code de l'api
+COPY ./api /var/www/html/
+
+# Installer les dépendances PHP via Composer
+COPY ./api/composer.json ./api/composer.lock ./
+RUN composer install --no-dev --prefer-dist
+
+# Activer les modules Apache nécessaires
+RUN a2enmod rewrite
+RUN a2enmod headers
+
+# Exposer le port 80 pour le serveur Apache
+EXPOSE 80

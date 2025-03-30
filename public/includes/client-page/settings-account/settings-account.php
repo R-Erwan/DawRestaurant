@@ -43,4 +43,5 @@
 
     </div>
 </div>
+
 <script type="module" src="includes/client-page/settings-account/settings-account.js"></script>
