@@ -10,7 +10,7 @@ export const showBanner = (type, message) => {
             // Disparaît après 2s
             setTimeout(() => {
                 hideBanner();
-            }, 5000);
+            }, 3000);
         }
     });
 };

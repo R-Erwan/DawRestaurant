@@ -34,7 +34,7 @@
                 <nav>
                     <ul>
                         <li><a href="menu.php">Notre carte</a></li>
-                        <li><a href="reservation.php">Réservation</a></li>
+                        <li><a href="/reservation.php">Réservation</a></li>
                         <li><a href="contact.php">Contact</a></li>
                         <li id="footer-login-links"><a href="login.php">Connexion</a></li>
                         <li id="footer-client-links" class="hidden"><a href="client.php">Mon espace</a></li>

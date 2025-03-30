@@ -11,4 +11,5 @@
     <?php include_once "includes/home-page/home-page.php" ?>
     <?php include_once "includes/footer/footer.php"?>
 </body>
+<script type="module" src="js/index.js"></script>
 </html>

@@ -43,8 +43,8 @@ class AuthService {
             throw new \Exception('Invalid email format');
         }
 
-        if(strlen($password) < 6){
-            throw new \Exception('Password must be at least 6 characters long');
+        if(strlen($password) < 8){
+            throw new \Exception('Password must be at least 8 characters long');
         }
 
         if( $this->user->findByEmail($email)){

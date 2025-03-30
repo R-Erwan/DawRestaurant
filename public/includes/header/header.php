@@ -6,7 +6,7 @@
         <div class="nav-links">
             <ul>
                 <li><a href="/menu.php">Notre carte</a></li>
-                <li><a href="#">Réservation</a></li>
+                <li><a href="/reservation.php">Réservation</a></li>
                 <li><a href="/contact.php">Contact</a></li>
                 <li id="login-links"><a href="/login.php">Connexion</a></li>
                 <li class="hidden" id="client-links"><a href="/client.php">Mon espace</a></li>
