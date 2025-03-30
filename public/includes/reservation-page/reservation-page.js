@@ -1,3 +1,5 @@
+import {parseJwt} from "../../js/utils";
+
 document.getElementById("reservation-form").addEventListener("submit",
     async function (e) {
         e.preventDefault();
@@ -42,7 +44,40 @@ document.getElementById("reservation-form").addEventListener("submit",
             isValid = false;
         }
         if (isValid) {
+            const token = localStorage.getItem("jwt");
+            if (token) {
+                try {
+                    const decodedToken = parseJwt(token);
+                    const userID = decodedToken.id;
+                    const reservationData = {
+                        user_id: userID,
+                        email: email,
+                        name: name,
+                        date: date,
+                        time: time,
+                        guests: guests,
+                    }
+                    const response = await fetch(`http://localhost:8080/api/reservation?action=createReservation`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token}`
+                        },
+                        body: JSON.stringify(reservationData)
+                    });
+                    if (response.ok) {
+                        document.getElementById("reservation-status").textContent = "Réservation réussis";
+                    } else {
+                        document.getElementById("reservation-status").textContent = "Réservation a échoué";
+                    }
+                } catch (error) {
+                    console.error('Erreur lors du décodage du token ou de l\'envoi de la réservation:', error);
+                }
 
+
+            } else {
+                window.location.href = "/login";
+            }
         }
 
     });

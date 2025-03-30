@@ -24,6 +24,7 @@
             <input type="number" id="guests" name="guests">
             <div id="guests-error" class="error-message"></div>
             <button type="submit">Réserver</button>
+            <div id="reservation-status" class="error-message"></div>
         </form>
     </div>
 </main>
