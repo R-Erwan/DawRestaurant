@@ -17,7 +17,7 @@
     <div class="responsive-nav-links">
         <ul>
             <li><a href="/menu.php">Notre carte</a></li>
-            <li><a href="#">Réservation</a></li>
+            <li><a href="/reservation.php">Réservation</a></li>
             <li><a href="/contact.php">Contact</a></li>
             <li><a href="/login.php">Connexion</a></li>
             <li class="hidden"><a href="/client.php">Mon espace</a></li>
@@ -26,4 +26,3 @@
 </header>
 <script src="https://kit.fontawesome.com/c4155bf45a.js" crossorigin="anonymous"></script>
 <script type="module" src="includes/header/header.js"></script>
-
