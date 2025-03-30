@@ -1,7 +1,9 @@
+<?php include_once "includes/popup/popup.php"?>
+
 <div class="login-main-container">
     <div class="login-container" id="login-container">
         <div class="form-container sign-up-container">
-            <form action="#">
+            <form action="#" id="register-form">
                 <h1>Créer un compte</h1>
                 <div class="social-container">
                     <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
@@ -9,14 +11,14 @@
                     <a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
                 </div>
                 <span>ou utiliser votre email</span>
-                <input type="text" placeholder="Nom" name="name" />
-                <input type="email" placeholder="Email" name="email" />
-                <input type="password" placeholder="Mot de passe" name="password" />
+                <input type="text" placeholder="Nom" name="name" id="register-name" required/>
+                <input type="email" placeholder="Email" name="email" id="register-email" required/>
+                <input type="password" placeholder="Mot de passe" name="password" id="register-password" required/>
                 <button>Créer le compte</button>
             </form>
         </div>
         <div class="form-container sign-in-container">
-            <form action="#">
+            <form action="#" id="login-form">
                 <h1>Se connecter</h1>
                 <div class="social-container">
                     <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
@@ -24,8 +26,8 @@
                     <a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
                 </div>
                 <span>ou utiliser votre compte</span>
-                <input type="email" placeholder="Email" name="email" />
-                <input type="password" placeholder="Mot de passe" name="password" />
+                <input type="email" placeholder="Email" name="email" id="login-email" required/>
+                <input type="password" placeholder="Mot de passe" name="password" id="login-password" required/>
                 <a href="#">Mot de passe oublié ?</a>
                 <button>Se connecter</button>
             </form>

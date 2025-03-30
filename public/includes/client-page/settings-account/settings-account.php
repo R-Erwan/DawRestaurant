@@ -1,8 +1,8 @@
-
+<?php include_once "includes/popup/popup.php"?>
 <div class="account-container">
     <div class="account-details">
         <h2>Informations de contact</h2>
-        <form action="#" name="update-contact">
+        <form action="#" id="form-contact">
             <div class="box">
                 <label for="firstName">Prénom</label>
                 <input type="text" name="firstName" id="firstName" disabled>
@@ -16,17 +16,14 @@
                 <input type="tel" name="phone" id="phone" disabled>
             </div>
         </form>
-        <input type="submit" id="submit-update-contact" form="update-contact" hidden>
+        <input type="submit" id="submit-update-contact" form="form-contact" class="hidden">
         <button class="toggle-update" id="toggle-update">Modifier</button>
+        <button class="toggle-update cancel hidden" id="cancel-button">Annuler</button>
     </div>
     <div class="account-password">
         <h2>Changer le mot de passe</h2>
-        <form action="" name="update-password">
+        <form action="" name="update-password" id="form-password">
             <div class="form-content">
-                <div>
-                    <label for="old-password">Ancien mot de passe *</label>
-                    <input type="password" name="old-password" id="old-password" required>
-                </div>
                 <div>
                     <label for="new-password">Nouveau mot de passe *</label>
                     <input type="password" name="new-password" id="new-password" required>
@@ -43,4 +40,5 @@
 
     </div>
 </div>
+
 <script type="module" src="includes/client-page/settings-account/settings-account.js"></script>

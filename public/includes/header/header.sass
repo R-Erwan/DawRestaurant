@@ -5,7 +5,7 @@ header
   background-color: const.$secondary-color
   position: sticky
   top: 0
-  z-index: 1000
+  z-index: 10
 
 .header-navbar
   width: 70%
@@ -53,6 +53,11 @@ header
 
 .responsive-nav-links
   display: none
+  opacity: 0
+
+.visibleLink
+  display: block
+  opacity: 1
 
 .fa-bars
   font-size: 30px
@@ -64,6 +69,9 @@ header
   display: none
   &::before
     display: none
+
+.hidden
+  display: none
 
 @media screen and (max-width: 960px)
   .nav-links
@@ -93,3 +101,6 @@ header
     display: block
     &::before
       display: block
+
+
+
