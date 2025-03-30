@@ -34,3 +34,5 @@ RUN a2enmod headers
 
 # Exposer le port 80 pour le serveur Apache
 EXPOSE 80
+
+# Test

@@ -27,3 +27,5 @@ RUN a2enmod rewrite
 
 # Exposer le port 80 pour le serveur Apache
 EXPOSE 80
+
+# Test
