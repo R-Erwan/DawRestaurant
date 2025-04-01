@@ -46,4 +46,15 @@ class UserService{
 
         return $this->user->updateById($id, $name, $email, $firstName, $password, $phone, $role);
     }
+
+    /**
+     * @throws \Exception
+     */
+    public function getRolesById(mixed $requestedUserId){
+        $roles = $this->user->findRolesById($requestedUserId);
+        if($roles){
+            return $roles;
+        }
+        throw new \Exception("User not found");
+    }
 }

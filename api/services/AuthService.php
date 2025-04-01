@@ -18,13 +18,14 @@ class AuthService {
     /**
      * @throws \Exception
      */
-    public function login($email, $password): array
-    {
+    public function login($email, $password): array {
         $user = $this->user->findByEmail($email);
         if ($user && password_verify($password, $user['password'])) {
+            $roles = array_map(fn($role) => $role['name'], $this->user->findRolesById($user['id']));
             $payload = [
                 "user_id" => $user['id'],
                 "email" => $user['email'],
+                "roles" => $roles,
                 "exp" => time() + 3600 // Expiration dans 1h
             ];
 

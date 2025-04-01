@@ -11,22 +11,24 @@ require_once 'middleware/AuthMiddleware.php';
 $userController = new UserController($pdo);
 
 /* MiddleWare Auth*/
-$authUser = AuthMiddleware::verifyToken();
 if (!isset($_GET['id']) || !ctype_digit($_GET['id'])) {
     http_response_code(400);
     echo json_encode(["message" => "Invalid user ID"]);
     exit;
 }
-
 $requestedUserId = intval($_GET['id']);
 
-if($authUser['user_id'] !== $requestedUserId) {
-    http_response_code(403);
-    echo json_encode(["message" => "Unauthorized"]);
+$authUser = AuthMiddleware::verifyAdminAccesWithoutExit();
+if(!$authUser){
+    $authUser = AuthMiddleware::verifyUserAccess($requestedUserId);
+}
+/* Routes */
+
+if($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['action'] === 'roles'){
+    $userController->getUserRolesById($requestedUserId);
     exit;
 }
 
-/* Routes */
 if($_SERVER['REQUEST_METHOD'] === 'GET') {
     $userController->getUserInfoById($requestedUserId);
     exit;
