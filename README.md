@@ -1,5 +1,23 @@
 # DawRestaurant
 
+# TodoList
+
+## Front
+- Page d'administration pour l'admin avec protection
+- Système pour afficher les disponibilité
+## Back
+- Persistence des réservation en BD.
+- Persistence des plats ( onglet menu)
+- Changement de l'ui par l'admin (Page d'acceuil)
+- Affichage des disponibilité pour réservation ( Pensé avoir un fort control dans l'API). L'admin pourra régler se paramètre, par exemple en définissant des horaire d'ouverture et un nombre maximum de couvert
+
+## Si tout est finis 
+- Oauth2
+- Récupération MDP
+- Envoie de mail ?
+- 
+
+
 ## Lancement avec docker 
 ### Requis local :
     Docker
