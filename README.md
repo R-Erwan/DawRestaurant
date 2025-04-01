@@ -3,7 +3,7 @@
 # TodoList
 
 ## Front
-- Page d'administration pour l'admin avec protection
+- Page d'administration pour l'admin avec protection ( sur la page client, control de l'affichage avec les roles)
 - Système pour afficher les disponibilité
 ## Back
 - Persistence des réservation en BD.
