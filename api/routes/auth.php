@@ -14,7 +14,6 @@ $reservationController = new ReservationController($pdo);
 // Login
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_GET['action'] === 'login') {
     $input = json_decode(file_get_contents('php://input'), true);
-
     $authController->login($input);
     exit;
 }

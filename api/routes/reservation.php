@@ -10,46 +10,23 @@ require_once 'controllers/ReservationController.php';
 
 $reservationController = new ReservationController($pdo);
 
-function getJSON() {
-    return json_decode(file_get_contents('php://input'), true);
-}
 
 switch ($_SERVER['REQUEST_METHOD']) {
     case 'POST':
         if ($_GET['action'] === 'createReservation') {
-            $input = getJSON();
-            if ($input) {
-                $reservationController->createReservation($input);
-            } else {
-                http_response_code(400);
-                echo json_encode(['Message' => 'Un problème est survenu.']);
-            }
+            $input = json_decode(file_get_contents('php://input'), true);
+            $reservationController->createReservation($input);
         } elseif ($_GET['action'] === 'updateReservation') {
-            $input = getJSON();
-            if ($input) {
-                $reservationController->updateReservation($input);
-            } else {
-                http_response_code(400);
-                echo json_encode(['Message' => 'Un problème est survenu.']);
-            }
+            $input = json_decode(file_get_contents('php://input'), true);
+            $reservationController->updateReservation($input);
         }
         break;
     case 'GET':
         $reservationController->getAllReservations();
         break;
     case 'DELETE':
-        $input = getJSON();
-        if ($input) {
-            $reservationController->deleteReservation($input);
-        } else {
-            http_response_code(400);
-            echo json_encode(['Message' => 'Un problème est survenu.']);
-        }
-        break;
-    default:
-
-        http_response_code(405);
-        echo json_encode(['Message' => 'Requete non valide']);
+        $input = json_decode(file_get_contents('php://input'), true);
+        $reservationController->deleteReservation($input);
         break;
 }
 
