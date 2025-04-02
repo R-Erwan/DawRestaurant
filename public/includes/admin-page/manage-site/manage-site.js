@@ -46,5 +46,4 @@ document.addEventListener('DOMContentLoaded', async () => {
     displayAnnouces(annonces);
 
 
-
 })
