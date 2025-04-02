@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS roles
 (
     id SERIAL PRIMARY KEY,
     name VARCHAR(50) UNIQUE NOT NULL
-    );
+);
 
 -- Table de liaison entre utilisateurs et rôles
 CREATE TABLE IF NOT EXISTS user_roles
@@ -36,4 +36,24 @@ CREATE TABLE IF NOT EXISTS reservations
     number_of_people INT NOT NULL,
     created_at TIMESTAMP DEFAULT NOW(),
     updated_at TIMESTAMP DEFAULT NOW()
+);
+
+-- Table des plats
+CREATE TABLE IF NOT EXISTS dishes
+(
+    dish_id SERIAL PRIMARY KEY,
+    dish_name VARCHAR(255) NOT NULL,
+    description VARCHAR(255) NOT NULL,
+    price DECIMAl(10,2) NOT NULL,
+    created_at TIMESTAMP DEFAULT NOW(),
+    updated_at TIMESTAMP DEFAULT NOW()
+);
+
+
+-- Table des catégories de plats
+CREATE TABLE IF NOT EXISTS dish_categories
+(
+    category_id SERIAL PRIMARY KEY,
+    dish_id INT NOT NULL REFERENCES dishes(dish_id) ON DELETE CASCADE,
+    category VARCHAR(50) NOT NULL
 );
