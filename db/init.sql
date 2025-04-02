@@ -21,3 +21,14 @@ CREATE TABLE IF NOT EXISTS user_roles (
     role_id INT NOT NULL REFERENCES roles(id) ON DELETE CASCADE,
     PRIMARY KEY (user_id, role_id)
     );
+
+CREATE TABLE IF NOT EXISTS announces (
+    id SERIAL PRIMARY KEY,
+    type INT NOT NULL,
+    position INT NOT NULL DEFAULT 0,
+    title VARCHAR(100),
+    description TEXT,
+    image_url VARCHAR(255),
+    created_at TIMESTAMP DEFAULT NOW()
+);
+

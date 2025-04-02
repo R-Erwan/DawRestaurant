@@ -6,6 +6,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit;
 }
 
+//Pour la production, cela evite tout les messages d'erreur que l'on veut surtout pas envoyer aux clients
+//error_reporting(E_ALL & ~E_WARNING & ~E_NOTICE);
+
 require_once __DIR__ . '/vendor/autoload.php';
 require_once "config/config.php";
 require_once 'config/db.php';
@@ -21,6 +24,9 @@ switch ($requestUri) {
         break;
     case '/user':
         require_once 'routes/user.php';
+        break;
+    case '/announce':
+        require_once 'routes/announce.php';
         break;
     default:
         http_response_code(404);

@@ -36,8 +36,8 @@ class User {
         $stmt->execute([$email]);
         return $stmt->fetch();
     }
-
-    public function emailExistsExceptCurrentUser($email, $id) {
+    public function emailExistsExceptCurrentUser($email, $id): bool
+    {
         // Requête SQL pour vérifier si un autre utilisateur avec cet email existe
         $sql = "SELECT COUNT(*) FROM users WHERE email = ? AND id != ?";
         $stmt = $this->pdo->prepare($sql);
@@ -46,15 +46,12 @@ class User {
         // Si le compte est supérieur à 0, cela signifie qu'il y a déjà un utilisateur avec cet email
         return $stmt->fetchColumn() > 0;
     }
-
-
     public function findById($id) {
         $sql = "SELECT * FROM users WHERE id = ?";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute([$id]);
         return $stmt->fetch();
     }
-
     private function getRoleIdByName($role){
         $sql = "SELECT id FROM roles WHERE name = ?";
         $stmt = $this->pdo->prepare($sql);
@@ -62,7 +59,6 @@ class User {
         $role = $stmt->fetch();
         return $role ? $role['id'] : null;
     }
-
     public function updateById($id, $name, $email, $firstName = null,  $password = null, $phone = null, $role = 'user') {
         // Préparation des parties de la requête
         $fields = [];
@@ -100,6 +96,19 @@ class User {
         // Exécution de la requête préparée
         $stmt = $this->pdo->prepare($sql);
         return $stmt->execute($params);
+    }
+
+    public function findRolesById(mixed $requestedUserId){
+        $sql = "SELECT r.name FROM roles r 
+                JOIN user_roles ur ON r.id = ur.role_id
+                WHERE ur.user_id = ?";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([$requestedUserId]);
+        $roles = $stmt->fetchAll();
+        if($roles){
+            return $roles;
+        }
+        return null;
     }
 
 

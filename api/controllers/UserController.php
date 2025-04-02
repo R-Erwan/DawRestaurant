@@ -47,4 +47,18 @@ class UserController{
             echo json_encode(["message" => $e->getMessage()]);
         }
     }
+
+    public function getUserRolesById(mixed $requestedUserId) : void{
+        try {
+            $result = $this->userService->getRolesById($requestedUserId);
+            http_response_code(200);
+            echo json_encode([
+                "message" => "User roles found",
+                "roles" => $result
+            ]);
+        } catch (\Exception $e){
+            http_response_code(404);
+            echo json_encode(["message" => $e->getMessage()]);
+        }
+    }
 }

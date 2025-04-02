@@ -73,53 +73,33 @@ main
   100%
     transform: translateX(-75%)
 
-.grid-container
-  display: grid
-  grid-template-columns: repeat(2, 1fr)
-  grid-column-gap: 2rem
-  grid-row-gap: 3rem
+.announce-container
+  display: flex
+  flex-direction: row
+  align-items: center
+  justify-content: space-evenly
+  flex-wrap: wrap
   padding: 4rem
   max-width: 1400px
   margin: 0 auto
   height: 100%
   background-color: #dfa96d
 
-.div1
-  grid-area: 1 / 1 / 2 / 2
-
-.div2
-  grid-area: 1 / 2 / 2 / 3
-
-.div3
-  grid-area: 2 / 1 / 3 / 2
-
-.div4
-  grid-area: 2 / 2 / 3 / 3
-
-.div5
-  grid-area: 3 / 1 / 4 / 2
-
-.div6
-  grid-area: 3 / 2 / 4 / 3
-
-
-.div1, .div2, .div3, .div4, .div5, .div6
+.announce
+  width: 48%
+  height: 60vh
+  margin: 2vh 0
   background: white
   border-radius: 12px
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08)
   padding: 25px
   transition: transform 0.3s ease, box-shadow 0.3s ease
-
-.div1 .div2, .div3, .div4, .div5 .div6
-  position: relative
   overflow: hidden
-  height: auto
+  &:hover
+    transform: translateY(-5px)
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12)
 
-.div1:hover, .div2:hover, .div3:hover, .div4:hover, .div5:hover, .div6:hover
-  transform: translateY(-5px)
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12)
-
-.div1, .div4, .div5
+.announce-text
   h3
     font-family: 'Arial', sans-serif
     font-size: 1.8rem
@@ -143,7 +123,7 @@ main
     line-height: 1.7
     margin: 10px 0 0
 
-.div2 img, .div3 img, .div6 img
+.announce-img img
   width: 100%
   height: 100%
   object-fit: cover
@@ -151,16 +131,13 @@ main
   transition: transform 0.3s ease
   max-width: 100%
   max-height: 100%
+  &:hover
+    transform: scale(1.05)
 
-.div2:hover img, .div3:hover img, .div6:hover img
-  transform: scale(1.05)
 @media (max-width: 768px)
-
   .grid-container
     grid-template-columns: 1fr
     padding: 20px
-    .div1, .div2, .div3, .div4, .div5, .div6
-      grid-area: auto
   .carousel-text
     font-size: 1.5rem
   .carousel-container
