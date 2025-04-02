@@ -4,9 +4,31 @@
 .manager-container
   width: 100%
   min-height: 100vh
+  display: flex
+  justify-content: space-between
+  flex-direction: row
   .desc
     font-size: 0.8rem
     font-weight: 200
+
+.manager-title
+  display: flex
+  flex-direction: row
+  align-items: center
+  justify-content: space-between
+  padding: 0 20px 20px 0
+  width: 70%
+
+.validate-button
+  padding: 0.7rem 1.5rem
+  border-radius: 10px
+  border: none
+  background-color: const.$primary-color
+  color: #fff
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)
+  cursor: pointer
+  &:hover
+    transform: scale(1.2)
 
 .manager-annouces-container
   width: 70%
@@ -14,7 +36,6 @@
   border-radius: 15px
   padding: 2rem
   background-color: #fff
-
 
 .drag-drop-container
   display: flex
@@ -24,7 +45,7 @@
   flex-wrap: wrap
   .dropzone
     width: 45%
-    height: 20vh
+    height: 25vh
     margin: 1rem
     padding: 1rem
     display: flex
@@ -34,23 +55,139 @@
     background-color: rgba(246, 246, 246, 0.55)
     border-radius: 10px
     overflow: hidden
+    transition: all .3s ease-in-out
     &:hover
-      background-color: rgba(237, 237, 237, 0.55)
+      background-color: rgba(225, 225, 225, 0.55)
 
 .dragElement
   display: flex
   flex-direction: column
   justify-content: center
   align-items: center
+  min-height: 90%
   width: 90%
+  img
+    pointer-events: none
+  &:hover
+    cursor: pointer
 
 .content-text
   h3
-    font-size: 0.7rem
+    font-size: 1rem
   p
-    font-size: 0.5rem
+    font-size: 0.7rem
 .content-img
   width: 80%
   img
     width: 90%
     border-radius: 10px
+
+.hoverOver
+  border: 1px solid #505050
+
+/* Form */
+
+.annouces-form-container
+  width: 25%
+  max-height: 70vh
+  background-color: #fff
+  border-radius: 10px
+  padding: 2rem
+  box-shadow: 0px 10px 15px -3px rgba(0,0,0,0.1)
+  form
+    display: flex
+    flex-direction: column
+    align-items: center
+    justify-content: flex-start
+    height: 100%
+
+label
+  width: 100%
+  margin: 0.5rem 0
+
+#type
+  appearance: none
+  padding: 7px 40px 7px 12px
+  width: 100%
+  border: 1px solid #E8EAED
+  border-radius: 5px
+  background: white
+  box-shadow: 0 1px 3px -2px #9098A9
+  cursor: pointer
+  font-family: inherit
+  font-size: 16px
+  transition: all 150ms ease
+  &:required:invalid
+    color: #5A667F
+
+input[type=text], textarea
+  display: none
+  width: 100%
+  padding: 10px
+  border: 1px solid #888888
+  border-radius: 5px
+  margin: 0.5rem 0
+
+input[type=submit]
+  margin: 30px 0
+  justify-self: flex-end
+  align-self: center
+
+/* Image drop zone */
+.drop-container
+  display: none
+  flex-direction: column
+  justify-content: center
+  align-items: center
+  gap: 10px
+  height: 200px
+  padding: 20px
+  border: 2px dashed const.$secondary-color
+  color: const.$primary-color-dark
+  cursor: pointer
+  transition: background .2s ease-in-out, border .2s ease-in-out
+  border-radius: 5px
+
+
+.drop-container:hover
+  background: rgba(250, 179, 105, 0.14)
+
+
+.drop-title
+  color: const.$secondary-color
+  font-size: 20px
+  font-weight: bold
+  text-align: center
+
+
+.drop-container.drag-active
+  background: #eee
+
+
+input[type=file]
+  width: 350px
+  max-width: 100%
+  border-radius: 5px
+  color: const.$secondary-color
+  padding: 8px
+  background-color: #fff
+  border: 1px solid const.$secondary-color
+
+
+input[type=file]:focus
+  outline: 2px dashed const.$secondary-color
+  outline-offset: 2px
+
+
+input[type=file]::file-selector-button
+  margin-right: 8px
+  border: none
+  background: const.$secondary-color
+  padding: 8px 12px
+  color: #fff
+  cursor: pointer
+  border-radius: 5px
+
+
+input[type=file]::file-selector-button:hover
+  background: const.$secondary-color-dark

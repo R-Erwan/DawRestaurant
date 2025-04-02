@@ -59,7 +59,7 @@ class AnnounceService{
             if($description === null){
                 throw new \Exception("Invalid coherence description is required");
             }
-            if(strlen($description) < 200 || strlen($description) > 700){
+            if(strlen($description) < 200 || strlen($description) > 630){
                 throw new \Exception("Invalid description length, must be between 200 and 700 characters");
             }
             if(strlen($title) < 3 || strlen($title) > 40){
