@@ -25,9 +25,10 @@ CREATE TABLE IF NOT EXISTS user_roles (
 CREATE TABLE IF NOT EXISTS announces (
     id SERIAL PRIMARY KEY,
     type INT NOT NULL,
-    ordering INT UNIQUE NOT NULL,
+    position INT NOT NULL DEFAULT 0,
     title VARCHAR(100),
     description TEXT,
     image_url VARCHAR(255),
     created_at TIMESTAMP DEFAULT NOW()
 );
+
