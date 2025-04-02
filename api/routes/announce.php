@@ -9,10 +9,8 @@ require_once 'middleware/AuthMiddleware.php';
 $announceController = new AnnounceController($pdo);
 
 
-/* MiddleWare Auth*/
-$authUser = AuthMiddleware::verifyToken();
-/* Routes */
 
+/* Routes */
 if($_SERVER['REQUEST_METHOD'] == 'GET') {
     $announceController->getAllAnnouces();
     exit;
