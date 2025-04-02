@@ -1,4 +1,4 @@
-import {checkToken, fetchUserData} from "./utils";
+import {checkToken, fetchUserData, parseJwt} from "./utils";
 document.addEventListener("DOMContentLoaded", async function () {
     checkToken();
     const token = localStorage.getItem("jwt");
@@ -12,8 +12,13 @@ document.addEventListener("DOMContentLoaded", async function () {
     });
 
     const data = await fetchUserData();
+    const admin = parseJwt(token).roles.includes("admin")
     if (data) {
         document.getElementById("header-username").innerText = data.user.name;
         document.getElementById("header-email").innerText = data.user.email;
+    }
+
+    if(admin){
+        document.querySelector(".hidden").classList.remove("hidden");
     }
 });

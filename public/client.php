@@ -14,14 +14,26 @@
             <a href="/index.php">Le<span class="l-green">R</span>esto</a>
         </div>
         <nav>
-            <div class="nav-cat">Réservations</div>
-            <div class="nav-item <?php echo ($type == 'current') ? "active-nav" : "" ?>"><a href="client.php?type=current">Mes réservations</a></div>
-            <div class="nav-item <?php echo ($type == 'history') ? "active-nav" : "" ?>"><a href="client.php?type=history">Historique</a></div>
-            <div class="nav-cat">Paramètres</div>
-            <div class="nav-item <?php echo ($type == 'account') ? "active-nav" : "" ?> "  ><a href="client.php?type=account">Compte</a></div>
-<!--            <div class="nav-item --><?php //echo ($type == 'privacy') ? "active-nav" : "" ?><!-- "  ><a href="client.php?type=privacy">Confidentialité</a></div>-->
-            <div class="nav-cat"></div>
-            <div class="nav-item" id="logout">Déconnexion</div>
+            <div class="nav-container hidden">
+                <div class="nav-cat">Admin</div>
+                <div class="nav-item <?php echo ($type == 'manageBookings') ? "active-nav" : "" ?>"><a href="client.php?type=manageBookings">Gérer les réservations</a></div>
+                <div class="nav-item <?php echo ($type == 'manageHomePage') ? "active-nav" : "" ?>"><a href="client.php?type=manageHomePage">Gérer les annonces</a></div>
+                <div class="nav-item <?php echo ($type == 'manageFoods') ? "active-nav" : "" ?>"><a href="client.php?type=manageFoods">Gérer les plats</a></div>
+                <div class="nav-item <?php echo ($type == 'manageSchedule') ? "active-nav" : "" ?>"><a href="client.php?type=manageSchedule">Emplois du temps</a></div>
+            </div>
+            <div class="nav-container">
+                <div class="nav-cat">Réservations</div>
+                <div class="nav-item <?php echo ($type == 'current') ? "active-nav" : "" ?>"><a href="client.php?type=current">Mes réservations</a></div>
+                <div class="nav-item <?php echo ($type == 'history') ? "active-nav" : "" ?>"><a href="client.php?type=history">Historique</a></div>
+            </div>
+            <div class="nav-container">
+                <div class="nav-cat">Paramètres</div>
+                <div class="nav-item <?php echo ($type == 'account') ? "active-nav" : "" ?> "  ><a href="client.php?type=account">Compte</a></div>
+            </div>
+            <div class="nav-container">
+                <div class="nav-cat"></div>
+                <div class="nav-item" id="logout">Déconnexion</div>
+            </div>
         </nav>
         <div class="question-container">
             <i class="fa-solid fa-gear"></i>
@@ -50,6 +62,8 @@
                 include_once "includes/client-page/reservation-list/reservation-list.php";
             } else if($type == 'account') {
                 include_once "includes/client-page/settings-account/settings-account.php";
+            } else if($type =='manageHomePage') {
+                include_once "includes/admin-page/manage-site/manage-site.php";
             } else echo "Not developed";
             ?>
         </div>
