@@ -41,7 +41,7 @@ document.getElementById("reservation-form").addEventListener("submit",
 
         if (guests > 8) {
             document.getElementById("guests-error").textContent = "Le nombre de personnes max doit être inférieur à 9.";
-            isValid = false;
+            isValid =  false;
         }
         if (isValid) {
             const token = localStorage.getItem("jwt");

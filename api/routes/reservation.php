@@ -22,7 +22,12 @@ switch ($_SERVER['REQUEST_METHOD']) {
         }
         break;
     case 'GET':
-        $reservationController->getAllReservations();
+        if ($_GET['action'] === 'All') {
+            $reservationController->getAllReservations();
+        } elseif ($_GET['action'] === 'userReservations')
+        {
+            $reservationController->getReservationByUserID($_GET['id']);
+        }
         break;
     case 'DELETE':
         $input = json_decode(file_get_contents('php://input'), true);

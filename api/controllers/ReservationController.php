@@ -17,12 +17,13 @@ class ReservationController
     public function createReservation($data): void
     {
         try {
-            if (empty($data["name"]) || empty($data["email"]) || empty($data["date"]) || empty($data["time"]) || empty($data["guests"])) {
+            if (empty($data["id"]) && empty($data["name"]) || empty($data["email"]) || empty($data["date"]) || empty($data["time"]) || empty($data["guests"])) {
                 http_response_code(400);
                 echo json_encode(['message' => 'Données manquantes']);
                 exit;
             }
             $this->reservationService->createReservation(
+                $data["id"],
                 $data["name"],
                 $data["email"],
                 $data["date"],
@@ -51,7 +52,7 @@ class ReservationController
         }
     }
 
-    public function getReservationById($id): void
+    public function getReservationByID($id): void
     {
         try {
             $result = $this->reservationService->getReservation($id);
@@ -71,25 +72,42 @@ class ReservationController
         }
     }
 
+    public  function getReservationByUserID($user_id): void
+    {
+        try {
+            $result = $this->reservationService->getReservationByUserID($user_id);
+            if ($result) {
+                http_response_code(200);
+                echo json_encode([
+                    'message' => 'Réservation trouvée',
+                    'reservation' => $result
+                ]);
+            } else {
+                http_response_code(404);
+                echo json_encode(['message' => 'Aucune réservation trouvée']);            }
+        } catch (Exception $e) {
+            http_response_code(500);
+            echo json_encode(['message' => 'Erreur lors de la récupération de la réservation', 'error' => $e->getMessage()]);
+        }
+    }
+
     public function updateReservation($data): void
     {
         try {
-            if (empty($data["id"]) || empty($data["name"]) || empty($data["email"]) || empty($data["date"]) || empty($data["time"]) || empty($data["guests"])) {
+            if (empty($data["id"]) || empty($data["date"]) || empty($data["time"]) || empty($data["guests"])) {
                 http_response_code(400);
                 echo json_encode(['message' => 'Données manquantes']);
                 exit;
             }
             $this->reservationService->updateReservation(
                 $data["id"],
-                $data["name"],
-                $data["email"],
                 $data["date"],
                 $data["time"],
                 $data["guests"]
             );
 
             echo json_encode(['message' => 'Réservation mise à jour avec succès']);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             http_response_code(500);
             echo json_encode(['message' => 'Erreur lors de la mise à jour de la réservation', 'error' => $e->getMessage()]);
         }
@@ -105,7 +123,7 @@ class ReservationController
                 http_response_code(404);
                 echo json_encode(['message' => 'Aucune réservation trouvée']);
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             http_response_code(500);
             echo json_encode(['message' => 'Erreur lors de la suppression de la réservation', 'error' => $e->getMessage()]);
         }

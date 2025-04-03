@@ -30,6 +30,8 @@ CREATE TABLE IF NOT EXISTS reservations
 (
     reservation_id SERIAL PRIMARY KEY,
     user_id INT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL,
     reservation_date DATE NOT NULL,
     reservation_time VARCHAR(255) NOT NULL,
     status VARCHAR(20) DEFAULT 'en attente',

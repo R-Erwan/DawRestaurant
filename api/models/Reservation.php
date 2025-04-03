@@ -6,24 +6,25 @@ use PDO;
 
 class Reservation
 {
-    private $pdo;
+    private PDO $pdo;
 
     public function __construct(PDO $pdo)
     {
         $this->pdo = $pdo;
     }
 
-    public function create($user_id, $reservation_date, $reservation_time, $number_of_people, $status): bool
+    public function create($user_id, $name, $email, $reservation_date, $reservation_time, $number_of_people): bool
     {
-        $sql = "INSERT INTO reservations (user_id, reservation_date, reservation_time, number_of_people, status)
-                VALUES (:user_id, :reservation_date, :reservation_time, :number_of_people, :status)";
+        $sql = "INSERT INTO reservations (user_id, name, email, reservation_date, reservation_time, number_of_people)
+                VALUES (:user_id, :name, :email, :reservation_date, :reservation_time, :number_of_people)";
 
         $stmt = $this->pdo->prepare($sql);
         $stmt->bindParam(':user_id', $user_id);
+        $stmt->bindParam(':name', $name);
+        $stmt->bindParam(':email', $email);
         $stmt->bindParam(':reservation_date', $reservation_date);
         $stmt->bindParam(':reservation_time', $reservation_time);
         $stmt->bindParam(':number_of_people', $number_of_people);
-        $stmt->bindParam(':status', $status);
         return $stmt->execute();
     }
 
@@ -44,25 +45,49 @@ class Reservation
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function update($user_id, $email, $reservation_date, $reservation_time, $number_of_people, $status): bool
+    public function getByUserID($user_id)
+    {
+        $sql = "SELECT * FROM reservations WHERE user_id = :user_id";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->bindParam(':user_id', $user_id);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function update($reservation_id, $reservation_date, $reservation_time, $number_of_people): bool
     {
         $sql = "UPDATE reservations SET
-                        user_id = :user_id,
+                        reservation_date = :reservation_date,
+                        reservation_time = :reservation_time,
+                        number_of_people = :number_of_people
+                    WHERE reservation_id = :reservation_id";
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->bindParam(':reservation_id', $reservation_id);
+        $stmt->bindParam(':reservation_date', $reservation_date);
+        $stmt->bindParam(':reservation_time', $reservation_time);
+        $stmt->bindParam(':number_of_people', $number_of_people);
+
+        return $stmt->execute();
+    }
+
+    public function updateAdmin($reservation_id, $name, $email, $reservation_date, $reservation_time, $number_of_people): bool
+    {
+        $sql = "UPDATE reservations SET
+                        name = :name,
                         email = :email,
                         reservation_date = :reservation_date,
                         reservation_time = :reservation_time,
-                        number_of_people = :number_of_people,
-                        status = :status
-                WHERE reservation_id = :reservation_id";
+                        number_of_people = :number_of_people
+                    WHERE reservation_id = :reservation_id";
 
         $stmt = $this->pdo->prepare($sql);
-        $stmt->bindParam(':user_id', $user_id);
+        $stmt->bindParam(':reservation_id', $reservation_id);
+        $stmt->bindParam(':name', $name);
         $stmt->bindParam(':email', $email);
         $stmt->bindParam(':reservation_date', $reservation_date);
         $stmt->bindParam(':reservation_time', $reservation_time);
         $stmt->bindParam(':number_of_people', $number_of_people);
-        $stmt->bindParam(':status', $status);
-        $stmt->bindParam(':reservation_id', $reservation_id);
         return $stmt->execute();
     }
 
@@ -73,5 +98,5 @@ class Reservation
         $stmt->bindParam(':reservation_id', $reservation_id);
         return $stmt->execute();
     }
+
 }
-?>
