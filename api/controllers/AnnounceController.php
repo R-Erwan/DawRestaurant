@@ -25,6 +25,7 @@ class AnnounceController{
                 $data['description'] ?? null,
                 $data['image_url'] ?? null
             );
+            http_response_code(200);
             echo json_encode(["message" => "Annouce created successfully", "result" => $result]);
         } catch(\Exception $e) {
             http_response_code(404);
@@ -35,6 +36,7 @@ class AnnounceController{
     public function getAllAnnouces(): void {
         try {
             $result = $this->annouceService->getAllAnnouncesOrderedByPosition();
+            http_response_code(200);
             echo json_encode(["message" => "Annonces retrieved successfully", "result" => $result]);
         } catch (\Exception $e) {
             http_response_code(404);
@@ -55,6 +57,7 @@ class AnnounceController{
                 $data['description'] ?? null,
                 $data['image_url'] ?? null
             );
+            http_response_code(200);
             echo json_encode(["message" => "Annonce updated successfully"]);
         } catch (\Exception $e){
             http_response_code(404);

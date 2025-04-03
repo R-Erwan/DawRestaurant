@@ -13,7 +13,7 @@ async function fetchAnnounces(){
             //Page d'erreur
         }
     } catch (e) {
-        console.error(e);
+        showBanner('error',"Erreur lors de la récupération des données");
     }
 }
 
@@ -37,6 +37,9 @@ function displayAnnouces(announces) {
             </div>
             `;
         }
+        dropzone.addEventListener("click", (e) => {
+            displayUpdateForm(an,i);
+        })
 
         dragDropContainer.appendChild(dropzone);
     })
@@ -80,6 +83,190 @@ function displayForm(type){
     }
 }
 
+async function submitAnnounce() {
+    const type = parseInt(document.querySelector('#type').value);
+    const title = document.querySelector('#title').value;
+    const desc = document.querySelector('#desc').value;
+    let imageUrl;
+    let body = { "type": type };
+
+    /* Traiter l'image si besoin */
+    if (type === 2) {
+        const imageFile = document.querySelector('#images').files[0];
+
+        if (!imageFile) {
+            showBanner('error', "Aucune image sélectionnée !");
+            return;
+        }
+
+        const imageFormData = new FormData();
+        imageFormData.append('file', imageFile);
+
+        try {
+            const response = await fetch('/includes/admin-page/manage-site/upload.php', {
+                method: 'POST',
+                body: imageFormData,
+                headers: {
+                    "Authorization": `Bearer ${localStorage.getItem("jwt")}`
+                }
+            });
+
+            const result = await response.json();
+            if (response.ok) {
+                imageUrl = result.url;
+                body.image_url = imageUrl;
+            } else {
+                showBanner('error', result.error);
+                return;
+            }
+        } catch (e) {
+            showBanner('error', "Erreur lors de l'upload de l'image");
+            return;
+        }
+    } else if (type === 1) {
+        body.title = title;
+        body.description = desc;
+    }
+
+    /* Requête à l'API */
+    const response = await fetch(`http://localhost:8000/announce`, {
+        method: "POST",
+        body: JSON.stringify(body),
+        headers: {
+            'Content-Type': 'application/json',
+            "Authorization": `Bearer ${localStorage.getItem("jwt")}`
+        }
+    });
+
+    const result = await response.json();
+    if (response.ok) {
+        showBanner('success', result.message);
+        setTimeout(() => {
+            location.reload();
+        }, 1000);
+    } else {
+        showBanner('error', result.message);
+    }
+}
+
+function displayUpdateForm(announce,i){
+
+    const updateForm = document.querySelector("#update-form");
+    updateForm.classList.remove("hidden");
+    updateForm.setAttribute("id_a", announce.id);
+    updateForm.setAttribute("type", announce.type);
+    document.querySelector("#create-form").classList.add("hidden");
+    const updateTitle  = document.querySelector('#update-title');
+    const updateDesc = document.querySelector('#update-desc');
+    const updateImage = document.querySelector('#update-dropcontainer');
+    const posId = document.querySelector('#update-id-position');
+
+    posId.textContent = ` ${i+1}`;
+    if(announce.type === 1){
+        updateTitle.style.display = 'block';
+        updateTitle.value = announce.title;
+        updateDesc.style.display = 'block';
+        updateDesc.value = announce.description;
+        updateImage.style.display = 'none';
+    } else if (announce.type === 2) {
+        updateTitle.style.display = 'none';
+        updateDesc.style.display = 'none';
+        updateImage.style.display = 'flex';
+    }
+}
+
+async function updateAnnounce(announceId){
+    const title = document.querySelector('#update-title').value;
+    const desc = document.querySelector('#update-desc').value;
+    const type = parseInt(document.querySelector("#update-form").getAttribute('type'));
+
+    let imageUrl;
+    let body = {"id" : announceId};
+
+    /* Traiter l'image si besoin */
+    if (type === 2) {
+        const imageFile = document.querySelector('#update-images').files[0];
+
+        if (!imageFile) {
+            showBanner('error', "Aucune image sélectionnée !");
+            return;
+        }
+
+        const imageFormData = new FormData();
+        imageFormData.append('file', imageFile);
+
+        try {
+            const response = await fetch('/includes/admin-page/manage-site/upload.php', {
+                method: 'POST',
+                body: imageFormData,
+                headers: {
+                    "Authorization": `Bearer ${localStorage.getItem("jwt")}`
+                }
+            });
+
+            const result = await response.json();
+            if (response.ok) {
+                imageUrl = result.url;
+                body.image_url = imageUrl;
+            } else {
+                showBanner('error', result.error);
+                return;
+            }
+        } catch (e) {
+            showBanner('error', "Erreur lors de l'upload de l'image");
+            return;
+        }
+    } else if (type === 1) {
+        body.title = title;
+        body.description = desc;
+    }
+
+    /* Requête à l'API */
+    const response = await fetch(`http://localhost:8000/announce`, {
+        method: "PUT",
+        body: JSON.stringify(body),
+        headers: {
+            'Content-Type': 'application/json',
+            "Authorization": `Bearer ${localStorage.getItem("jwt")}`
+        }
+    });
+
+    const result = await response.json();
+    if (response.ok) {
+        showBanner('success', result.message);
+        setTimeout(() => {
+            location.reload();
+        }, 1000);
+    } else {
+        showBanner('error', result.message);
+    }
+
+
+}
+async function deleteAnnounce(announceId){
+    if(confirm("Valider la suppression de l'annonce ? ")){
+        try{
+            const response = await fetch(`http://localhost:8000/announce?announce_id=${announceId}`, {
+                method: "DELETE",
+                headers: {
+                    "Authorization": `Bearer ${localStorage.getItem("jwt")}`,
+                    "Content-Type": "application/json",
+                }
+            });
+            const result = await response.json();
+            if (response.ok) {
+                showBanner('success', result.message);
+                setTimeout(() => {
+                    location.reload();
+                }, 1000);
+            } else {
+                showBanner('error', result.message);
+            }
+        } catch (error){
+            showBanner('error', "Erreur de suppression");
+        }
+    }
+}
 document.addEventListener('DOMContentLoaded', async () => {
 
     /* Fetch data */
@@ -119,6 +306,33 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     const typeInput = document.getElementById("type");
     typeInput.addEventListener("change", e => {displayForm(parseInt(typeInput.value));});
+
+    const submitForm = document.getElementById("submit-form");
+    submitForm.addEventListener("click", async e => {
+        e.preventDefault();
+        await submitAnnounce();
+    })
+
+
+    /* Update Form */
+    document.querySelector("#back-update").addEventListener("click",  (e) => {
+        document.querySelector("#create-form").classList.remove("hidden");
+        document.querySelector("#update-form").classList.add("hidden");
+    })
+    document.querySelector("#del-announce").addEventListener("click",  async (e) => {
+        const ida = document.querySelector("#update-form").getAttribute('id_a');
+        await deleteAnnounce(ida);
+        document.querySelector("#create-form").classList.remove("hidden");
+        document.querySelector("#update-form").classList.add("hidden");
+    })
+
+    document.querySelector("#submit-update-form").addEventListener("click", async (e) => {
+        const ida = document.querySelector("#update-form").getAttribute('id_a');
+        e.preventDefault();
+        await updateAnnounce(ida);
+        document.querySelector("#create-form").classList.remove("hidden");
+        document.querySelector("#update-form").classList.add("hidden");
+    })
 
     /* Draggable */
     const dropZones = document.querySelectorAll('.dropzone');
@@ -176,8 +390,3 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     });
 });
-
-
-
-
-
