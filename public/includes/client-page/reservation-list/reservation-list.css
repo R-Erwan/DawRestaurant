@@ -1,0 +1,145 @@
+.horizontal-bar, .horizontal-bar-XL, .horizontal-bar-L {
+  width: 50%;
+  height: 3px;
+  background: #fab369;
+  margin: 60px auto;
+}
+
+.horizontal-bar-L {
+  width: 75%;
+}
+
+.horizontal-bar-XL {
+  margin: 10px auto;
+  width: 100%;
+}
+
+.vertical-bar, .vertical-bar-XL, .vertical-bar-L {
+  width: 3px;
+  height: 5vh;
+  background: #FFF;
+}
+
+.vertical-bar-L {
+  width: 3px;
+  height: 10vh;
+}
+
+.vertical-bar-XL {
+  width: 3px;
+  height: 100vh;
+}
+
+/* tabs menu*/
+.tabs-menu {
+  width: 100%;
+  border-bottom: 1px solid #555555;
+  padding-bottom: 2vh;
+}
+.tabs-menu button {
+  border: none;
+  cursor: pointer;
+  background-color: transparent;
+  margin: 0 60px;
+}
+.tabs-menu button:hover {
+  color: #5a7c38;
+}
+.tabs-menu .tabs-selected {
+  color: #5a7c38;
+  font-weight: 500;
+}
+.tabs-menu .tabs-selected:after {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 2px;
+  background-color: #5a7c38;
+  transform: translateY(2.15vh);
+}
+
+/* tabs content */
+.tabs-content {
+  width: 100%;
+  margin: 0 auto 0 auto;
+  padding: 20px;
+}
+
+.table li {
+  border-radius: 5px;
+  padding: 25px 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+.table .table-header {
+  background-color: #cfad89;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.table .table-row {
+  background-color: #fff;
+  box-shadow: 0px 0px 9px 0px rgba(0, 0, 0, 0.1);
+}
+.table .table-row .c5 {
+  border: solid 2px #fab369;
+  color: #fab369;
+  padding: 5px;
+  text-align: center;
+  border-radius: 20px;
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+}
+.table .table-row .c5:hover {
+  border: solid 2px transparent;
+  color: #FFF;
+  background-color: #fab369;
+}
+.table .table-row .c4:before {
+  content: "";
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  transform: translateX(-10px);
+}
+.table .c1 {
+  flex-basis: 10%;
+}
+.table .c2 {
+  flex-basis: 10%;
+}
+.table .c3 {
+  flex-basis: 20%;
+}
+.table .c4 {
+  flex-basis: 20%;
+}
+.table .c5 {
+  flex-basis: 10%;
+}
+
+.state-confirmed {
+  color: #86B971;
+}
+.state-confirmed:before {
+  background-color: #86B971;
+}
+
+.state-waiting {
+  color: #fab369;
+}
+.state-waiting:before {
+  background-color: #fab369;
+}
+
+.state-canceled {
+  color: #881212;
+}
+.state-canceled:before {
+  background-color: #881212;
+}
+
+/*# sourceMappingURL=reservation-list.css.map */
