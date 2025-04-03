@@ -9,7 +9,6 @@ use controllers\ReservationController;
 require_once 'controllers/AuthController.php';
 
 $authController = new AuthController($pdo);
-$reservationController = new ReservationController($pdo);
 
 // Login
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_GET['action'] === 'login') {
