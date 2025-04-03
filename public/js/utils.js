@@ -30,7 +30,7 @@ export async function fetchUserData() {
     try {
         const decoded = parseJwt(token);
         // Fetch data
-        const response = await fetch(`http://localhost:8000/user?id=${decoded.user_id}`, {
+        const response = await fetch(`/api/user?id=${decoded.user_id}`, {
             method: "GET",
             headers: {
                 'Content-Type': 'application/json',

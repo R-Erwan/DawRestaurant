@@ -1,6 +1,6 @@
 async function fetchAnnounces(){
     try {
-        const response = await fetch(`http://localhost:8000/announce`,{
+        const response = await fetch(`/api/announce`,{
             method: "GET",
             headers: {'Content-Type': 'application/json'}
         });

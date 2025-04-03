@@ -2,7 +2,7 @@ import {showBanner} from "../../popup/popup";
 
 async function fetchAnnounces(){
     try {
-        const response = await fetch(`http://localhost:8000/announce`,{
+        const response = await fetch(`/api/announce`,{
             method: "GET",
             headers: {'Content-Type': 'application/json'}
         });
@@ -55,7 +55,7 @@ async function sendOrder(){
     })
 
     const jwt = localStorage.getItem("jwt");
-    const response = await fetch(`http://localhost:8000/announce?action=positions`, {
+    const response = await fetch(`/api/announce?action=positions`, {
         method: "PUT",
         headers: {
             'Content-Type': 'application/json',
@@ -129,7 +129,7 @@ async function submitAnnounce() {
     }
 
     /* Requête à l'API */
-    const response = await fetch(`http://localhost:8000/announce`, {
+    const response = await fetch(`/api/announce`, {
         method: "POST",
         body: JSON.stringify(body),
         headers: {
@@ -222,7 +222,7 @@ async function updateAnnounce(announceId){
     }
 
     /* Requête à l'API */
-    const response = await fetch(`http://localhost:8000/announce`, {
+    const response = await fetch(`/api/announce`, {
         method: "PUT",
         body: JSON.stringify(body),
         headers: {
@@ -246,7 +246,7 @@ async function updateAnnounce(announceId){
 async function deleteAnnounce(announceId){
     if(confirm("Valider la suppression de l'annonce ? ")){
         try{
-            const response = await fetch(`http://localhost:8000/announce?announce_id=${announceId}`, {
+            const response = await fetch(`/api/announce?announce_id=${announceId}`, {
                 method: "DELETE",
                 headers: {
                     "Authorization": `Bearer ${localStorage.getItem("jwt")}`,
