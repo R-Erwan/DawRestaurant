@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="includes/header/header.css">
 <header>
     <nav class="header-navbar">
         <div class="nav-logo">

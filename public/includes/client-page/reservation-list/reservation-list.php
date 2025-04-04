@@ -1,4 +1,4 @@
-
+<link rel="stylesheet" href="includes/client-page/reservation-list/reservation-list.css">
 <div class="tabs-menu">
     <button class="tabs-button tabs-selected" id="tabs-all">Tous</button>
     <button class="tabs-button" id="tabs-confirmed">Confirmé</button>

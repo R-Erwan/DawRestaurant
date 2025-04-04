@@ -1,5 +1,5 @@
 <?php include_once "includes/popup/popup.php"?>
-
+<link rel="stylesheet" href="includes/login-form/login-form.css">
 <div class="login-main-container">
     <div class="login-container" id="login-container">
         <div class="form-container sign-up-container">
