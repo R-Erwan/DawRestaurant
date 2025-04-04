@@ -2,23 +2,20 @@
 @use "../../css/reset"
 
 main
-  background-color: const.$third-color
   min-height: 100vh
   width: 100%
-
 
 .carousel-container
   width: 100%
   height: 50vh
   position: relative
   overflow: hidden
-  background: const.$primary-color
 
 .carousel-slides
   width: 400%
   height: 100%
   display: flex
-  animation: slide 15s ease-in-out infinite
+  animation: slide 30s ease-in-out infinite
 
 .carousel-slide
   width: 25%
@@ -73,6 +70,7 @@ main
   100%
     transform: translateX(-75%)
 
+
 .announce-container
   display: flex
   flex-direction: row
@@ -83,7 +81,7 @@ main
   max-width: 1400px
   margin: 0 auto
   height: 100%
-  background-color: #dfa96d
+  //background-color: #dfa96d
 
 .announce
   width: 45%
