@@ -13,10 +13,11 @@ class Reservation
         $this->pdo = $pdo;
     }
 
-    public function create($user_id, $name, $email, $reservation_date, $reservation_time, $number_of_people): bool
+    public function create($user_id, $name, $email, $reservation_date, $reservation_time, $number_of_people, $status): bool
     {
-        $sql = "INSERT INTO reservations (user_id, name, email, reservation_date, reservation_time, number_of_people)
-                VALUES (:user_id, :name, :email, :reservation_date, :reservation_time, :number_of_people)";
+        $sql ="INSERT INTO reservations (user_id, name, email, reservation_date, reservation_time, status, number_of_people) 
+                VALUES (:user_id, :name, :email, :reservation_date, :reservation_time, :status, :number_of_people)";
+
 
         $stmt = $this->pdo->prepare($sql);
         $stmt->bindParam(':user_id', $user_id);
@@ -25,6 +26,7 @@ class Reservation
         $stmt->bindParam(':reservation_date', $reservation_date);
         $stmt->bindParam(':reservation_time', $reservation_time);
         $stmt->bindParam(':number_of_people', $number_of_people);
+        $stmt->bindParam(':status', $status);
         return $stmt->execute();
     }
 
@@ -38,7 +40,7 @@ class Reservation
 
     public function getByID($id)
     {
-        $sql = "SELECT * FROM reservations WHERE reservation_id = :id";
+        $sql = "SELECT * FROM reservations WHERE id = :id";
         $stmt = $this->pdo->prepare($sql);
         $stmt->bindParam(':id', $id);
         $stmt->execute();
@@ -54,16 +56,26 @@ class Reservation
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function update($reservation_id, $reservation_date, $reservation_time, $number_of_people): bool
+    public function getByUserAndStatus($id, $status)
+    {
+        $sql = "SELECT * FROM reservations WHERE user_id = :user_id AND status = :status";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->bindParam(':user_id', $id);
+        $stmt->bindParam(':status', $status);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function update($id, $reservation_date, $reservation_time, $number_of_people): bool
     {
         $sql = "UPDATE reservations SET
                         reservation_date = :reservation_date,
                         reservation_time = :reservation_time,
                         number_of_people = :number_of_people
-                    WHERE reservation_id = :reservation_id";
+                    WHERE id = :id";
 
         $stmt = $this->pdo->prepare($sql);
-        $stmt->bindParam(':reservation_id', $reservation_id);
+        $stmt->bindParam(':id', $id);
         $stmt->bindParam(':reservation_date', $reservation_date);
         $stmt->bindParam(':reservation_time', $reservation_time);
         $stmt->bindParam(':number_of_people', $number_of_people);
@@ -71,7 +83,7 @@ class Reservation
         return $stmt->execute();
     }
 
-    public function updateAdmin($reservation_id, $name, $email, $reservation_date, $reservation_time, $number_of_people): bool
+    public function updateAdmin($id, $name, $email, $reservation_date, $reservation_time, $number_of_people): bool
     {
         $sql = "UPDATE reservations SET
                         name = :name,
@@ -79,10 +91,10 @@ class Reservation
                         reservation_date = :reservation_date,
                         reservation_time = :reservation_time,
                         number_of_people = :number_of_people
-                    WHERE reservation_id = :reservation_id";
+                    WHERE id = :id";
 
         $stmt = $this->pdo->prepare($sql);
-        $stmt->bindParam(':reservation_id', $reservation_id);
+        $stmt->bindParam(':id', $id);
         $stmt->bindParam(':name', $name);
         $stmt->bindParam(':email', $email);
         $stmt->bindParam(':reservation_date', $reservation_date);
@@ -91,11 +103,11 @@ class Reservation
         return $stmt->execute();
     }
 
-    public function delete($reservation_id): bool
+    public function delete($id): bool
     {
-        $sql = "DELETE FROM reservations WHERE reservation_id = :reservation_id";
+        $sql = "DELETE FROM reservations WHERE id = :reservation_id";
         $stmt = $this->pdo->prepare($sql);
-        $stmt->bindParam(':reservation_id', $reservation_id);
+        $stmt->bindParam(':id', $id);
         return $stmt->execute();
     }
 

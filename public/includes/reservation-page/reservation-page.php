@@ -1,7 +1,7 @@
 <main>
     <div class="container">
         <h1>Réservation</h1>
-        <form id="reservation-form" action="#">
+        <form id="reservation-form">
             <label for="name">Nom</label>
             <input type="text" id="name" name="name">
             <div id="name-error" class="error-message"></div>
@@ -28,4 +28,4 @@
         </form>
     </div>
 </main>
-<script type="module" src="includes/reservation-page/reservation.js"></script>
+<script type="module" src="includes/reservation-page/reservation-page.js"></script>
