@@ -48,7 +48,7 @@ class ReservationService
     /**
      * @throws Exception
      */
-    public function updateReservationAdmin($user_id, $name, $email, $reservation_date, $reservation_time, $number_of_people): bool
+    public function updateReservationAdmin($user_id, $reservation_id, $name, $email, $reservation_date, $reservation_time, $number_of_people, $status): bool
     {
         if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
             throw new Exception('Format de l\'email invalide');
@@ -56,31 +56,31 @@ class ReservationService
 
         if ($number_of_people >= 9)
         {
-            throw new Exception('Le nombre d\'invites est trop éleve);');
+            throw new Exception('Le nombre d\'invites est trop eleve);');
         }
 
-        return $this->reservation->updateAdmin($user_id, $name, $email, $reservation_date, $reservation_time, $number_of_people);
+        return $this->reservation->updateAdmin($user_id, $reservation_id, $name, $email, $reservation_date, $reservation_time, $number_of_people, $status);
 
     }
 
     /**
      * @throws Exception
      */
-    public function deleteReservation($idReservation): bool
+    public function deleteReservation($reservation_id): bool
     {
-        if (!$this->reservation->getByID($idReservation)) {
+        if (!$this->reservation->getByID($reservation_id)) {
             throw new Exception('Reservation non trouvee');
         }
-        return $this->reservation->delete($idReservation);
+        return $this->reservation->delete($reservation_id);
     }
 
 
     /**
      * @throws Exception
      */
-    public function getReservation(int $idReservation): ?array
+    public function getReservation($reservation_id): ?array
     {
-        $result = $this->reservation->getByID($idReservation);
+        $result = $this->reservation->getByID($reservation_id);
         if (!$result) {
             throw new Exception('Reservation non trouvee');
         }
@@ -108,12 +108,5 @@ class ReservationService
         }
         return $result;
     }
-    public function getAllReservationsByUserAndStatus($user_id, $status): array
-    {
-        $result = $this->reservation->getByUserAndStatus($user_id, $status);
-        if (!$result) {
-            throw  new Exception('Reservation non trouvee');
-        }
-        return $result;
-    }
+
 }

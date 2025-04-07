@@ -16,17 +16,6 @@ class ReservationController
         $this->reservationService = new ReservationService($pdo);
     }
 
-    private function validateData($data, $requiredFields): void
-    {
-        foreach ($requiredFields as $field) {
-            if (empty($data[$field])) {
-                http_response_code(400);
-                echo json_encode(['message' => "Le champ $field est requis"]);
-                exit;
-            }
-        }
-    }
-
     public function createReservation($data): void
     {
         $requiredFields = ["user_id", "name", "email", "date", "time", "guests", "status"];
@@ -45,6 +34,17 @@ class ReservationController
         } catch (Exception $e) {
             http_response_code(500);
             echo json_encode(['message' => 'Erreur lors de la creation de la reservation', 'error' => $e->getMessage()]);
+        }
+    }
+
+    private function validateData($data, $requiredFields): void
+    {
+        foreach ($requiredFields as $field) {
+            if (empty($data[$field])) {
+                http_response_code(400);
+                echo json_encode(['message' => "Le champ $field est requis"]);
+                exit;
+            }
         }
     }
 
@@ -83,28 +83,6 @@ class ReservationController
         }
     }
 
-    public function getReservationByUserAndStatus($id,$status): void
-    {
-        try {
-            $result = $this->reservationService->getAllReservationsByUserAndStatus($id, $status);
-            if ($result) {
-                http_response_code(200);
-                echo json_encode([
-                    'message' => 'Reservations trouvees',
-                    'reservation' => $result
-                ]);
-            } else {
-                http_response_code(404);
-                echo json_encode(['message' => 'Aucune reservation trouvee']);
-            }
-        } catch (Exception $e) {
-            http_response_code(500);
-            echo json_encode(['message' => 'Erreur lors de la recuperation de la reservation', 'error' => $e->getMessage()]);
-        }
-    }
-
-
-
     public function getReservationByUser($user_id): void
     {
         try {
@@ -136,6 +114,28 @@ class ReservationController
             $time = $data["time"];
             $guests = $data["guests"];
             $this->reservationService->updateReservation($reservation_id, $date, $time, $guests);
+            echo json_encode(['message' => 'Reservation mise a jour avec succes']);
+        } catch (Exception $e) {
+            http_response_code(500);
+            echo json_encode(['message' => 'Erreur lors de la mise a jour de la reservation', 'error' => $e->getMessage()]);
+        }
+    }
+
+    public function updateReservationAdmin($data): void
+    {
+        $requiredFields = ["id", "user_id", "name", "email", "date", "time", "guests", "status"];
+        $this->validateData($data, $requiredFields);
+
+        try {
+            $reservation_id = $data["id"];
+            $user_id = $data["user_id"];
+            $name = $data["name"];
+            $email = $data["email"];
+            $date = $data["date"];
+            $time = $data["time"];
+            $guests = $data["guests"];
+            $status = $data["status"];
+            $this->reservationService->updateReservationAdmin($user_id, $reservation_id, $name, $email, $date, $time, $guests, $status);
             echo json_encode(['message' => 'Reservation mise a jour avec succes']);
         } catch (Exception $e) {
             http_response_code(500);

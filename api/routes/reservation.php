@@ -26,9 +26,6 @@ switch ($_SERVER['REQUEST_METHOD']) {
         } elseif ($_GET['action'] === 'AllbyUser')
         {
             $reservationController->getReservationByUser($_GET['id']);
-        } elseif ($_GET['action'] === 'AllbyStatus')
-        {
-            $reservationController->getReservationByUserAndStatus($_GET['id'], $_GET['status']);
         }
         break;
     case 'DELETE':
