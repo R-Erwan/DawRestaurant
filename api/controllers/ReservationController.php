@@ -18,7 +18,7 @@ class ReservationController
 
     public function createReservation($data): void
     {
-        $requiredFields = ["user_id", "name", "email", "date", "time", "guests", "status"];
+        $requiredFields = ["user_id", "name", "email", "date", "time", "guests"];
         $this->validateData($data, $requiredFields);
 
         try {
@@ -28,8 +28,7 @@ class ReservationController
             $date = $data["date"];
             $time = $data["time"];
             $guests = $data["guests"];
-            $status = $data["status"];
-            $this->reservationService->createReservation($user_id, $name, $email, $date, $time, $guests, $status);
+            $this->reservationService->createReservation($user_id, $name, $email, $date, $time, $guests);
             echo json_encode(['message' => 'Reservation creee avec succes']);
         } catch (Exception $e) {
             http_response_code(500);
@@ -123,19 +122,18 @@ class ReservationController
 
     public function updateReservationAdmin($data): void
     {
-        $requiredFields = ["id", "user_id", "name", "email", "date", "time", "guests", "status"];
+        $requiredFields = ["id", "name", "email", "date", "time", "guests", "status"];
         $this->validateData($data, $requiredFields);
 
         try {
             $reservation_id = $data["id"];
-            $user_id = $data["user_id"];
             $name = $data["name"];
             $email = $data["email"];
             $date = $data["date"];
             $time = $data["time"];
             $guests = $data["guests"];
             $status = $data["status"];
-            $this->reservationService->updateReservationAdmin($user_id, $reservation_id, $name, $email, $date, $time, $guests, $status);
+            $this->reservationService->updateReservationAdmin($reservation_id, $name, $email, $date, $time, $guests, $status);
             echo json_encode(['message' => 'Reservation mise a jour avec succes']);
         } catch (Exception $e) {
             http_response_code(500);

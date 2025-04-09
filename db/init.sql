@@ -34,9 +34,10 @@ CREATE TABLE IF NOT EXISTS reservations
     email VARCHAR(255) NOT NULL,
     reservation_date DATE NOT NULL,
     reservation_time VARCHAR(255) NOT NULL,
-    status VARCHAR(255),
+    status VARCHAR(255) DEFAULT 'waiting',
     number_of_people INT NOT NULL
 );
+
 
 -- Table des plats
 CREATE TABLE IF NOT EXISTS dishes

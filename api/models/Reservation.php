@@ -13,10 +13,10 @@ class Reservation
         $this->pdo = $pdo;
     }
 
-    public function create($user_id, $name, $email, $reservation_date, $reservation_time, $number_of_people, $status): bool
+    public function create($user_id, $name, $email, $reservation_date, $reservation_time, $number_of_people): bool
     {
-        $sql ="INSERT INTO reservations (user_id, name, email, reservation_date, reservation_time, status, number_of_people) 
-                VALUES (:user_id, :name, :email, :reservation_date, :reservation_time, :status, :number_of_people)";
+        $sql ="INSERT INTO reservations (user_id, name, email, reservation_date, reservation_time, number_of_people) 
+                VALUES (:user_id, :name, :email, :reservation_date, :reservation_time, :number_of_people)";
 
 
         $stmt = $this->pdo->prepare($sql);
@@ -26,7 +26,6 @@ class Reservation
         $stmt->bindParam(':reservation_date', $reservation_date);
         $stmt->bindParam(':reservation_time', $reservation_time);
         $stmt->bindParam(':number_of_people', $number_of_people);
-        $stmt->bindParam(':status', $status);
         return $stmt->execute();
     }
 

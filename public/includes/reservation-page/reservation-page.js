@@ -54,7 +54,6 @@ document.getElementById("reservation-form").addEventListener("submit", async fun
                     date: date,
                     time: time,
                     guests: guests,
-                    status: "En attente"
                 };
 
                 console.log(reservationData);
