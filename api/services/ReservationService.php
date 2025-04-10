@@ -53,7 +53,7 @@ class ReservationService
     /**
      * @throws Exception
      */
-    public function updateReservationAdmin($reservation_id, $name, $email, $reservation_date, $reservation_time, $reservation_type, $number_of_people, $status): bool
+    public function updateReservationAdmin($reservation_id, $name, $email, $reservation_date, $reservation_time, $number_of_people, $status): bool
     {
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             throw new Exception('Format de l\'email invalide');
@@ -63,7 +63,7 @@ class ReservationService
             throw new Exception('Le nombre d\'invites est trop élevé');
         }
 
-        return $this->reservation->updateAdmin($reservation_id, $name, $email, $reservation_date, $reservation_time, $reservation_type, $number_of_people, $status);
+        return $this->reservation->updateAdmin($reservation_id, $name, $email, $reservation_date, $reservation_time, $number_of_people, $status);
     }
 
     /**

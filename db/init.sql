@@ -34,7 +34,6 @@ CREATE TABLE IF NOT EXISTS reservations
     email VARCHAR(255) NOT NULL,
     reservation_date DATE NOT NULL,
     reservation_time VARCHAR(255) NOT NULL,
-    reservation_type VARCHAR(255) DEFAULT 'current',
     number_of_people INT NOT NULL,
     status VARCHAR(255) DEFAULT 'waiting',
     created_at TIMESTAMP DEFAULT NOW()

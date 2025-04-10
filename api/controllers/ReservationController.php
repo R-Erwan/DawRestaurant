@@ -121,7 +121,7 @@ class ReservationController
 
     public function updateReservationAdmin($data): void
     {
-        $requiredFields = ["id", "name", "email", "date", "time", "type", "guests", "status"];
+        $requiredFields = ["id", "name", "email", "date", "time", "guests", "status"];
         $this->validateData($data, $requiredFields);
 
         try {
@@ -130,11 +130,10 @@ class ReservationController
             $email = $data["email"];
             $date = $data["date"];
             $time = $data["time"];
-            $type = $data["type"];
             $guests = $data["guests"];
             $status = $data["status"];
 
-            $this->reservationService->updateReservationAdmin($reservation_id, $name, $email, $date, $time, $type,
+            $this->reservationService->updateReservationAdmin($reservation_id, $name, $email, $date, $time,
                                                                 $guests, $status);
             echo json_encode(['message' => 'Reservation mise a jour avec succes']);
         } catch (Exception $e) {

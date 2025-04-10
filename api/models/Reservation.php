@@ -72,14 +72,13 @@ class Reservation
         return $stmt->execute();
     }
 
-    public function updateAdmin($id, $name, $email, $reservation_date, $reservation_time, $reservation_type, $number_of_people, $status): bool
+    public function updateAdmin($id, $name, $email, $reservation_date, $reservation_time, $number_of_people, $status): bool
     {
         $sql = "UPDATE reservations SET
                         name = :name,
                         email = :email,
                         reservation_date = :reservation_date,
                         reservation_time = :reservation_time,
-                        reservation_type = :reservation_type,
                         number_of_people = :number_of_people,
                         status = :status
                     WHERE id = :id";
@@ -90,7 +89,6 @@ class Reservation
         $stmt->bindParam(':email', $email);
         $stmt->bindParam(':reservation_date', $reservation_date);
         $stmt->bindParam(':reservation_time', $reservation_time);
-        $stmt->bindParam(':reservation_type', $reservation_type);
         $stmt->bindParam(':number_of_people', $number_of_people);
         $stmt->bindParam(':status', $status);
         return $stmt->execute();
