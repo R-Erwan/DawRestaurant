@@ -19,7 +19,6 @@ document.addEventListener("DOMContentLoaded", async function () {
             elem.textContent = "";
         });
 
-        const name = document.getElementById("name").value.trim();
         const email = document.getElementById("email").value.trim();
         const date = document.getElementById("date").value;
         const time = document.getElementById("time").value;
@@ -27,11 +26,6 @@ document.addEventListener("DOMContentLoaded", async function () {
 
         let isValid = true;
 
-
-        if (!name) {
-            document.getElementById("name-error").textContent = "Le nom est obligatoire.";
-            isValid = false;
-        }
         if (!email) {
             document.getElementById("email-error").textContent = "L'email est obligatoire.";
             isValid = false;
@@ -60,7 +54,6 @@ document.addEventListener("DOMContentLoaded", async function () {
                 const reservationData = {
                     user_id: id,
                     email: email,
-                    name: name,
                     date: date,
                     time: time,
                     guests: guests,

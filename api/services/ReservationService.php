@@ -4,23 +4,27 @@ namespace services;
 
 use Exception;
 use models\Reservation;
+use models\User;
 use PDO;
 
 require_once 'models/Reservation.php';
+require_once 'models/User.php';
 
 class ReservationService
 {
     private Reservation $reservation;
+    private User $user;
 
     public function __construct(PDO $pdo)
     {
         $this->reservation = new Reservation($pdo);
+        $this->user = new User($pdo);
     }
 
     /**
      * @throws Exception
      */
-    public function createReservation($user_id, $name, $email, $reservation_date, $reservation_time, $number_of_people): void
+    public function createReservation($user_id, $email, $reservation_date, $reservation_time, $number_of_people): void
     {
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             throw new Exception('Format de l\'email invalide');
@@ -30,6 +34,8 @@ class ReservationService
             throw new Exception('Le nombre d\'invites est trop élevé');
         }
 
+        $tmp = $this->user->findById($user_id);
+        $name = $tmp['name'];
         $this->reservation->create($user_id, $name, $email, $reservation_date, $reservation_time, $number_of_people);
     }
 

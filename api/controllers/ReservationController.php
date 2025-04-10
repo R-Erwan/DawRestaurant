@@ -18,17 +18,16 @@ class ReservationController
 
     public function createReservation($data): void
     {
-        $requiredFields = ["user_id", "name", "email", "date", "time", "guests"];
+        $requiredFields = ["user_id", "email", "date", "time", "guests"];
         $this->validateData($data, $requiredFields);
 
         try {
             $user_id = $data["user_id"];
-            $name = $data["name"];
             $email = $data["email"];
             $date = $data["date"];
             $time = $data["time"];
             $guests = $data["guests"];
-            $this->reservationService->createReservation($user_id, $name, $email, $date, $time, $guests);
+            $this->reservationService->createReservation($user_id, $email, $date, $time, $guests);
             echo json_encode(['message' => 'Reservation creee avec succes']);
         } catch (Exception $e) {
             http_response_code(500);
