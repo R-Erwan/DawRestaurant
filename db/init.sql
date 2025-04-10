@@ -32,3 +32,25 @@ CREATE TABLE IF NOT EXISTS announces (
     created_at TIMESTAMP DEFAULT NOW()
 );
 
+CREATE TABLE IF NOT EXISTS days_rules (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(50) UNIQUE NOT NULL,
+    open bool NOT NULL DEFAULT true
+);
+
+CREATE TABLE IF NOT EXISTS time_rules (
+    id SERIAL PRIMARY KEY,
+    id_days INT NOT NULL REFERENCES days_rules(id) ON DELETE CASCADE,
+    time_start TIME NOT NULL,
+    time_end TIME NOT NULL,
+    number_places INT NOT NULL,
+    CHECK ( time_end > time_start ),
+    UNIQUE (id_days, time_start, time_end)
+);
+
+CREATE TABLE IF NOT EXISTS exception_rules (
+    id SERIAL PRIMARY KEY,
+    date DATE NOT NULL UNIQUE,
+    open BOOLEAN NOT NULL DEFAULT false,
+    comment TEXT
+);
