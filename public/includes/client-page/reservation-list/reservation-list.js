@@ -31,35 +31,34 @@ const tabsCanceled = document.querySelector('#tabs-canceled');
 const tableContent = document.querySelector('#table-content');
 
 function displayReservations(state = 'all', type = 'current') {
-    // Clear existing rows
+    // Nettoie les lignes existantes
     tableContent.innerHTML = `
         <li class="table-header">
             <div class="col c1">Date</div>
             <div class="col c2">Heure</div>
             <div class="col c3">Nombres de couverts</div>
-            <div class="col c4">Status</div>
+            <div class="col c4">Statut</div>
             <div class="col c5"></div>
         </li>
     `;
 
-    // Get the current date
     const currentDate = new Date();
 
-    // Filter data based on state (confirmed, waiting, canceled, etc.)
+    // Filtre les données selon le statut (confirmed, waiting, canceled, etc.)
     let filteredData = state === 'all' ? data : data.filter(item => item.state === state);
 
-    // Filter based on the type (current or history)
+    // Filtre selon le type (actuel ou historique)
     filteredData = filteredData.filter(item => {
         const reservationDate = new Date(item.date.split('/').reverse().join('-') + ' ' + item.hour);
         if (type === 'current') {
-            return reservationDate > currentDate; // Future reservations
+            return reservationDate > currentDate; // Réservations futures
         } else if (type === 'history') {
-            return reservationDate < currentDate; // Past reservations
+            return reservationDate < currentDate; // Réservations passées
         }
         return false;
     });
 
-    // Generate rows for the filtered data
+    // Génére les lignes pour les données filtrées
     filteredData.forEach(item => {
         const row = document.createElement('li');
         row.classList.add('table-row');
@@ -69,7 +68,7 @@ function displayReservations(state = 'all', type = 'current') {
             <div class="col c2">${item.hour}</div>
             <div class="col c3">${item.nCouv}</div>
             <div class="col c4 state-${item.state}">${capitalizeFirstLetter(item.state)}</div>
-            <div class="col c5">Details</div>
+            <div class="col c5">Détails</div>
         `;
 
         tableContent.appendChild(row);
@@ -80,32 +79,32 @@ function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
-// Event listeners for the tabs
+// Écouteurs d’événements pour les onglets
 tabsAll.addEventListener('click', () => {
     setActiveTab(tabsAll);
-    const type = getUrlParamType(); // Get type from URL
+    const type = getUrlParamType();
     displayReservations('all', type);
 });
 
 tabsConfirmed.addEventListener('click', () => {
     setActiveTab(tabsConfirmed);
-    const type = getUrlParamType(); // Get type from URL
+    const type = getUrlParamType();
     displayReservations('confirmed', type);
 });
 
 tabsWaiting.addEventListener('click', () => {
     setActiveTab(tabsWaiting);
-    const type = getUrlParamType(); // Get type from URL
+    const type = getUrlParamType();
     displayReservations('waiting', type);
 });
 
 tabsCanceled.addEventListener('click', () => {
     setActiveTab(tabsCanceled);
-    const type = getUrlParamType(); // Get type from URL
+    const type = getUrlParamType();
     displayReservations('canceled', type);
 });
 
-// Helper function to set active tab
+// Fonction pour définir l’onglet actif
 function setActiveTab(activeTab) {
     document.querySelectorAll('.tabs-button').forEach(tab => {
         tab.classList.remove('tabs-selected');
@@ -113,14 +112,14 @@ function setActiveTab(activeTab) {
     activeTab.classList.add('tabs-selected');
 }
 
-// Function to retrieve the 'type' parameter from URL
+// Fonction pour récupérer le paramètre 'type' dans l’URL
 function getUrlParamType() {
     const urlParams = new URLSearchParams(window.location.search);
-    return urlParams.get('type') || 'current'; // Default to 'current' if not specified
+    return urlParams.get('type') || 'current';
 }
 
-// Window onload function to handle URL parameter and filter accordingly
+// Fonction exécutée au chargement de la page pour appliquer les filtres selon les paramètres d’URL
 window.onload = () => {
-    const type = getUrlParamType(); // Get type from URL
-    displayReservations('all', type); // Display all reservations based on the type (current or history)
+    const type = getUrlParamType();
+    displayReservations('all', type);
 };

@@ -12,12 +12,15 @@
             <input type="date" name="date" id="date">
             <div id="date-error" class="error-message"></div>
             <label for="time">Heure</label>
-            <select id="time" name="time">
-                <option value="" disabled selected>Choisir une heure</option>
+            <select id="time">
+                <option value="18:00">18:00</option>
+                <option value="18:30">18:30</option>
                 <option value="19:00">19:00</option>
+                <option value="19:30">19:30</option>
                 <option value="20:00">20:00</option>
+                <option value="20:30">20:30</option>
                 <option value="21:00">21:00</option>
-                <option value="22:00">22:00</option>
+                <option value="21:30">21:30</option>
             </select>
             <div id="time-error" class="error-message"></div>
             <label for="guests">Nombre de personnes</label>
@@ -26,6 +29,7 @@
             <button type="submit">Réserver</button>
             <div id="reservation-status" class="error-message"></div>
         </form>
+        <div id="container-time"></div>
     </div>
 </main>
 <script type="module" src="includes/reservation-page/reservation-page.js"></script>

@@ -7,6 +7,7 @@ use models\Reservation;
 use PDO;
 
 require_once 'models/Reservation.php';
+
 class ReservationService
 {
     private Reservation $reservation;
@@ -25,9 +26,8 @@ class ReservationService
             throw new Exception('Format de l\'email invalide');
         }
 
-        if ($number_of_people >= 9)
-        {
-            throw new Exception('Le nombre d\'invites est trop éleve);');
+        if ($number_of_people >= 9) {
+            throw new Exception('Le nombre d\'invites est trop élevé');
         }
 
         $this->reservation->create($user_id, $name, $email, $reservation_date, $reservation_time, $number_of_people);
@@ -36,31 +36,28 @@ class ReservationService
     /**
      * @throws Exception
      */
-    public function updateReservation($user_id, $reservation_date, $reservation_time, $number_of_people): bool
+    public function updateReservation($reservation_id, $reservation_date, $reservation_time, $number_of_people): bool
     {
-        if ($number_of_people >= 9)
-        {
-            throw new Exception('Le nombre d\'invites est trop éleve);');
+        if ($number_of_people >= 9) {
+            throw new Exception('Le nombre d\'invites est trop élevé');
         }
-        return $this->reservation->update($user_id, $reservation_date, $reservation_time, $number_of_people);
+        return $this->reservation->update($reservation_id, $reservation_date, $reservation_time, $number_of_people);
     }
 
     /**
      * @throws Exception
      */
-    public function updateReservationAdmin($reservation_id, $name, $email, $reservation_date, $reservation_time, $number_of_people, $status): bool
+    public function updateReservationAdmin($reservation_id, $name, $email, $reservation_date, $reservation_time, $reservation_type, $number_of_people, $status): bool
     {
-        if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             throw new Exception('Format de l\'email invalide');
         }
 
-        if ($number_of_people >= 9)
-        {
-            throw new Exception('Le nombre d\'invites est trop eleve);');
+        if ($number_of_people >= 9) {
+            throw new Exception('Le nombre d\'invites est trop élevé');
         }
 
-        return $this->reservation->updateAdmin($reservation_id, $name, $email, $reservation_date, $reservation_time, $number_of_people, $status);
-
+        return $this->reservation->updateAdmin($reservation_id, $name, $email, $reservation_date, $reservation_time, $reservation_type, $number_of_people, $status);
     }
 
     /**
@@ -69,11 +66,10 @@ class ReservationService
     public function deleteReservation($reservation_id): bool
     {
         if (!$this->reservation->getByID($reservation_id)) {
-            throw new Exception('Reservation non trouvee');
+            throw new Exception('Réservation non trouvée');
         }
         return $this->reservation->delete($reservation_id);
     }
-
 
     /**
      * @throws Exception
@@ -82,7 +78,7 @@ class ReservationService
     {
         $result = $this->reservation->getByID($reservation_id);
         if (!$result) {
-            throw new Exception('Reservation non trouvee');
+            throw new Exception('Réservation non trouvée');
         }
         return $result;
     }
@@ -95,18 +91,20 @@ class ReservationService
         $result = $this->reservation->getAll();
 
         if (!$result) {
-            throw new Exception('Reservation pas trouvee');
+            throw new Exception('Aucune réservation trouvée');
         }
         return $result;
     }
 
+    /**
+     * @throws Exception
+     */
     public function getReservationByUser($user_id)
     {
         $result = $this->reservation->getByUserID($user_id);
         if (!$result) {
-            throw new Exception('Réservation pas trouvee');
+            throw new Exception('Réservation non trouvée');
         }
         return $result;
     }
-
 }
