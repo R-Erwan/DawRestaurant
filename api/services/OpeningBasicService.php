@@ -1,6 +1,7 @@
 <?php
 
 namespace services;
+use DateTime;
 use models\OpeningBasic;
 require_once 'models/OpeningBasic.php';
 
@@ -58,6 +59,13 @@ class OpeningBasicService{
         if($nb_places < 0){
             throw new \Exception("Bad number of places, can't be negative");
         }
+
+        $timeStart = DateTime::createFromFormat('H:i', $time_start);
+        $timeEnd = DateTime::createFromFormat('H:i', $time_end);
+        if (!$timeStart || !$timeEnd) {
+            throw new \InvalidArgumentException("Invalid time format for time_start or time_end");
+        }
+
         try {
             return $this->openingBasic->create($id_day,$time_start,$time_end,$nb_places);
         } catch (\PDOException $e) {
@@ -67,7 +75,7 @@ class OpeningBasicService{
             } elseif ($code == '23514') {
                 throw new \Exception("End time must be after start time");
             } else {
-                throw new \Exception("Database Error: " . $e->getMessage());
+                throw new \Exception("Database Error: ");
             }
         }
     }
@@ -79,8 +87,15 @@ class OpeningBasicService{
         if($nb_places < 0){
             throw new \Exception("Number of places must be greater than zero");
         }
+
+        $timeStart = DateTime::createFromFormat('H:i', $time_start);
+        $timeEnd = DateTime::createFromFormat('H:i', $time_end);
+        if (!$timeStart || !$timeEnd) {
+            throw new \InvalidArgumentException("Invalid time format");
+        }
+
         try {
-             $result = $this->openingBasic->update($id_time,$time_start,$time_end,$nb_places);
+             $result = $this->openingBasic->updateByTimeId($id_time,$time_start,$time_end,$nb_places);
              if(!$result){
                  throw new \Exception("No rules found to update");
              }
@@ -92,7 +107,7 @@ class OpeningBasicService{
             } elseif ($code == '23514') {
                 throw new \Exception("End time must be after start time");
             } else {
-                throw new \Exception("Database Error: " . $e->getMessage());
+                throw new \Exception("Database Error");
             }
         }
     }
@@ -108,7 +123,7 @@ class OpeningBasicService{
             }
             return true;
         } catch (\PDOException $e) {
-            throw new \Exception("Database Error: " . $e->getMessage());
+            throw new \Exception("Database Error");
         }
     }
 

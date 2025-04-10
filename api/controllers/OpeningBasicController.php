@@ -39,7 +39,7 @@ class OpeningBasicController{
     public function createOpeningBasicRule($data): void {
         if(!isset($data['id_day']) || !isset($data['time_start']) || !isset($data['time_end']) || !isset($data['nb_places'])){
             http_response_code(400);
-            echo json_encode(['message' => 'Missing information']);
+            echo json_encode(['message' => 'Missing fields']);
             exit;
         }
         try {

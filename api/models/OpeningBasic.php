@@ -1,7 +1,6 @@
 <?php
 
 namespace models;
-
 class OpeningBasic{
     private $pdo;
     public function __construct($pdo) {
@@ -33,11 +32,15 @@ class OpeningBasic{
         return $this->pdo->lastInsertId();
     }
 
-    public function update($id_time,$time_start,$time_end, $nb_places) {
+    public function updateByTimeId($id_time, $time_start, $time_end, $nb_places) {
         $sql = ' UPDATE time_rules SET time_start = ?, time_end = ?, number_places = ? WHERE id = ?';
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute([$time_start,$time_end,$nb_places,$id_time]);
         return $stmt->rowCount();
+    }
+
+    public function updateOpenByDayId(){
+        ; //TODO
     }
 
     public function delete($id_time): bool {

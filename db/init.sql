@@ -54,3 +54,14 @@ CREATE TABLE IF NOT EXISTS exception_rules (
     open BOOLEAN NOT NULL DEFAULT false,
     comment TEXT
 );
+
+CREATE TABLE IF NOT EXISTS exception_time_rules (
+    id SERIAL PRIMARY KEY,
+    id_exc INT NOT NULL REFERENCES exception_rules(id) ON DELETE CASCADE,
+    time_start TIME NOT NULL,
+    time_end TIME NOT NULL,
+    number_of_places INT NOT NULL,
+    CHECK (time_end > time_start),
+    UNIQUE (id_exc, time_start, time_end)
+);
+
