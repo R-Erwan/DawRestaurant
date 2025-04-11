@@ -47,7 +47,6 @@ document.addEventListener("DOMContentLoaded", async function () {
             document.getElementById("guests-error").textContent = "Le nombre de personnes max doit être inférieur à 9.";
             isValid = false;
         }
-
         if (isValid) {
             const id = tokenContent.user_id;
             try {
@@ -58,9 +57,6 @@ document.addEventListener("DOMContentLoaded", async function () {
                     time: time,
                     guests: guests,
                 };
-
-                console.log(reservationData);
-
                 const response = await fetch("/api/reservation?action=createReservation", {
                     method: 'POST',
                     headers: {
@@ -72,11 +68,12 @@ document.addEventListener("DOMContentLoaded", async function () {
 
                 if (response.ok) {
                     document.getElementById("reservation-status").textContent = `Réservation réussie`;
+                    window.location.href = 'client.php'
 
                 } else {
                     document.getElementById("reservation-status").textContent = "La réservation a échoué. Veuillez réessayer.";
                 }
-                window.location.href = 'client.php'
+
             } catch (error) {
                 console.error('Erreur lors du décodage du token ou de l\'envoi de la réservation:', error);
                 document.getElementById("reservation-status").textContent = "Une erreur est survenue, veuillez réessayer.";

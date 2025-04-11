@@ -24,19 +24,31 @@ class ReservationService
     /**
      * @throws Exception
      */
-    public function createReservation($user_id, $email, $reservation_date, $reservation_time, $number_of_people): void
+    public function createReservation($user_id, $email, $reservation_date, $reservation_time, $number_of_people): bool
     {
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            throw new Exception('Format de l\'email invalide');
-        }
-
         if ($number_of_people >= 9) {
-            throw new Exception('Le nombre d\'invites est trop élevé');
+            throw new Exception('Le nombre d\'invités est trop élevé');
         }
 
-        $tmp = $this->user->findById($user_id);
-        $name = $tmp['name'];
-        $this->reservation->create($user_id, $name, $email, $reservation_date, $reservation_time, $number_of_people);
+        $user = $this->user->findById($user_id);
+
+        if (!$user) {
+            throw new Exception('Utilisateur introuvable');
+        }
+
+        if ($email !== $user['email']) {
+            throw new Exception('L\'email n\'est pas valide');
+
+        }
+
+         return $this->reservation->create(
+            $user_id,
+            $user['name'],
+            $email,
+            $reservation_date,
+            $reservation_time,
+            $number_of_people
+        );
     }
 
     /**
@@ -105,7 +117,7 @@ class ReservationService
     /**
      * @throws Exception
      */
-    public function getReservationByUser($user_id)
+    public function getReservationByUser($user_id): array
     {
         $result = $this->reservation->getByUserID($user_id);
         if (!$result) {

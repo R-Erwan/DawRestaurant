@@ -28,13 +28,17 @@ class ReservationController
             $time = $data["time"];
             $guests = $data["guests"];
             $this->reservationService->createReservation($user_id, $email, $date, $time, $guests);
-            echo json_encode(['message' => 'Reservation creee avec succes']);
+
+            echo json_encode(['message' => 'Réservation créée avec succès']);
         } catch (Exception $e) {
             http_response_code(500);
-            echo json_encode(['message' => 'Erreur lors de la creation de la reservation', 'error' => $e->getMessage()]);
+            echo json_encode([
+                'message' => 'Erreur lors de la création de la réservation',
+                'error' => $e->getMessage()
+            ]);
+            exit;
         }
     }
-
     private function validateData($data, $requiredFields): void
     {
         foreach ($requiredFields as $field) {
