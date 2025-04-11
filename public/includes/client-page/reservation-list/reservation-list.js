@@ -9,7 +9,7 @@ async function fetchReservation() {
     const token = parseJwt(jwt);
     const user_id = token.user_id;
     try {
-        const response = await fetch(`http://localhost:8000/reservation?action=AllbyUser&id=${user_id}`, {
+        const response = await fetch(`/api/reservation?action=User&id=${user_id}`, {
             headers: {
                 Authorization: `Bearer ${jwt}`,
                 'Content-Type': 'application/json',
@@ -31,7 +31,7 @@ async function fetchReservation() {
 const tabsAll = document.querySelector('#tabs-all');
 const tabsConfirmed = document.querySelector('#tabs-confirmed');
 const tabsWaiting = document.querySelector('#tabs-waiting');
-const tabsCanceled = document.querySelector('#tabs-canceled');
+const tabsCanceled = document.querySelector('#tabs-cancelled');
 const tableContent = document.querySelector('#table-content');
 
 
@@ -56,7 +56,7 @@ async function displayReservations(state = 'all', type = 'current') {
 
     // Filter based on the type (current or history)
     filteredData = filteredData.filter(item => {
-        const reservationDate = new Date(item.reservation_date+ ' ' + item.reservation_time);
+        const reservationDate = new Date(item.reservation_date + ' ' + item.reservation_time);
         if (type === 'current') {
             return reservationDate > currentDate;
         } else if (type === 'history') {
@@ -107,7 +107,7 @@ tabsWaiting.addEventListener('click', () => {
 tabsCanceled.addEventListener('click', () => {
     setActiveTab(tabsCanceled);
     const type = getUrlParamType();
-    displayReservations('canceled', type);
+    displayReservations('cancelled', type);
 });
 
 // Helper function to set active tab

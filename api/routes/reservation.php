@@ -22,7 +22,7 @@
         case 'GET':
             if ($_GET['action'] === 'All') {
                 $reservationController->getAllReservations();
-            } elseif ($_GET['action'] === 'AllbyUser')
+            } elseif ($_GET['action'] === 'User')
             {
                 $reservationController->getReservationByUser($_GET['id']);
             }

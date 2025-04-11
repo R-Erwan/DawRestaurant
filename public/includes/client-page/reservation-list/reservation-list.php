@@ -2,7 +2,7 @@
     <button class="tabs-button tabs-selected" id="tabs-all">Tous</button>
     <button class="tabs-button" id="tabs-confirmed">Confirmé</button>
     <button class="tabs-button" id="tabs-waiting">En attente</button>
-    <button class="tabs-button" id="tabs-canceled">Annulé</button>
+    <button class="tabs-button" id="tabs-cancelled">Annulé</button>
 </div>
 <div class="selector-bars"></div>
 <div class="tabs-content">

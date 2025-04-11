@@ -61,7 +61,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
                 console.log(reservationData);
 
-                const response = await fetch("http://localhost:8000/reservation?action=createReservation", {
+                const response = await fetch("/api/reservation?action=createReservation", {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -76,6 +76,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 } else {
                     document.getElementById("reservation-status").textContent = "La réservation a échoué. Veuillez réessayer.";
                 }
+
             } catch (error) {
                 console.error('Erreur lors du décodage du token ou de l\'envoi de la réservation:', error);
                 document.getElementById("reservation-status").textContent = "Une erreur est survenue, veuillez réessayer.";

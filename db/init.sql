@@ -20,8 +20,9 @@ CREATE TABLE IF NOT EXISTS user_roles (
     user_id INT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     role_id INT NOT NULL REFERENCES roles(id) ON DELETE CASCADE,
     PRIMARY KEY (user_id, role_id)
-    );
+);
 
+-- Table des annonces
 CREATE TABLE IF NOT EXISTS announces (
     id SERIAL PRIMARY KEY,
     type INT NOT NULL,
@@ -32,3 +33,16 @@ CREATE TABLE IF NOT EXISTS announces (
     created_at TIMESTAMP DEFAULT NOW()
 );
 
+-- Table des réservations
+CREATE TABLE IF NOT EXISTS reservations
+(
+    id SERIAL PRIMARY KEY,
+    user_id INT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    reservation_date DATE NOT NULL,
+    reservation_time VARCHAR(255) NOT NULL,
+    number_of_people INT NOT NULL,
+    status VARCHAR(255) DEFAULT 'waiting' CHECK (status IN ('waiting', 'confirmed', 'cancelled')),
+    created_at TIMESTAMP DEFAULT NOW()
+);

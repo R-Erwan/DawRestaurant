@@ -45,3 +45,32 @@ VALUES (2,
         NULL,
         '/resources/static/food3.jpg'
        );
+
+
+
+INSERT INTO reservations (user_id, name, email, reservation_date, reservation_time, number_of_people, status)
+VALUES
+    (1, 'admin', 'admin@leresto.com', '2025-04-15', '19:00', 2, 'confirmed'),
+    (1, 'admin', 'admin@leresto.com', '2025-04-17', '20:00', 4, 'waiting'),
+    (1, 'admin', 'admin@leresto.com', '2025-04-20', '18:30', 3, 'cancelled'),
+    (1, 'admin', 'admin@leresto.com', '2025-04-23', '21:00', 5, 'confirmed'),
+    (1, 'admin', 'admin@leresto.com', '2025-04-25', '19:30', 2, 'waiting'),
+    (1, 'admin', 'admin@leresto.com', '2025-04-28', '20:15', 6, 'confirmed'),
+    (1, 'admin', 'admin@leresto.com', '2025-05-01', '18:00', 2, 'waiting'),
+    (1, 'admin', 'admin@leresto.com', '2025-05-03', '19:45', 4, 'confirmed'),
+    (1, 'admin', 'admin@leresto.com', '2025-05-06', '20:30', 1, 'waiting'),
+    (1, 'admin', 'admin@leresto.com', '2025-05-10', '21:00', 2, 'cancelled');
+
+
+INSERT INTO reservations (user_id, name, email, reservation_date, reservation_time, number_of_people, status)
+VALUES
+    (2, 'nobody', 'nobody@leresto.com', '2025-04-16', '19:00', 2, 'waiting'),
+    (2, 'nobody', 'nobody@leresto.com', '2025-04-18', '20:15', 3, 'confirmed'),
+    (2, 'nobody', 'nobody@leresto.com', '2025-04-21', '18:45', 2, 'cancelled'),
+    (2, 'nobody', 'nobody@leresto.com', '2025-04-24', '19:30', 5, 'confirmed'),
+    (2, 'nobody', 'nobody@leresto.com', '2025-04-27', '20:00', 4, 'waiting'),
+    (2, 'nobody', 'nobody@leresto.com', '2025-04-30', '21:00', 6, 'confirmed'),
+    (2, 'nobody', 'nobody@leresto.com', '2025-05-02', '18:30', 1, 'waiting'),
+    (2, 'nobody', 'nobody@leresto.com', '2025-05-04', '20:45', 2, 'confirmed'),
+    (2, 'nobody', 'nobody@leresto.com', '2025-05-07', '19:15', 3, 'cancelled'),
+    (2, 'nobody', 'nobody@leresto.com', '2025-05-09', '20:00', 2, 'confirmed');
