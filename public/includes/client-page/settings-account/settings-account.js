@@ -32,7 +32,7 @@ async function formContactSubmit(e) {
     const jwt = localStorage.getItem("jwt");
     const id = parseJwt(jwt).user_id;
 
-    const response = await fetch(`http://localhost:8000/user?id=${id}`, {
+    const response = await fetch(`/api/user?id=${id}`, {
         method: "PUT",
         headers: {
             'Content-Type': 'application/json',
@@ -70,7 +70,7 @@ async function formPasswordSubmit(e, data) {
         return;
     }
 
-    const response = await fetch(`http://localhost:8000/user?id=${id}`, {
+    const response = await fetch(`/api/user?id=${id}`, {
         method: "PUT",
         headers: {
             'Content-Type': 'application/json',

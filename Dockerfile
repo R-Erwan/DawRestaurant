@@ -11,7 +11,7 @@ RUN docker-php-ext-install pdo pdo_pgsql
 #    apt-get install -y nodejs
 
 # Copier le fichier de configuration Apache
-COPY ./config/000-default.conf /etc/apache2/sites-available/000-default.conf
+COPY ./config/000-defaultFront.conf /etc/apache2/sites-available/000-default.conf
 
 # Copier le code du front-end
 COPY ./public /var/www/html/
@@ -23,9 +23,8 @@ WORKDIR /var/www/html
 #RUN npm install
 
 # Activer les modules Apache nécessaires
+RUN a2enmod proxy proxy_http
 RUN a2enmod rewrite
 
 # Exposer le port 80 pour le serveur Apache
 EXPOSE 80
-
-# Test

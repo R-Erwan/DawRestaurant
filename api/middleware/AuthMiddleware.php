@@ -30,4 +30,34 @@ class AuthMiddleware
             exit;
         }
     }
+
+    public static function verifyAdminAcces() {
+        $authUser = self::verifyToken();
+        if (!isset($authUser['roles']) || !in_array('admin', $authUser['roles'])) {
+            http_response_code(403);
+            echo json_encode(["message" => "Access denied. Admin role required."]);
+            exit;
+        }
+        return $authUser;
+    }
+
+    public static function verifyAdminAccesWithoutExit() {
+        $authUser = self::verifyToken();
+        if (!isset($authUser['roles']) || !in_array('admin', $authUser['roles'])) {
+           return false;
+        }
+        return $authUser;
+    }
+
+    public static function verifyUserAccess($requestedUserId) {
+        $authUser = self::verifyToken();
+        if($authUser['user_id'] !== $requestedUserId) {
+            http_response_code(403);
+            echo json_encode(["message" => "Unauthorized"]);
+            exit;
+        }
+        return $authUser;
+
+    }
+
 }

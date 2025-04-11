@@ -1,4 +1,5 @@
-<?php include_once "includes/popup/popup.php" ?>
+<?php include_once "includes/popup/popup.php"?>
+<link rel="stylesheet" href="includes/client-page/settings-account/settings-account.css">
 <div class="account-container">
     <div class="account-details">
         <h2>Informations de contact</h2>

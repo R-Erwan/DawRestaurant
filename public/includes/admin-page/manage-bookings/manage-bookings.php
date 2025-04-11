@@ -1,0 +1,1 @@
+<link rel="stylesheet" href="includes/admin-page/manage-bookings/manage-bookings.css">
