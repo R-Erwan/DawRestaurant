@@ -62,12 +62,31 @@ class OpeningBasicService{
 
         $timeStart = DateTime::createFromFormat('H:i', $time_start);
         $timeEnd = DateTime::createFromFormat('H:i', $time_end);
-        if (!$timeStart || !$timeEnd) {
-            throw new \InvalidArgumentException("Invalid time format for time_start or time_end");
+
+        $minHour = new DateTime('08:00'); //Min
+        $maxHour = new DateTime('24:00'); //Max
+
+        if ($timeStart < $minHour || $timeEnd > $maxHour) {
+            throw new \InvalidArgumentException("Hours must be between 08:00 and 24:00");
+        }
+
+        if (!$timeStart || !$timeEnd || $timeStart >= $timeEnd) {
+            throw new \InvalidArgumentException("Invalid or inconsistent time format");
+        }
+
+        // Vérifie les conflits d'intervalles
+        $timesActual = $this->openingBasic->getRangesById($id_day);
+        foreach ($timesActual as $range) {
+            $existingStart = DateTime::createFromFormat('H:i:s', $range['time_start']);
+            $existingEnd = DateTime::createFromFormat('H:i:s', $range['time_end']);
+
+            if ($timeStart < $existingEnd && $existingStart < $timeEnd) {
+                throw new \Exception("Time range conflicts with an existing range");
+            }
         }
 
         try {
-            return $this->openingBasic->create($id_day,$time_start,$time_end,$nb_places);
+            return $this->openingBasic->create($id_day, $time_start, $time_end, $nb_places);
         } catch (\PDOException $e) {
             $code = $e->getCode();
             if($code == '23505'){
@@ -75,10 +94,11 @@ class OpeningBasicService{
             } elseif ($code == '23514') {
                 throw new \Exception("End time must be after start time");
             } else {
-                throw new \Exception("Database Error: ");
+                throw new \Exception("Database Error: " . $e->getMessage());
             }
         }
     }
+
 
     /**
      * @throws \Exception

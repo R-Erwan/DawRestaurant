@@ -1,10 +1,10 @@
 import {showBanner} from "../../popup/popup";
 import {convertTimeValue, convertToFloatTime} from "../../../js/utils";
 const weekDays = ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"];
-
+const nbTimes = 8
 function displayCalendarTimes(){
     const times = document.querySelector(".calendar-times");
-    for (let i = 0; i < 24; i++) {
+    for (let i = nbTimes; i <= 24; i++) {
         if(i%2 === 0){
             times.innerHTML += `<span class="times-item">${i}:00</span>`;
         } else {
@@ -25,9 +25,9 @@ function displayEvent(data){
         event.setAttribute('oid',item.id);
         const timeStart = parseInt(item.time_start.split(":")[0]) + 1;
         const timeEnd = parseInt(item.time_end.split(":")[0]) + 1;
-        event.style.gridRowStart = `${timeStart}`;
-        event.style.gridRowEnd= `${timeEnd}`;
-        event.innerHTML = `<p class="nb-places">Limite : ${item.number_places}</p>`
+        event.style.gridRowStart = `${timeStart - nbTimes}`;
+        event.style.gridRowEnd= `${timeEnd - nbTimes}`;
+        event.innerHTML = `<p class="nb-places">${item.number_places}</p>`
         calItem.appendChild(event);
     })
 }
@@ -40,6 +40,7 @@ function displayTimesSelect(select,startTime){
         select.innerHTML += `<option value="${i}">${i}:00</option>`;
         select.innerHTML += `<option value="${i}.5">${i}:30</option>`;
     }
+    select.innerHTML += `<option value="24">24:00</option>`;
 }
 
 function displayModal(wid,data,oid){
@@ -57,7 +58,7 @@ function displayModal(wid,data,oid){
     modalTitle.innerHTML = weekDays[wid-1];
 
     // Creation des horaires
-    displayTimesSelect(timeStart,0);
+    displayTimesSelect(timeStart,nbTimes);
     timeStart.addEventListener('change', ()=>{
         timeEnd.classList.remove('hidden');
         const value = timeStart.value;
@@ -78,7 +79,7 @@ function displayModal(wid,data,oid){
     if(oid){
         deleteBtn.classList.remove('hidden');
 
-        displayTimesSelect(timeStart,0);
+        displayTimesSelect(timeStart,nbTimes);
         timeStart.value = convertToFloatTime(dataOid.time_start);
 
         displayTimesSelect(timeEnd,timeStart.value);

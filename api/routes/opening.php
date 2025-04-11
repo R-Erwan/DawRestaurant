@@ -32,6 +32,10 @@ switch (true) {
             $openingBasicController->getAllOpeningsBasic();
             exit;
         }
+
+        /* MiddleWare Auth*/
+        $authUser = AuthMiddleware::verifyAdminAcces();
+
         // POST /api/opening/basic
         if($_SERVER['REQUEST_METHOD'] == 'POST') {
             $input = json_decode(file_get_contents('php://input'), true);
@@ -67,6 +71,9 @@ switch (true) {
             $openingExceptionController->getAllFuturOpeningsExceptions();
             exit;
         }
+
+        /* MiddleWare Auth*/
+        $authUser = AuthMiddleware::verifyAdminAcces();
 
         // POST /api/opening/exception
         if($_SERVER['REQUEST_METHOD'] == 'POST') {

@@ -8,8 +8,6 @@ require_once 'middleware/AuthMiddleware.php';
 
 $announceController = new AnnounceController($pdo);
 
-
-
 /* Routes */
 if($_SERVER['REQUEST_METHOD'] == 'GET') {
     $announceController->getAllAnnouces();
