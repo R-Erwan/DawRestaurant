@@ -43,7 +43,7 @@ class Reservation
         $stmt = $this->pdo->prepare($sql);
         $stmt->bindParam(':id', $id);
         $stmt->execute();
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+        return $stmt->fetchall(PDO::FETCH_ASSOC);
     }
 
     public function getByUserID($user_id)
@@ -52,7 +52,7 @@ class Reservation
         $stmt = $this->pdo->prepare($sql);
         $stmt->bindParam(':user_id', $user_id);
         $stmt->execute();
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+        return $stmt->fetchall(PDO::FETCH_ASSOC);
     }
 
     public function update($id, $reservation_date, $reservation_time, $number_of_people): bool

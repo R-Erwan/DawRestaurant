@@ -35,26 +35,8 @@ CREATE TABLE IF NOT EXISTS reservations
     reservation_date DATE NOT NULL,
     reservation_time VARCHAR(255) NOT NULL,
     number_of_people INT NOT NULL,
-    status VARCHAR(255) DEFAULT 'waiting',
+    status VARCHAR(255) DEFAULT 'waiting' CHECK (status IN ('waiting', 'confirmed', 'cancelled')),
     created_at TIMESTAMP DEFAULT NOW()
 );
 
 
--- Table des plats
-CREATE TABLE IF NOT EXISTS dishes
-(
-    dish_id SERIAL PRIMARY KEY,
-    dish_name VARCHAR(255) NOT NULL,
-    description VARCHAR(255),
-    price DECIMAl(10,2) NOT NULL,
-    type VARCHAR(255) NOT NULL
-);
-
-
--- Table des catégories de plats
-CREATE TABLE IF NOT EXISTS dish_categories
-(
-    category_id SERIAL PRIMARY KEY,
-    dish_id INT NOT NULL REFERENCES dishes(dish_id) ON DELETE CASCADE,
-    category VARCHAR(255) NOT NULL
-);
