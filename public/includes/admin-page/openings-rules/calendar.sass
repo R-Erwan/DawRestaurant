@@ -1,0 +1,83 @@
+@use "../../../css/const"
+@use "../../../css/reset"
+
+$fc-button-bg-color: #86B971
+
+.cal-exc-title
+  margin: 2em 0
+
+.calendarExc-container
+  display: flex
+  flex-direction: row
+  justify-content: space-between
+
+.calendarExc
+  width: 45%
+
+.calendarExc-form
+  width: 50%
+  border-radius: 10px
+
+.date-info
+  .date-title
+    font-size: 2em
+
+.date-form
+  display: flex
+  flex-direction: column
+
+.sub-form
+  display: flex
+  flex-direction: column
+  width: 50%
+
+/* SWITCH */
+.switch 
+  font-size: 0.4em
+  position: relative
+  display: inline-block
+  width: 3.7em
+  height: 1.8em
+
+.switch input 
+  display: none
+  opacity: 0
+  width: 0
+  height: 0
+
+.slider 
+  position: absolute
+  cursor: pointer
+  top: 0
+  left: 0
+  right: 0
+  bottom: 0
+  background-color: #454545
+  transition: .2s
+  border-radius: 30px
+
+.slider:before 
+  position: absolute
+  content: ""
+  height: 1.4em
+  width: 1.4em
+  border-radius: 20px
+  left: 0.2em
+  bottom: 0.2em
+  background-color: #7a7a7a
+  transition: .4s
+
+input:checked + .slider::before 
+  background-color: const.$primary-color-light
+
+input:checked + .slider 
+  background-color: const.$primary-color
+
+input:focus + .slider 
+  box-shadow: 0 0 1px const.$primary-color
+
+input:checked + .slider:before 
+  transform: translateX(1.9em)
+
+
+

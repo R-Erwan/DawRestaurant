@@ -66,6 +66,7 @@
             </div>
         </div>
     </div>
+    <?php include_once "includes/admin-page/openings-rules/calendar.php"?>
 </div>
 
 <div class="modal-container">
