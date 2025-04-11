@@ -76,7 +76,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 } else {
                     document.getElementById("reservation-status").textContent = "La réservation a échoué. Veuillez réessayer.";
                 }
-
+                window.location.href = 'client.php'
             } catch (error) {
                 console.error('Erreur lors du décodage du token ou de l\'envoi de la réservation:', error);
                 document.getElementById("reservation-status").textContent = "Une erreur est survenue, veuillez réessayer.";
