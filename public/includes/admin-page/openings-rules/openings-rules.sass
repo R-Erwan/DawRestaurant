@@ -25,7 +25,10 @@ $timeHeight: 3vh
   grid-template-rows: repeat($nbTimes, $timeHeight)
   border-radius: 5px
   background-color: const.$primary-color-light
-
+  cursor: pointer
+  transition: filter .3s ease
+  &:hover
+    filter: brightness(93%)
 
 .calendar-item-title
   height: $timeHeight * 1.2
@@ -54,9 +57,92 @@ $timeHeight: 3vh
   background-color: const.$secondary-color
   grid-row-start: 4
   grid-row-end: 22
+  opacity: 0.5
   p
     color : white
     font-size: 1.25em
   &:hover
     transform: none
+
+.hidden
+  display: none
+/* MODAL */
+
+.modal-container
+  display: none
+  position: fixed
+  z-index: 1
+  left: 0
+  top: 0
+  width: 100%
+  height: 100%
+  overflow: auto
+  background-color: rgba(0,0,0,0.1)
+
+.modal-content
+  display: flex
+  flex-direction: column
+  align-items: flex-start
+  background-color: #fefefe
+  margin: 5% auto
+  border-radius: 5px
+  width: 30%
+  height: 70vh
+  box-shadow:  0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19)
+  animation-name: animatetop
+  animation-duration: 0.5s
+  select, button
+    width: 25%
+    margin: 20px auto
+    cursor: pointer
+    border : none
+    border-bottom: 1px solid gray
+  select, input
+    padding: 5px
+  button
+    border: none
+    padding: 10px
+    color: #FFFFFF
+    background-color: const.$primary-color
+    border-radius: 10px
+    transition: all .2s ease
+    &:hover
+      filter: brightness(110%)
+
+
+.modal-header
+  background-color: const.$secondary-color
+  width: 100%
+  border-top-left-radius: 5px
+  border-top-right-radius: 5px
+  padding: 15px 10px
+
+.modal-title
+  font-size: 1.25em
+  font-weight: 500
+  text-align: center
+  color: white
+
+.nb-places
+  margin: 20px auto
+  input
+    cursor: pointer
+    border : none
+    border-bottom: 1px solid gray
+  i
+    transform: translateX(-20px)
+    color: #333333
+    font-size: 1.25em
+
+#modal-delete
+  background-color: const.$secondary-color-dark
+
+@keyframes animatetop
+  from
+    top: -300px
+    opacity: 0
+  to
+    top: 0
+    opacity: 1
+
 

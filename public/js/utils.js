@@ -48,3 +48,15 @@ export async function fetchUserData() {
         console.error(e);
     }
 }
+
+export function convertTimeValue(value) {
+    const floatVal = parseFloat(value);
+    const hours = Math.floor(floatVal);
+    const minutes = (floatVal % 1 === 0.5) ? '30' : '00';
+    return `${hours}:${minutes}`;
+}
+
+export function convertToFloatTime(timeStr) {
+    const [hours, minutes] = timeStr.split(':').map(Number);
+    return hours + (minutes === 30 ? 0.5 : 0);
+}
