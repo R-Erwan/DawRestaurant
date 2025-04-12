@@ -45,7 +45,32 @@ VALUES (2,
         NULL,
         '/resources/static/food3.jpg'
        );
+-- Rules
+-- Days
+INSERT INTO days_rules(name, open) VALUES
+    ('lundi', false),('mardi',false),('mercredi',true),
+    ('jeudi',true),('vendredi',true),('samedi',true),('dimanche',true);
+-- Time rules
+INSERT INTO time_rules(id_days, time_start, time_end, number_places) VALUES
+     (3, '12:00', '14:00', 30),
+     (3, '19:00', '22:00', 40),
+     (4, '12:00', '14:00', 30),
+     (4, '19:00', '22:00', 40),
+     (5, '12:00', '14:00', 30),
+     (5, '19:00', '22:00', 40),
+     (6, '12:00', '14:30', 35),
+     (6, '19:00', '23:00', 50),
+     (7, '12:00', '15:00', 25);
 
+-- Exceptions rules Test
+INSERT INTO exception_rules(date,open,comment) VALUES
+    ('2025-04-16',false,'Vacance'),
+    ('2025-04-14',true,'Concert');
+
+INSERT INTO exception_time_rules(id_exc,time_start,time_end,number_of_places) VALUES
+    (1,'00:00:00','23:59:59',0),
+    (2,'12:00:00','15:00:00',100),
+    (2,'18:00:00','21:30:00',150)
 
 
 INSERT INTO reservations (user_id, name, email, reservation_date, reservation_time, number_of_people, status)

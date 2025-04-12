@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="includes/home-page/home-page.css">
 <main>
 <div class="carousel-container">
     <div class="carousel-slides">

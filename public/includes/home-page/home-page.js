@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         } else if (annonce.type === 2){
             const an = document.createElement('div')
             an.classList.add('announce-img','announce');
-            an.innerHTML = `<img src="${annonce.image_url}" alt="Un cuisinier">`
+            an.innerHTML = `<img src="${annonce.image_url}" loading="lazy" alt="Un cuisinier">`
             container.appendChild(an);
         }
     })

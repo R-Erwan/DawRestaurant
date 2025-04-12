@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="includes/reservation-page/reservation-page.css">
 <main>
     <div class="container">
         <h1>Réservation</h1>

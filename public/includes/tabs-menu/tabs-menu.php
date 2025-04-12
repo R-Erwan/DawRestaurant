@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="includes/tabs-menu/tabs-menu.css">
 <div class="menu-container">
     <div class="tabs-menu">
         <button class="tabs-button tabs-selected" id="tabs-starters"><i class="fa-solid fa-bowl-food"></i>Entrée

@@ -19,7 +19,7 @@
                 <div class="nav-item <?php echo ($type == 'manageBookings') ? "active-nav" : "" ?>"><a href="client.php?type=manageBookings">Gérer les réservations</a></div>
                 <div class="nav-item <?php echo ($type == 'manageHomePage') ? "active-nav" : "" ?>"><a href="client.php?type=manageHomePage">Gérer les annonces</a></div>
                 <div class="nav-item <?php echo ($type == 'manageFoods') ? "active-nav" : "" ?>"><a href="client.php?type=manageFoods">Gérer les plats</a></div>
-                <div class="nav-item <?php echo ($type == 'manageSchedule') ? "active-nav" : "" ?>"><a href="client.php?type=manageSchedule">Emplois du temps</a></div>
+                <div class="nav-item <?php echo ($type == 'manageSchedule') ? "active-nav" : "" ?>"><a href="client.php?type=manageSchedule">Règles d'ouvertures</a></div>
             </div>
             <div class="nav-container">
                 <div class="nav-cat">Réservations</div>
@@ -64,6 +64,8 @@
                 include_once "includes/client-page/settings-account/settings-account.php";
             } else if($type =='manageHomePage') {
                 include_once "includes/admin-page/manage-site/manage-site.php";
+            } else if($type =='manageSchedule') {
+                include_once "includes/admin-page/openings-rules/openings-rules.php";
             } else echo "Not developed";
             ?>
         </div>

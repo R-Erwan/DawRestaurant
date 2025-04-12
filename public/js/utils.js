@@ -48,3 +48,52 @@ export async function fetchUserData() {
         console.error(e);
     }
 }
+
+export function convertTimeValue(value) {
+    const floatVal = parseFloat(value);
+    const hours = Math.floor(floatVal);
+    const minutes = (floatVal % 1 === 0.5) ? '30' : '00';
+    return `${hours}:${minutes}`;
+}
+
+export function convertToFloatTime(timeStr) {
+    const [hours, minutes] = timeStr.split(':').map(Number);
+    return hours + (minutes === 30 ? 0.5 : 0);
+}
+
+export function displayTimesSelect(select,startTime){
+    let msg = startTime === 8 ? "Heure de début" : "Heure de fin";
+    startTime = parseInt(startTime);
+    select.innerHTML = `<option value='' disabled selected>${msg}</option>`
+    for (let i = startTime; i < 24; i++) {
+        select.innerHTML += `<option value="${i}">${i}:00</option>`;
+        select.innerHTML += `<option value="${i}.5">${i}:30</option>`;
+    }
+    select.innerHTML += `<option value="24">24:00</option>`;
+}
+
+export function isOverlapping(times) {
+    // Convertit une heure "HH:MM" en minutes
+    function toMinutes(str) {
+        const [h, m] = str.split(":").map(Number);
+        return h * 60 + m;
+    }
+
+    // Transforme les horaires en objets avec les temps en minutes
+    const intervals = times.map(t => ({
+        start: toMinutes(t.time_start),
+        end: toMinutes(t.time_end)
+    }));
+
+    // Trie les intervalles par heure de début
+    intervals.sort((a, b) => a.start - b.start);
+
+    // Vérifie s'il y a un chevauchement entre deux intervalles consécutifs
+    for (let i = 0; i < intervals.length - 1; i++) {
+        if (intervals[i].end > intervals[i + 1].start) {
+            return true; // chevauchement détecté
+        }
+    }
+
+    return false; // aucun chevauchement
+}

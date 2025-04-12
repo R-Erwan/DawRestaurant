@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="includes/footer/footer.css"/>
 <footer>
     <div class="footer-container">
         <div class="footer-contact">

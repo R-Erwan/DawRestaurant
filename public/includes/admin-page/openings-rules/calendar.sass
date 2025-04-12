@@ -1,0 +1,138 @@
+@use "../../../css/const"
+@use "../../../css/reset"
+
+$fc-button-bg-color: #86B971
+
+.cal-exc-explanation
+  margin-bottom: 1em
+
+.calendarExc-container
+  display: flex
+  flex-direction: row
+  justify-content: space-between
+
+.calendarExc
+  width: 45%
+
+.calendarExc-form
+  width: 50%
+  border-radius: 10px
+  padding: 2em
+  background-color: #fff
+
+.date-info
+  .date-title
+    font-size: 2em
+
+.date-form
+  display: flex
+  flex-direction: column
+
+.sub-form
+  display: flex
+  flex-direction: row
+  justify-content: space-between
+  width: 100%
+  margin: 1em 0
+
+.time-select
+  border : none
+  border-radius: 5px
+  padding: 5px
+
+#calexc-comment
+  margin: 1em 0
+  border: none
+  border-radius: 5px
+  padding: 10px
+  background-color: #fbfbfb
+  resize: none
+
+#calExc-nb-places
+  border: none
+  border-radius: 5px
+  padding: 5px
+
+.add-rule
+  padding: 0 0.4em
+  border-radius: 10px
+  font-size: 1.5em
+  margin: 0 auto
+  background-color: const.$secondary-color
+  border: 2px solid transparent
+  color: white
+  cursor: pointer
+  transition: all .3s ease
+  &:hover
+    background-color: #fff
+    border: 2px solid const.$secondary-color
+    color: const.$secondary-color
+
+.calexc-btn
+  margin: 1em auto
+  width: 40%
+  border: none
+  padding: 10px
+  color: #FFFFFF
+  background-color: const.$primary-color
+  border-radius: 10px
+  cursor: pointer
+  transition: all .2s ease
+  &:hover
+    filter: brightness(110%)
+    transform: scale(1.05)
+
+#calexc-delete
+  background-color: #8c1111
+
+
+/* SWITCH */
+.switch 
+  font-size: 0.4em
+  position: relative
+  display: inline-block
+  width: 3.7em
+  height: 1.8em
+
+.switch input 
+  display: none
+  opacity: 0
+  width: 0
+  height: 0
+
+.slider 
+  position: absolute
+  cursor: pointer
+  top: 0
+  left: 0
+  right: 0
+  bottom: 0
+  background-color: #454545
+  transition: .2s
+  border-radius: 30px
+
+.slider:before 
+  position: absolute
+  content: ""
+  height: 1.4em
+  width: 1.4em
+  border-radius: 20px
+  left: 0.2em
+  bottom: 0.2em
+  background-color: #7a7a7a
+  transition: .4s
+
+input:checked + .slider::before 
+  background-color: const.$primary-color-light
+
+input:checked + .slider 
+  background-color: const.$primary-color
+
+input:focus + .slider 
+  box-shadow: 0 0 1px const.$primary-color
+
+input:checked + .slider:before 
+  transform: translateX(1.9em)
+
+
+
