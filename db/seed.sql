@@ -70,7 +70,7 @@ INSERT INTO exception_rules(date,open,comment) VALUES
 INSERT INTO exception_time_rules(id_exc,time_start,time_end,number_of_places) VALUES
     (1,'00:00:00','23:59:59',0),
     (2,'12:00:00','15:00:00',100),
-    (2,'18:00:00','21:30:00',150)
+    (2,'18:00:00','21:30:00',150);
 
 
 INSERT INTO reservations (user_id, name, email, reservation_date, reservation_time, number_of_people, status)
