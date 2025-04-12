@@ -32,7 +32,7 @@
 
         <div class="contact-schedules">
             <h2>Nos horaires</h2>
-            <ul>
+            <ul id="times-opening">
                 <li><span class="contact-day">Lundi</span> 12h - 14h et 19h - 22h</li>
                 <li><span class="contact-day">Mardi</span> 12h - 14h et 19h - 22h</li>
                 <li><span class="contact-day">Mercredi</span> Le jours des enfants</li>
@@ -86,6 +86,7 @@
             width="1200" height="600" style="border:0;" allowfullscreen="" loading="lazy"
             referrerpolicy="no-referrer-when-downgrade"></iframe>
 </div>
+<script type="module" src="/js/contact.js"></script>
 
 <?php include_once "includes/footer/footer.php" ?>
 </body>
