@@ -1,36 +1,31 @@
 <link rel="stylesheet" href="includes/admin-page/openings-rules/calendar.css">
 <h2 class="cal-exc-title">Gérer les évènements exceptionnels </h2>
+<p class="cal-exc-explanation">
+    Les évènements exceptionnels surcharges toutes les autres règles pour une date précise.
+</p>
 
 <div class="calendarExc-container">
     <div class="calendarExc">
 
     </div>
-    <div class="calendarExc-form">
+    <div class="calendarExc-form hidden">
         <div class="date-info">
-            <h3 class="date-title">
-                Vendredi 11
-                <label class="switch">
-                    <input type="checkbox">
+            <h3 class="date-title" >
+                <span id="calexc-date-title" ></span>
+                <label class="switch ">
+                    <input type="checkbox" id="calexc-open" name="calexc-open" class="toggled-input">
                     <span class="slider"></span>
                 </label>
             </h3>
         </div>
         <div class="date-form">
+            <textarea class="toggled-input" name="calexc-comment" id="calexc-comment" cols="50" rows="3" ">Commentaire</textarea>
+            <div class="sub-forms">
 
-            <textarea name="calexc-comment" id="calexc-open" cols="50" rows="7"></textarea>
-            <div class="sub-form">
-                <select name="time-start" id="calExc-time-start" class="">
-                    <option value='' disabled selected>Heure de départ</option>
-                </select>
-                <select name="time-end" id="calExc-time-end" class="">
-                    <option value='' disabled selected>Heure de fin</option>
-                </select>
-                <div class="nb-places">
-                    <i class="fa-solid fa-utensils"></i>
-                    <input type="number" min="1"  id="calExc-nb-places" placeholder="Limite de couverts">
-                </div>
             </div>
-            <button>Ajouter la règle</button>
+            <button class="add-rule">+</button>
+            <button class="calexc-btn" id="calexc-confirm">Confirmer les règles</button>
+            <button class="calexc-btn hidden" id="calexc-delete">Supprimer les règles</button>
 
         </div>
     </div>

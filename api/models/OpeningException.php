@@ -25,7 +25,7 @@ class OpeningException {
         $sql = '
             SELECT * FROM exception_rules er
             JOIN exception_time_rules etr on er.id = etr.id_exc
-            WHERE date > CURRENT_DATE ORDER BY date DESC';
+            WHERE date >= CURRENT_DATE ORDER BY date DESC';
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll();

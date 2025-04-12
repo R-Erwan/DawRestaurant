@@ -3,8 +3,8 @@
 
 $fc-button-bg-color: #86B971
 
-.cal-exc-title
-  margin: 2em 0
+.cal-exc-explanation
+  margin-bottom: 1em
 
 .calendarExc-container
   display: flex
@@ -17,6 +17,8 @@ $fc-button-bg-color: #86B971
 .calendarExc-form
   width: 50%
   border-radius: 10px
+  padding: 2em
+  background-color: #fff
 
 .date-info
   .date-title
@@ -28,8 +30,61 @@ $fc-button-bg-color: #86B971
 
 .sub-form
   display: flex
-  flex-direction: column
-  width: 50%
+  flex-direction: row
+  justify-content: space-between
+  width: 100%
+  margin: 1em 0
+
+.time-select
+  border : none
+  border-radius: 5px
+  padding: 5px
+
+#calexc-comment
+  margin: 1em 0
+  border: none
+  border-radius: 5px
+  padding: 10px
+  background-color: #fbfbfb
+  resize: none
+
+#calExc-nb-places
+  border: none
+  border-radius: 5px
+  padding: 5px
+
+.add-rule
+  padding: 0 0.4em
+  border-radius: 10px
+  font-size: 1.5em
+  margin: 0 auto
+  background-color: const.$secondary-color
+  border: 2px solid transparent
+  color: white
+  cursor: pointer
+  transition: all .3s ease
+  &:hover
+    background-color: #fff
+    border: 2px solid const.$secondary-color
+    color: const.$secondary-color
+
+.calexc-btn
+  margin: 1em auto
+  width: 40%
+  border: none
+  padding: 10px
+  color: #FFFFFF
+  background-color: const.$primary-color
+  border-radius: 10px
+  cursor: pointer
+  transition: all .2s ease
+  &:hover
+    filter: brightness(110%)
+    transform: scale(1.05)
+
+#calexc-delete
+  background-color: #8c1111
+
 
 /* SWITCH */
 .switch 

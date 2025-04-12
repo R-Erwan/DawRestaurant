@@ -21,14 +21,19 @@ class OpeningBasicService{
             throw new \Exception("Date format invalid");
         }
         $dayWeek = date('w', $timestamp);
-        return $this->getById($dayWeek);
+        if($dayWeek == 0){ $dayWeek = 7;}
+        try {
+            return $this->getById($dayWeek);
+        } catch (\Exception $e) {
+            return [];
+        }
     }
 
     /**
      * @throws \Exception
      */
     public function getById($id_day){
-        if($id_day < 0 || $id_day > 6){
+        if($id_day < 1 || $id_day > 7){
             throw new \Exception("Invalid ID day");
         }
         $openingBasic = $this->openingBasic->getById($id_day);

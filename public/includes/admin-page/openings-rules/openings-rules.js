@@ -1,5 +1,5 @@
 import {showBanner} from "../../popup/popup";
-import {convertTimeValue, convertToFloatTime} from "../../../js/utils";
+import {convertTimeValue, convertToFloatTime, displayTimesSelect} from "../../../js/utils";
 const weekDays = ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"];
 const nbTimes = 8
 function displayCalendarTimes(){
@@ -30,17 +30,6 @@ function displayEvent(data){
         event.innerHTML = `<p class="nb-places">${item.number_places}</p>`
         calItem.appendChild(event);
     })
-}
-
-function displayTimesSelect(select,startTime){
-    let msg = startTime === 0 ? "Heure de début" : "Heure de fin";
-    startTime = parseInt(startTime);
-    select.innerHTML = `<option value='' disabled selected>${msg}</option>`
-    for (let i = startTime; i < 24; i++) {
-        select.innerHTML += `<option value="${i}">${i}:00</option>`;
-        select.innerHTML += `<option value="${i}.5">${i}:30</option>`;
-    }
-    select.innerHTML += `<option value="24">24:00</option>`;
 }
 
 function displayModal(wid,data,oid){

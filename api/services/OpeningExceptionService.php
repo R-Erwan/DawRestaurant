@@ -80,12 +80,34 @@ class OpeningExceptionService {
                     throw new \InvalidArgumentException("nb_places must be a positive integer");
                 }
             }
+
+            // Vérification des chevauchements
+            $intervals = array_map(function($time) {
+                return [
+                    'start' => DateTime::createFromFormat('H:i', $time['time_start']),
+                    'end' => DateTime::createFromFormat('H:i', $time['time_end'])
+                ];
+            }, $times);
+
+            // Tri des intervalles par heure de début
+            usort($intervals, function($a, $b) {
+                return $a['start'] <=> $b['start'];
+            });
+
+            // Vérifie s'il y a chevauchement entre intervalles consécutifs
+            for ($i = 0; $i < count($intervals) - 1; $i++) {
+                if ($intervals[$i]['end'] > $intervals[$i + 1]['start']) {
+                    throw new \InvalidArgumentException("Time intervals must not overlap");
+                }
+            }
+
         }
 
         try {
             $strbool = $open ? 'true' : 'false';
             $exc_id = $this->openingException->createExc($date,$strbool,$comment);
             if(!$open){
+                $this->openingException->createExcTimeRule($exc_id,"00:00","23:59",0); // A tester
                 return $exc_id;
             }
             try {
@@ -94,11 +116,11 @@ class OpeningExceptionService {
                 }
             } catch (PDOException $e) {
                 $this->openingException->deleteById($exc_id);
-                throw new \Exception("Database Error");
+                throw new \Exception("Database Error" . $e->getMessage());
             }
             return $exc_id;
         } catch (\PDOException $e) {
-            throw new \Exception("Database Error");
+            throw new \Exception("Database Error" . $e->getMessage());
         }
     }
 
