@@ -102,4 +102,20 @@ class Reservation
         return $stmt->execute();
     }
 
+    public function getNbPeopleByDate($date) {
+        $sql = "SELECT SUM(number_of_people) AS total_personnes
+            FROM reservations
+            WHERE reservation_date = ?
+            AND status IN ('confirmed', 'waiting')";
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([$date]);
+
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        // On retourne 0 si aucune ligne trouvée ou si la somme est NULL
+        return $result['total_personnes'] ?? 0;
+    }
+
+
 }

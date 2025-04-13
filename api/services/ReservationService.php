@@ -2,6 +2,7 @@
 
 namespace services;
 
+use DateTime;
 use Exception;
 use models\Reservation;
 use models\User;
@@ -9,16 +10,19 @@ use PDO;
 
 require_once 'models/Reservation.php';
 require_once 'models/User.php';
+require_once 'ReservationValidator.php';
 
 class ReservationService
 {
     private Reservation $reservation;
     private User $user;
+    private ReservationValidator $reservationValidator;
 
     public function __construct(PDO $pdo)
     {
         $this->reservation = new Reservation($pdo);
         $this->user = new User($pdo);
+        $this->reservationValidator = new ReservationValidator($pdo);
     }
 
     /**
@@ -124,5 +128,16 @@ class ReservationService
             throw new Exception('Réservation non trouvée');
         }
         return $result;
+    }
+
+    /**
+     * @throws \InvalidArgumentException
+     */
+    protected function getNumberOfReservationsByDate($date){
+        $d = DateTime::createFromFormat('Y-m-d', $date);
+        if(!$d || $d->format("Y-m-d") !== $date){
+            throw new \InvalidArgumentException("Invalid date format");
+        }
+        return $this->reservation->getNbPeopleByDate($date);
     }
 }
