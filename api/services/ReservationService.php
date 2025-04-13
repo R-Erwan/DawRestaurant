@@ -45,6 +45,10 @@ class ReservationService
 
         }
 
+        if(!$this->reservationValidator->isValidReservation($reservation_date, $reservation_time, $number_of_people)){
+            throw new Exception('Invalid reservation');
+        }
+
          return $this->reservation->create(
             $user_id,
             $user['name'],
@@ -133,7 +137,7 @@ class ReservationService
     /**
      * @throws \InvalidArgumentException
      */
-    protected function getNumberOfReservationsByDate($date){
+    public function getNumberOfReservationsByDate($date){
         $d = DateTime::createFromFormat('Y-m-d', $date);
         if(!$d || $d->format("Y-m-d") !== $date){
             throw new \InvalidArgumentException("Invalid date format");
