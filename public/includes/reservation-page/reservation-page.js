@@ -51,13 +51,12 @@ document.addEventListener("DOMContentLoaded", async function () {
             const id = tokenContent.user_id;
             try {
                 const reservationData = {
-                    user_id: id,
                     email: email,
                     date: date,
                     time: time,
                     guests: guests,
                 };
-                const response = await fetch("/api/reservation?action=createReservation", {
+                const response = await fetch(`/api/reservation?id=${id}`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

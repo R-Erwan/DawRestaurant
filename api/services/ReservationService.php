@@ -45,11 +45,7 @@ class ReservationService
 
         }
 
-        try {
-            $valid = $this->reservationValidator->isValidReservation($reservation_date, $reservation_time, $number_of_people);
-        } catch (Exception $e){
-            throw new Exception($e->getMessage());
-        }
+        $valid = $this->reservationValidator->isValidReservation($reservation_date, $reservation_time, $number_of_people);
         if(!$valid){
             throw new Exception("Invalid Reservation");
         }
@@ -97,9 +93,6 @@ class ReservationService
      */
     public function deleteReservation($reservation_id): bool
     {
-        if (!$this->reservation->getByID($reservation_id)) {
-            throw new Exception('Réservation non trouvée');
-        }
         return $this->reservation->delete($reservation_id);
     }
 

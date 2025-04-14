@@ -16,23 +16,24 @@ class ReservationController
         $this->reservationService = new ReservationService($pdo);
     }
 
-    public function createReservation($data): void
+    public function createReservation($data,$requestedId): void
     {
-        $requiredFields = ["user_id", "email", "date", "time", "guests"];
+        $requiredFields = ["email", "date", "time", "guests"];
         $this->validateData($data, $requiredFields);
 
         try {
-            $user_id = $data["user_id"];
+            $user_id = $requestedId;
             $email = $data["email"];
             $date = $data["date"];
             $time = $data["time"];
             $guests = $data["guests"];
             $this->reservationService->createReservation($user_id, $email, $date, $time, $guests);
 
-            echo json_encode(['message' => 'Reservation created successfully ']);
+            http_response_code(200);
+            echo json_encode(["message" => 'Reservation created successfully ']);
         } catch (Exception $e) {
             http_response_code(400);
-            echo json_encode(['message' => $e->getMessage()]);
+            echo json_encode(["message" => $e->getMessage()]);
             exit;
         }
     }
@@ -102,13 +103,13 @@ class ReservationController
         }
     }
 
-    public function updateReservation($data): void
+    public function updateReservation($data,$requestedId): void //TODO MIDDLEWARE ISVALIDUPDATE
     {
-        $requiredFields = ["id", "date", "time", "guests"];
+        $requiredFields = ["date", "time", "guests"];
         $this->validateData($data, $requiredFields);
 
         try {
-            $reservation_id = $data["id"];
+            $reservation_id = $requestedId;
             $date = $data["date"];
             $time = $data["time"];
             $guests = $data["guests"];

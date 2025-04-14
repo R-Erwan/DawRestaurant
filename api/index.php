@@ -5,6 +5,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit;
 }
 
+//Pour la production, cela évite tous les messages d'erreur que l'on veut surtout pas envoyer aux clients
+//error_reporting(E_ALL & ~E_WARNING & ~E_NOTICE);
+
 require_once __DIR__ . '/vendor/autoload.php';
 require_once 'config/config.php';
 require_once 'config/db.php';
@@ -31,13 +34,14 @@ switch (true) {
         require_once 'routes/announce.php';
         break;
 
+    case $path === 'reservation':
+        require_once 'routes/reservation.php';
+        break;
+
     case str_starts_with($path, 'opening'):
         require_once 'routes/opening.php';
         break;
 
-    case $path === 'reservation':
-        require_once 'routes/reservation.php';
-        break;
     default:
         http_response_code(404);
         echo json_encode(['error' => 'Invalid request']);

@@ -3,20 +3,20 @@ import {parseJwt} from "../../../js/utils";
 async function fetchReservation() {
     const jwt = localStorage.getItem('jwt');
     if (!jwt) {
-        console.error('Pas de JWT');
         return [];
     }
     const token = parseJwt(jwt);
     const user_id = token.user_id;
     try {
-        const response = await fetch(`/api/reservation?action=User&id=${user_id}`, {
+        const response = await fetch(`/api/reservation?&id=${user_id}`, {
             headers: {
-                Authorization: `Bearer ${jwt}`,
+                "Authorization": `Bearer ${jwt}`,
                 'Content-Type': 'application/json',
             },
         });
+        const dataJson = await response.json();
         if (response.ok) {
-            return await response.json();
+            return dataJson;
         } else {
             console.error('Failed to fetch reservations:', response.status, response.statusText);
             return [];

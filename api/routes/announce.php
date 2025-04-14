@@ -38,3 +38,6 @@ if($_SERVER['REQUEST_METHOD'] == 'PUT') {
     $announceController->updateAnnounce($input);
     exit;
 }
+
+http_response_code(404);
+echo json_encode(['error' => 'Invalid announce endpoint']);

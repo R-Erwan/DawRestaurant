@@ -43,7 +43,7 @@ class Reservation
         $stmt = $this->pdo->prepare($sql);
         $stmt->bindParam(':id', $id);
         $stmt->execute();
-        return $stmt->fetchall(PDO::FETCH_ASSOC);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
     public function getByUserID($user_id)
@@ -98,7 +98,7 @@ class Reservation
     {
         $sql = "DELETE FROM reservations WHERE id = :reservation_id";
         $stmt = $this->pdo->prepare($sql);
-        $stmt->bindParam(':id', $id);
+        $stmt->bindParam(':reservation_id', $id);
         return $stmt->execute();
     }
 
