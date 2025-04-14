@@ -145,7 +145,6 @@ function convertExcToEvent(data) {
     return events;
 }
 
-
 function formExcRender({open = false, comment = false, rules = [] } = {}){
     // Switch btn
     document.querySelector("#calexc-open").checked = open;

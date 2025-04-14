@@ -1,4 +1,4 @@
-export const showBanner = (type, message) => {
+export const showBanner = (type, message, timeout = 3000) => {
     hideBanner();
 
     requestAnimationFrame(() => {
@@ -10,7 +10,7 @@ export const showBanner = (type, message) => {
             // Disparaît après 2s
             setTimeout(() => {
                 hideBanner();
-            }, 3000);
+            }, timeout);
         }
     });
 };

@@ -72,6 +72,38 @@ export function displayTimesSelect(select,startTime){
     select.innerHTML += `<option value="24">24:00</option>`;
 }
 
+/**
+ * Génère des options d'heures à partir de plusieurs créneaux et les insère dans un <select>
+ * @param {HTMLSelectElement} select - L'élément <select> dans lequel insérer les options
+ * @param {string[]} creneaux - Un tableau de chaînes représentant les créneaux (ex: ["12-15", "18-24"])
+ * @param {string} placeholder - Texte par défaut (ex: "Heure de début", "Heure de fin")
+ */
+export function displayMultipleTimeSlots(select, creneaux, placeholder = "Choisir une heure") {
+    select.innerHTML = `<option value='' disabled selected>${placeholder}</option>`;
+
+    creneaux.forEach(creneau => {
+        const [start, end] = creneau.split("-").map(Number);
+        for (let i = start; i < end; i++) {
+            select.innerHTML += `<option value="${i}">${i}:00</option>`;
+            select.innerHTML += `<option value="${i}.5">${i}:30</option>`;
+        }
+    });
+
+    // Optionnel : si la fin d'un créneau est 24, tu peux ajouter "24:00"
+    if (creneaux.some(c => c.endsWith("24"))) {
+        select.innerHTML += `<option value="24">24:00</option>`;
+    }
+}
+
+
+
+export function getFrenchWeekdayName(dateString) {
+    const jours = ["Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"];
+    const date = new Date(dateString);
+    return jours[date.getDay()];
+}
+
+
 export function isOverlapping(times) {
     // Convertit une heure "HH:MM" en minutes
     function toMinutes(str) {
