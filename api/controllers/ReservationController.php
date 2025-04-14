@@ -29,13 +29,10 @@ class ReservationController
             $guests = $data["guests"];
             $this->reservationService->createReservation($user_id, $email, $date, $time, $guests);
 
-            echo json_encode(['message' => 'Réservation créée avec succès']);
+            echo json_encode(['message' => 'Reservation created successfully ']);
         } catch (Exception $e) {
-            http_response_code(500);
-            echo json_encode([
-                'message' => 'Erreur lors de la création de la réservation',
-                'error' => $e->getMessage()
-            ]);
+            http_response_code(400);
+            echo json_encode(['message' => $e->getMessage()]);
             exit;
         }
     }
@@ -44,7 +41,7 @@ class ReservationController
         foreach ($requiredFields as $field) {
             if (empty($data[$field])) {
                 http_response_code(400);
-                echo json_encode(['message' => "Le champ $field est requis"]);
+                echo json_encode(['message' => "Input $field is required"]);
                 exit;
             }
         }
@@ -55,13 +52,13 @@ class ReservationController
         try {
             $result = $this->reservationService->getAllReservations();
             if ($result) {
-                echo json_encode(['message' => 'Reservations trouvees', 'reservations' => $result]);
+                echo json_encode(['message' => 'Reservations retrieved successfully', 'reservations' => $result]);
             } else {
-                echo json_encode(['message' => 'Aucune reservation trouvee']);
+                echo json_encode(['message' => 'No reservations found']);
             }
         } catch (Exception $e) {
             http_response_code(500);
-            echo json_encode(['message' => 'Erreur lors de la recuperation des reservations', 'error' => $e->getMessage()]);
+            echo json_encode(['message' => 'Error while retrieving reservation', 'error' => $e->getMessage()]);
         }
     }
 
@@ -72,16 +69,16 @@ class ReservationController
             if ($result) {
                 http_response_code(200);
                 echo json_encode([
-                    'message' => 'Reservation trouvee',
+                    'message' => 'Reservation retrieved successfully',
                     'reservation' => $result
                 ]);
             } else {
                 http_response_code(404);
-                echo json_encode(['message' => 'Aucune reservation trouvee']);
+                echo json_encode(['message' => 'No reservations found']);
             }
         } catch (Exception $e) {
             http_response_code(500);
-            echo json_encode(['message' => 'Erreur lors de la recuperation de la reservation', 'error' => $e->getMessage()]);
+            echo json_encode(['message' => 'Error while retrieving reservation', 'error' => $e->getMessage()]);
         }
     }
 
@@ -92,16 +89,16 @@ class ReservationController
             if ($result) {
                 http_response_code(200);
                 echo json_encode([
-                    'message' => 'Reservation trouvee',
+                    'message' => 'Reservation retrieved successfully',
                     'reservation' => $result
                 ]);
             } else {
                 http_response_code(404);
-                echo json_encode(['message' => 'Aucune reservation trouvee']);
+                echo json_encode(['message' => 'No reservations found']);
             }
         } catch (Exception $e) {
             http_response_code(500);
-            echo json_encode(['message' => 'Erreur lors de la recuperation de la reservation', 'error' => $e->getMessage()]);
+            echo json_encode(['message' => 'Error while retrieving reservation', 'error' => $e->getMessage()]);
         }
     }
 
@@ -116,10 +113,10 @@ class ReservationController
             $time = $data["time"];
             $guests = $data["guests"];
             $this->reservationService->updateReservation($reservation_id, $date, $time, $guests);
-            echo json_encode(['message' => 'Reservation mise a jour avec succes']);
+            echo json_encode(['message' => 'Reservation updated successfully']);
         } catch (Exception $e) {
             http_response_code(500);
-            echo json_encode(['message' => 'Erreur lors de la mise a jour de la reservation', 'error' => $e->getMessage()]);
+            echo json_encode(['message' => 'Error while updating reservation', 'error' => $e->getMessage()]);
         }
     }
 
@@ -139,10 +136,10 @@ class ReservationController
 
             $this->reservationService->updateReservationAdmin($reservation_id, $name, $email, $date, $time,
                                                                 $guests, $status);
-            echo json_encode(['message' => 'Reservation mise a jour avec succes']);
+            echo json_encode(['message' => 'Reservation updated successfully']);
         } catch (Exception $e) {
             http_response_code(500);
-            echo json_encode(['message' => 'Erreur lors de la mise a jour de la reservation', 'error' => $e->getMessage()]);
+            echo json_encode(['message' => 'Error while updating reservation', 'error' => $e->getMessage()]);
         }
     }
 
@@ -151,14 +148,14 @@ class ReservationController
         try {
             $result = $this->reservationService->deleteReservation($id);
             if ($result) {
-                echo json_encode(['message' => 'Reservation supprimee avec succes']);
+                echo json_encode(['message' => 'Reservation deleted successfully']);
             } else {
                 http_response_code(404);
-                echo json_encode(['message' => 'Aucune reservation trouvee']);
+                echo json_encode(['message' => 'No reservations found']);
             }
         } catch (Exception $e) {
             http_response_code(500);
-            echo json_encode(['message' => 'Erreur lors de la suppression de la reservation', 'error' => $e->getMessage()]);
+            echo json_encode(['message' => 'Error while deleting reservation', 'error' => $e->getMessage()]);
         }
     }
 }

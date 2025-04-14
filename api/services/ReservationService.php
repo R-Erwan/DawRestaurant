@@ -22,7 +22,7 @@ class ReservationService
     {
         $this->reservation = new Reservation($pdo);
         $this->user = new User($pdo);
-        $this->reservationValidator = new ReservationValidator($pdo);
+        $this->reservationValidator = new ReservationValidator($pdo,$this);
     }
 
     /**
@@ -45,9 +45,15 @@ class ReservationService
 
         }
 
-        if(!$this->reservationValidator->isValidReservation($reservation_date, $reservation_time, $number_of_people)){
-            throw new Exception('Invalid reservation');
+        try {
+            $valid = $this->reservationValidator->isValidReservation($reservation_date, $reservation_time, $number_of_people);
+        } catch (Exception $e){
+            throw new Exception($e->getMessage());
         }
+        if(!$valid){
+            throw new Exception("Invalid Reservation");
+        }
+
 
          return $this->reservation->create(
             $user_id,
@@ -137,11 +143,11 @@ class ReservationService
     /**
      * @throws \InvalidArgumentException
      */
-    public function getNumberOfReservationsByDate($date){
+    public function getNumberOfReservationsByDateAndTimes($date,$timeS,$timeE){
         $d = DateTime::createFromFormat('Y-m-d', $date);
         if(!$d || $d->format("Y-m-d") !== $date){
             throw new \InvalidArgumentException("Invalid date format");
         }
-        return $this->reservation->getNbPeopleByDate($date);
+        return $this->reservation->getNbPeopleByDate($date,$timeS,$timeE);
     }
 }
