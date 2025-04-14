@@ -129,3 +129,7 @@ export function isOverlapping(times) {
 
     return false; // aucun chevauchement
 }
+
+export function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}

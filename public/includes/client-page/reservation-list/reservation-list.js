@@ -1,4 +1,4 @@
-import {parseJwt} from "../../../js/utils";
+import {capitalizeFirstLetter, parseJwt} from "../../../js/utils";
 
 async function fetchReservation() {
     const jwt = localStorage.getItem('jwt');
@@ -79,10 +79,6 @@ async function displayReservations(state = 'all', type = 'current') {
 
         tableContent.appendChild(row);
     });
-}
-
-function capitalizeFirstLetter(string) {
-    return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
 // Event listeners for the tabs

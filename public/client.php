@@ -66,6 +66,8 @@
                 include_once "includes/admin-page/manage-site/manage-site.php";
             } else if($type =='manageSchedule') {
                 include_once "includes/admin-page/openings-rules/openings-rules.php";
+            } else if($type =='manageBookings') {
+                include_once "includes/admin-page/manage-bookings/manage-bookings.php";
             } else echo "Not developed";
             ?>
         </div>
