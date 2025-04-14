@@ -66,9 +66,18 @@ class ReservationService
      */
     public function updateReservation($reservation_id, $reservation_date, $reservation_time, $number_of_people): bool
     {
-        if ($number_of_people >= 9) {
-            throw new Exception('Le nombre d\'invites est trop élevé');
+        $ancientReservation = $this->reservation->getById($reservation_id);
+        $ancientNumber = $ancientReservation['number_of_people'];
+        $newNumberCompute = 0;
+        if($number_of_people > $ancientNumber){
+            // Si on rajoute des gens à la réservation, on ne passe que les rajouts.
+            $newNumberCompute = $number_of_people - $ancientNumber;
         }
+        $valid = $this->reservationValidator->isValidReservation($reservation_date, $reservation_time, $newNumberCompute);
+        if(!$valid){
+            throw new Exception("Invalid Reservation");
+        }
+
         return $this->reservation->update($reservation_id, $reservation_date, $reservation_time, $number_of_people);
     }
 
