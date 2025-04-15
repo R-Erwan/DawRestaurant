@@ -3,6 +3,7 @@
 namespace services;
 
 use Cassandra\Date;
+use DateInterval;
 use DateTime;
 
 require_once 'OpeningBasicService.php';
@@ -29,8 +30,16 @@ class ReservationValidator {
             throw new \InvalidArgumentException("Invalid date format");
         }
         $today = new DateTime();
+        $today->setTime(0,0);
+        $d->setTime(0,0);
         if($d < $today){
             throw new \Exception("Can't make reservation for past day");
+        }
+
+        $maxDate = (clone $today)->add(new DateInterval('P3M'));
+
+        if ($d > $maxDate) {
+            throw new \Exception("Reservations can't be made more than 3 months in advance");
         }
 
         $exceptionsRules = $this->openingExceptionService->getByDate($reservation_date);

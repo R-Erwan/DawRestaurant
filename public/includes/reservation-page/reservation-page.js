@@ -4,6 +4,12 @@ import {showBanner} from "../popup/popup";
 document.addEventListener("DOMContentLoaded", async function () {
     checkToken();
 
+    const today = new Date();
+    const maxDate = new Date(today);
+    maxDate.setMonth(today.getMonth() + 3);
+    const dateInput = document.querySelector("#date");
+    dateInput.setAttribute("min",today.toISOString().split("T")[0]);
+    dateInput.setAttribute("max",maxDate.toISOString().split("T")[0]);
     const token = localStorage.getItem("jwt");
     if (!token) {
         redirectToLogin();
@@ -82,10 +88,10 @@ function validateFormData({ email, date, time, guests }) {
     }
 
     if (!guests || guests <= 0) {
-        setError("guests-error", "Le nombre de personnes doit être supérieur à 0.");
+        setError("guests-error", "Le nombre de personnes doit être supérieur à 0");
         isValid = false;
     } else if (guests > 8) {
-        setError("guests-error", "Le nombre de personnes max doit être inférieur à 9.");
+        setError("guests-error", "Pour une réservation de plus de 9 personnes, contactez-nous par mail ou par téléphone");
         isValid = false;
     }
 
