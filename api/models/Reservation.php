@@ -31,7 +31,10 @@ class Reservation
 
     public function getAll(): array
     {
-        $sql = "SELECT * FROM reservations";
+        $sql = "SELECT r.id, r.user_id, r.reservation_date,
+               r.reservation_time, r.number_of_people, r.status,
+               r.created_at, u.name, u.email, u.first_name, u.phone_number
+               FROM reservations r JOIN users u ON r.user_id = u.id";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -55,29 +58,9 @@ class Reservation
         return $stmt->fetchall(PDO::FETCH_ASSOC);
     }
 
-    public function update($id, $reservation_date, $reservation_time, $number_of_people): bool
+    public function update($id, $reservation_time, $number_of_people,$status): bool
     {
         $sql = "UPDATE reservations SET
-                        reservation_date = :reservation_date,
-                        reservation_time = :reservation_time,
-                        number_of_people = :number_of_people
-                    WHERE id = :id";
-
-        $stmt = $this->pdo->prepare($sql);
-        $stmt->bindParam(':id', $id);
-        $stmt->bindParam(':reservation_date', $reservation_date);
-        $stmt->bindParam(':reservation_time', $reservation_time);
-        $stmt->bindParam(':number_of_people', $number_of_people);
-
-        return $stmt->execute();
-    }
-
-    public function updateAdmin($id, $name, $email, $reservation_date, $reservation_time, $number_of_people, $status): bool
-    {
-        $sql = "UPDATE reservations SET
-                        name = :name,
-                        email = :email,
-                        reservation_date = :reservation_date,
                         reservation_time = :reservation_time,
                         number_of_people = :number_of_people,
                         status = :status
@@ -85,13 +68,39 @@ class Reservation
 
         $stmt = $this->pdo->prepare($sql);
         $stmt->bindParam(':id', $id);
-        $stmt->bindParam(':name', $name);
-        $stmt->bindParam(':email', $email);
-        $stmt->bindParam(':reservation_date', $reservation_date);
+        $stmt->bindParam(':status', $status);
         $stmt->bindParam(':reservation_time', $reservation_time);
         $stmt->bindParam(':number_of_people', $number_of_people);
-        $stmt->bindParam(':status', $status);
+
         return $stmt->execute();
+    }
+
+    public function updateAdmin($id, $reservation_date, $reservation_time, $number_of_people, $status): bool
+    {
+        $fields = [];
+        $params = [];
+
+        if($reservation_date) {
+            $fields[] = "reservation_date = ?";
+            $params[] = $reservation_date;
+        }
+        if($reservation_time) {
+            $fields[] = "reservation_time = ?";
+            $params[] = $reservation_time;
+        }
+        if($number_of_people) {
+            $fields[] = "number_of_people = ?";
+            $params[] = $number_of_people;
+        }
+        if($status) {
+            $fields[] = "status = ?";
+            $params[] = $status;
+        }
+
+        $sql = "UPDATE reservations SET " . implode(", ", $fields) . " WHERE id = ?";
+        $params[] = $id;
+        $stmt = $this->pdo->prepare($sql);
+        return $stmt->execute($params);
     }
 
     public function delete($id): bool

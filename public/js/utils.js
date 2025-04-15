@@ -133,3 +133,19 @@ export function isOverlapping(times) {
 export function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
+
+export function formatDate(dateString) {
+    const date = new Date(dateString);
+    const mois = [
+        "Janvier", "Février", "Mars", "Avril", "Mai", "Juin",
+        "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"
+    ];
+
+    const jour = date.getDate();
+    const moisTexte = mois[date.getMonth()];
+    const annee = date.getFullYear();
+    const heures = date.getHours();
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+
+    return `${jour} ${moisTexte} ${annee} à ${heures}h${minutes}`;
+}

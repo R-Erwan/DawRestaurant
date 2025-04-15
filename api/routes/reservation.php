@@ -49,13 +49,15 @@ if($_SERVER['REQUEST_METHOD'] == 'PUT' && isset($_GET['id_reservation'])) {
         echo json_encode(['error' => 'Invalid request']);
         exit;
     }
+    $data = json_decode(file_get_contents('php://input'), true);
 
     if(!$authUser){
         $authUser = AuthMiddleware::verifyUserAccess($requestedUserId);
+        $reservationController->updateReservation($data,$_GET['id_reservation']);
+    } else {
+        $reservationController->updateReservationAdmin($data,$_GET['id_reservation']);
     }
 
-    $data = json_decode(file_get_contents('php://input'), true);
-    $reservationController->updateReservation($data,$_GET['id_reservation']);
     exit;
 }
 

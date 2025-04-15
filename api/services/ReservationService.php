@@ -64,7 +64,7 @@ class ReservationService
     /**
      * @throws Exception
      */
-    public function updateReservation($reservation_id, $reservation_date, $reservation_time, $number_of_people): bool
+    public function updateReservation($reservation_id, $reservation_time, $number_of_people, $cancel): bool
     {
         $ancientReservation = $this->reservation->getById($reservation_id);
         $ancientNumber = $ancientReservation['number_of_people'];
@@ -73,28 +73,24 @@ class ReservationService
             // Si on rajoute des gens à la réservation, on ne passe que les rajouts.
             $newNumberCompute = $number_of_people - $ancientNumber;
         }
-        $valid = $this->reservationValidator->isValidReservation($reservation_date, $reservation_time, $newNumberCompute);
+        if($cancel){
+            $status = "cancelled";
+        } else {
+            $status = "waiting";
+        }
+        $valid = $this->reservationValidator->isValidReservation($ancientReservation['reservation_date'], $reservation_time, $newNumberCompute);
         if(!$valid){
             throw new Exception("Invalid Reservation");
         }
 
-        return $this->reservation->update($reservation_id, $reservation_date, $reservation_time, $number_of_people);
+        return $this->reservation->update($reservation_id, $reservation_time, $number_of_people, $status);
     }
 
     /**
      * @throws Exception
      */
-    public function updateReservationAdmin($reservation_id, $name, $email, $reservation_date, $reservation_time, $number_of_people, $status): bool
-    {
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            throw new Exception('Format de l\'email invalide');
-        }
-
-        if ($number_of_people >= 9) {
-            throw new Exception('Le nombre d\'invites est trop élevé');
-        }
-
-        return $this->reservation->updateAdmin($reservation_id, $name, $email, $reservation_date, $reservation_time, $number_of_people, $status);
+    public function updateReservationAdmin($reservation_id, $reservation_date, $reservation_time, $number_of_people, $status): bool {
+        return $this->reservation->updateAdmin($reservation_id, $reservation_date, $reservation_time, $number_of_people, $status);
     }
 
     /**

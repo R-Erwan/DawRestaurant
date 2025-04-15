@@ -103,17 +103,17 @@ class ReservationController
         }
     }
 
-    public function updateReservation($data,$requestedId): void //TODO MIDDLEWARE ISVALIDUPDATE
+    public function updateReservation($data,$requestedId): void
     {
-        $requiredFields = ["date", "time", "guests"];
+        $requiredFields = ["time", "guests", "cancel"];
         $this->validateData($data, $requiredFields);
 
         try {
             $reservation_id = $requestedId;
-            $date = $data["date"];
             $time = $data["time"];
             $guests = $data["guests"];
-            $this->reservationService->updateReservation($reservation_id, $date, $time, $guests);
+            $cancel = $data["cancel"];
+            $this->reservationService->updateReservation($reservation_id, $time, $guests, $cancel);
             echo json_encode(['message' => 'Reservation updated successfully']);
         } catch (Exception $e) {
             http_response_code(500);
@@ -121,22 +121,16 @@ class ReservationController
         }
     }
 
-    public function updateReservationAdmin($data): void
+    public function updateReservationAdmin($data,$requestedId): void
     {
-        $requiredFields = ["id", "name", "email", "date", "time", "guests", "status"];
-        $this->validateData($data, $requiredFields);
-
         try {
-            $reservation_id = $data["id"];
-            $name = $data["name"];
-            $email = $data["email"];
-            $date = $data["date"];
-            $time = $data["time"];
-            $guests = $data["guests"];
-            $status = $data["status"];
+            $reservation_id = $requestedId;
+            $date = $data["date"] ?? null;
+            $time = $data["time"] ?? null;
+            $guests = $data["guests"] ?? null;
+            $status = $data["status"] ?? null;
 
-            $this->reservationService->updateReservationAdmin($reservation_id, $name, $email, $date, $time,
-                                                                $guests, $status);
+            $this->reservationService->updateReservationAdmin($reservation_id,$date, $time, $guests, $status);
             echo json_encode(['message' => 'Reservation updated successfully']);
         } catch (Exception $e) {
             http_response_code(500);

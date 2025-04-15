@@ -1,5 +1,5 @@
 import {showBanner} from "../../popup/popup";
-import {capitalizeFirstLetter} from "../../../js/utils";
+import {capitalizeFirstLetter, formatDate} from "../../../js/utils";
 let currentTabFilter = "today";
 let currentDateFilter = "";
 let currentFilterFilter = "none";
@@ -63,7 +63,7 @@ async function fetchAllReservations() {
     }
 }
 
-function displayReservations(data,couv = "",maxcouv = "") {
+function displayReservations(data, couv = "", maxcouv = "") {
     const tableContent = document.querySelector("#table-content");
     tableContent.innerHTML = `
         <li class="table-header">
@@ -75,7 +75,6 @@ function displayReservations(data,couv = "",maxcouv = "") {
         </li>
     `;
 
-    // Generate rows from data
     data.forEach(item => {
         const row = document.createElement('li');
         row.classList.add('table-row');
@@ -87,7 +86,45 @@ function displayReservations(data,couv = "",maxcouv = "") {
             <div class="col c5">Details</div>
         `;
 
+        const detailsRow = document.createElement('div')
+        detailsRow.classList.add('details-row', 'hidden');
+        detailsRow.innerHTML = `
+            <div class="details-header details-container">
+                <span class="details-elmt" id="d-name">${capitalizeFirstLetter(item.name)}</span>
+                <span class="details-elmt" id="d-fname">${capitalizeFirstLetter(item.first_name ?? "")}</span>
+            </div>
+            <div class="details-body details-container">
+                <span class="details-elmt" id="d-mail"> <i class="fa-solid fa-envelope"></i>${item.email}</span>
+                <span class="details-elmt" id="d-phone"> <i class="fa-solid fa-phone"></i>${item.phone_number ?? ""}</span>
+                <span class="details-elmt" id="d-created">Date de demande de réservation : ${formatDate(item.created_at)}</span>
+            </div>
+             <select id="details-state" class="details-container">
+                <option value="confirmed">Confirmed</option>
+                <option value="waiting">Waiting</option>
+                <option value="cancelled">Cancelled</option>
+            </select> 
+        `
+
         tableContent.appendChild(row);
+        tableContent.appendChild(detailsRow);
+
+        const detailsBtn = row.querySelector('.c5');
+        detailsBtn.addEventListener('click', (e) => {
+            detailsRow.classList.toggle('hidden');
+        });
+        const detailsState = detailsRow.querySelector("#details-state");
+        detailsState.value = item.status;
+        detailsState.addEventListener("change", async (e) => {
+            setDatePickerColor(detailsState.value,detailsState);
+            const ok = await fetchUpdateReservationState(item.id,detailsState.value);
+            if(ok) {
+                const rowState = row.querySelector('.c4');
+                rowState.className = `col c4 state-${detailsState.value}` // Met à jour tout de suite si la requête est ok
+                rowState.innerText=capitalizeFirstLetter(detailsState.value);
+                item.status=detailsState.value;
+            }
+        })
+        setDatePickerColor(item.status,detailsState);
     });
 }
 
@@ -176,4 +213,42 @@ function setActiveTab(activeTab) {
         tab.classList.toggle('tabs-selected',false);
     });
     activeTab.classList.toggle('tabs-selected',true);
+}
+
+function setDatePickerColor(status,statePicker){
+    switch (status) {
+        case "confirmed":
+            statePicker.style.backgroundColor = "#87B971";
+            break;
+        case "waiting":
+            statePicker.style.backgroundColor = "#FAB36A";
+            break;
+        case "cancelled":
+            statePicker.style.backgroundColor = "#881112";
+            break;
+    }
+}
+
+async function fetchUpdateReservationState(id,state){
+    const jwt = localStorage.getItem('jwt');
+    try {
+        const response = await fetch(`/api/reservation?id_reservation=${id}`, {
+            method: 'PUT',
+            headers: {
+                "Authorization": `Bearer ${jwt}`,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({status: state}),
+        });
+        const dataJson = await response.json();
+        if (response.ok) {
+            return true;
+        } else {
+            showBanner('error',"Failed to update state : " + dataJson.message);
+            return false;
+        }
+    } catch (error) {
+        showBanner('error',"Failed to update state");
+        return false
+    }
 }

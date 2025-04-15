@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS users (
     password VARCHAR(255) NOT NULL,
     first_name VARCHAR(100),  -- Optionnel
     phone_number VARCHAR(20),  -- Optionnel
-    created_at TIMESTAMP DEFAULT NOW()
+    created_at TIMESTAMPTZ DEFAULT NOW()
     );
 
 -- Table des rôles
@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS announces (
     title VARCHAR(100),
     description TEXT,
     image_url VARCHAR(255),
-    created_at TIMESTAMP DEFAULT NOW()
+    created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
 CREATE TABLE IF NOT EXISTS days_rules (
@@ -78,5 +78,5 @@ CREATE TABLE IF NOT EXISTS reservations
     reservation_time VARCHAR(255) NOT NULL,
     number_of_people INT NOT NULL,
     status VARCHAR(255) DEFAULT 'waiting' CHECK (status IN ('waiting', 'confirmed', 'cancelled')),
-    created_at TIMESTAMP DEFAULT NOW()
+    created_at TIMESTAMPTZ DEFAULT NOW()
 );

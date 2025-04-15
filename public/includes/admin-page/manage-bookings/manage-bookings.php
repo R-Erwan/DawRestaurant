@@ -30,4 +30,5 @@
         </li>
     </ul>
 </div>
+
 <script type="module" src="includes/admin-page/manage-bookings/manage-bookings.js"></script>
