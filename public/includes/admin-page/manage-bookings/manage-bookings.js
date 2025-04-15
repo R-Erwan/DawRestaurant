@@ -5,8 +5,8 @@ let currentDateFilter = "";
 let currentFilterFilter = "none";
 document.addEventListener('DOMContentLoaded', async () => {
     const data = await fetchAllReservations();
-    console.log(data);
-    displayReservations(filterData(data.reservations,"today"));
+    const filter = filterData(data.reservations,"today")
+    displayReservations(filter.filteredData,filter.count);
 
     // Today tab
     tabsFilterEvent(document.querySelector("#tabs-today"),"today",data);
@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const selectFilter = document.querySelector("#tabs-filter");
     selectFilter.addEventListener("change", (e) => {
         const filter = filterData(data.reservations,currentTabFilter,selectFilter.value,currentDateFilter);
-        displayReservations(filter);
+        displayReservations(filter.filteredData,filter.count);
         currentFilterFilter = selectFilter.value;
     })
 
@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     datePicker.addEventListener("change", (e) => {
         setActiveTab(e.target);
         const filter = filterData(data.reservations,"date","none",datePicker.value);
-        displayReservations(filter);
+        displayReservations(filter.filteredData,filter.count);
         currentDateFilter = datePicker.value;
         currentTabFilter = "date";
     })
@@ -36,7 +36,7 @@ function tabsFilterEvent(tab,filterType,data) {
         document.querySelector("#tabs-date").value="";
         setActiveTab(e.target);
         const filter = filterData(data.reservations,filterType,currentFilterFilter,currentDateFilter);
-        displayReservations(filter);
+        displayReservations(filter.filteredData,filter.count);
         currentTabFilter = filterType;
     })
 }
@@ -63,13 +63,13 @@ async function fetchAllReservations() {
     }
 }
 
-function displayReservations(data, couv = "", maxcouv = "") {
+function displayReservations(data, couv = "") {
     const tableContent = document.querySelector("#table-content");
     tableContent.innerHTML = `
         <li class="table-header">
             <div class="col c1">Date</div>
             <div class="col c2">Heure</div>
-            <div class="col c3">Nombres de couverts ${couv} / ${maxcouv} </div>
+            <div class="col c3">Nombres de couverts <span class="nb-couv">${couv}</span></div>
             <div class="col c4">Status</div>
             <div class="col c5"></div>
         </li>
@@ -201,11 +201,10 @@ function filterData(data, type, filter = "none", date= "") {
                 return item.status === "cancelled";
             });
             break;
-
-
-
     }
-    return filteredData;
+    const count = filteredData.reduce((acc, item) => acc + (item.number_of_people || 0), 0);
+
+    return {filteredData, count};
 }
 
 function setActiveTab(activeTab) {
