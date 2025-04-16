@@ -3,6 +3,7 @@
 namespace services;
 
 use config\MailerConfig;
+use Exception\PasswordResetRateLimitException;
 use PHPMailer\PHPMailer\Exception;
 
 require_once 'config/MailerConfig.php';
@@ -35,6 +36,7 @@ class MailService{
 
     /**
      * @throws Exception
+     * @throws PasswordResetRateLimitException
      */
     public static function sendResetPasswordLink(string $toEmail, string $token): bool {
         if(!ACTIVE_MAIL){
@@ -48,6 +50,8 @@ class MailService{
             $mail->Subject ='Réinialisation de votre mot de passe';
             $mail->Body = "Cliquez sur ce lien pour réinitialiser votre mot de passe : <a href='$resetLink'>$resetLink</a><br>Ce lien expire dans 30 minutes.";
             return $mail->send();
+        } catch (PasswordResetRateLimitException $e){
+            throw new PasswordResetRateLimitException();
         } catch (Exception $e) {
             error_log("Erreur mail : " . $mail->ErrorInfo);
             return false;

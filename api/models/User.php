@@ -116,8 +116,12 @@ class User {
     /**
      * @throws RandomException
      */
-    public function createTokenReset($email): string
+    public function createTokenReset($email,$user_id): string
     {
+        $sql = "UPDATE users SET last_reset_request = NOW() WHERE id = ?";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([$user_id]);
+
         $token = bin2hex(random_bytes(32));
         $expires = date('Y-m-d H:i:s', strtotime('+30 minutes'));
         $stmt = $this->pdo->prepare("INSERT INTO password_resets (email, token, expires_at) VALUES (?, ?, ?)");

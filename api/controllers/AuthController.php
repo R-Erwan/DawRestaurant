@@ -2,6 +2,7 @@
 
 namespace controllers;
 
+use Exception\PasswordResetRateLimitException;
 use services\AuthService;
 
 require_once 'services/AuthService.php';
@@ -67,6 +68,11 @@ class AuthController
                 http_response_code(400);
                 echo json_encode(['message' => 'Error sending reset links']);
             }
+
+        } catch (PasswordResetRateLimitException $e){
+            http_response_code($e->getCode());
+            echo json_encode(['message' => $e->getMessage()]);
+
         } catch (\Exception $e){
             http_response_code(400);
             echo json_encode(['message' => "Error sending reset password links". $e->getMessage()]);

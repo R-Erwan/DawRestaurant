@@ -6,6 +6,7 @@ CREATE TABLE IF NOT EXISTS users (
     password VARCHAR(255) NOT NULL,
     first_name VARCHAR(100),  -- Optionnel
     phone_number VARCHAR(20),  -- Optionnel
+    last_reset_request TIMESTAMPTZ,
     created_at TIMESTAMPTZ DEFAULT NOW()
     );
 
