@@ -1,52 +1,27 @@
 import {showBanner} from "../popup/popup";
+import {displayModal} from "./login-modal/login-modal.js";
 
-const signUpButton = document.getElementById("signUp");
-const signInButton = document.getElementById("signIn");
-const loginContainer = document.getElementById("login-container");
+document.addEventListener("DOMContentLoaded", () => {
 
-signUpButton.addEventListener('click', () => {
-    loginContainer.classList.add("right-panel-active");
-});
-signInButton.addEventListener('click', () => {
-    loginContainer.classList.remove("right-panel-active");
-});
+
+    const signUpButton = document.getElementById("signUp");
+    const signInButton = document.getElementById("signIn");
+    const loginContainer = document.getElementById("login-container");
+
+    signUpButton.addEventListener('click', () => {
+        loginContainer.classList.add("right-panel-active");
+    });
+    signInButton.addEventListener('click', () => {
+        loginContainer.classList.remove("right-panel-active");
+    });
 
 // Login
-const loginForm = document.getElementById("login-form");
-loginForm.addEventListener('submit', async function (e) {
-    e.preventDefault();
-    const email = document.getElementById("login-email").value;
-    const password = document.getElementById("login-password").value;
-    const response = await fetch("/api/auth?action=login", {
-        method: "POST",
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            email: email,
-            password: password,
-        })
-    });
-    const data = await response.json();
-    if (response.ok && data.token) {
-        localStorage.setItem('jwt', data.token);
-        window.location.href = 'client.php'
-        showBanner('success', data.message);
-    } else {
-        loginForm.reset();
-        showBanner('error', data.message || "Une erreur est survenu");
-    }
-});
-
-// Sign in
-const registerForm = document.getElementById("register-form");
-registerForm.addEventListener('submit', async function (e) {
-    e.preventDefault();
-    const email = document.getElementById("register-email").value;
-    const password = document.getElementById("register-password").value;
-    const name = document.getElementById("register-name").value;
-    try {
-        const response = await fetch("/api/auth?action=register", {
+    const loginForm = document.getElementById("login-form");
+    loginForm.addEventListener('submit', async function (e) {
+        e.preventDefault();
+        const email = document.getElementById("login-email").value;
+        const password = document.getElementById("login-password").value;
+        const response = await fetch("/api/auth?action=login", {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json',
@@ -54,22 +29,58 @@ registerForm.addEventListener('submit', async function (e) {
             body: JSON.stringify({
                 email: email,
                 password: password,
-                name: name,
             })
         });
         const data = await response.json();
-        if (response.ok) {
-            registerForm.reset();
-            showBanner('success', data.message + " - Connecter vous pour avoir accès a votre espace !");
+        if (response.ok && data.token) {
+            localStorage.setItem('jwt', data.token);
+            window.location.href = 'client.php'
+            showBanner('success', data.message);
         } else {
-            registerForm.reset();
-            showBanner('error', data.message || 'Une erreur est survenue');
+            loginForm.reset();
+            showBanner('error', data.message || "Une erreur est survenu");
         }
-    } catch (error) {
-        console.error(error);
-    }
+    });
+
+// Sign in
+    const registerForm = document.getElementById("register-form");
+    registerForm.addEventListener('submit', async function (e) {
+        e.preventDefault();
+        const email = document.getElementById("register-email").value;
+        const password = document.getElementById("register-password").value;
+        const name = document.getElementById("register-name").value;
+        try {
+            const response = await fetch("/api/auth?action=register", {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    email: email,
+                    password: password,
+                    name: name,
+                })
+            });
+            const data = await response.json();
+            if (response.ok) {
+                registerForm.reset();
+                showBanner('success', data.message + " - Connecter vous pour avoir accès a votre espace !");
+            } else {
+                registerForm.reset();
+                showBanner('error', data.message || 'Une erreur est survenue');
+            }
+        } catch (error) {
+            console.error(error);
+        }
+
+    })
+
+    document.querySelector("#forget-pswd").addEventListener("click", (e) => {
+        displayModal();
+    });
 
 })
+
 
 
 

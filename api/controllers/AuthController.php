@@ -59,6 +59,7 @@ class AuthController
             echo json_encode(['message' => "Missing required fields"]);
             exit;
         }
+
         try {
             $result = $this->authService->resetPasswordEmail($data['email']);
             if($result){

@@ -70,12 +70,18 @@ class AuthService
      * @throws \PHPMailer\PHPMailer\Exception
      * @throws \DateMalformedStringException
      * @throws PasswordResetRateLimitException
+     * @throws Exception
      */
     public function resetPasswordEmail($email): bool
     {
+
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            throw new Exception('Invalid email format');
+        }
+
         $user = $this->user->findByEmail($email);
         if (!$user) {
-            return false;
+            throw new Exception('Email does not exist');
         }
 
         $nowTs = (new DateTime())->getTimestamp();
