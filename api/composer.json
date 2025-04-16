@@ -3,6 +3,7 @@
     "firebase/php-jwt": "^6.0",
     "ext-json": "*",
     "ext-pdo": "*",
-    "ext-ctype": "*"
+    "ext-ctype": "*",
+    "phpmailer/phpmailer": "*"
   }
 }
