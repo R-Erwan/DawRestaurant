@@ -75,7 +75,7 @@ CREATE TABLE IF NOT EXISTS reservations
     name VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL,
     reservation_date DATE NOT NULL,
-    reservation_time VARCHAR(255) NOT NULL,
+    reservation_time TIME NOT NULL,
     number_of_people INT NOT NULL,
     status VARCHAR(255) DEFAULT 'waiting' CHECK (status IN ('waiting', 'confirmed', 'cancelled')),
     created_at TIMESTAMPTZ DEFAULT NOW()
