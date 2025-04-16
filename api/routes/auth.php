@@ -56,7 +56,7 @@ switch (true) {
         // POST /auth/reset-password
         if($_SERVER['REQUEST_METHOD'] === 'POST') {
             $input = json_decode(file_get_contents('php://input'), true);
-            //TODO reset password controller
+            $authController->resetPasswordToken($input);
         }
         break;
 

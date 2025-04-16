@@ -74,19 +74,39 @@ class AuthService
     public function resetPasswordEmail($email): bool
     {
         $user = $this->user->findByEmail($email);
-        if(!$user){
+        if (!$user) {
             return false;
         }
 
         $nowTs = (new DateTime())->getTimestamp();
-        $lastTs = (new DateTime($user['last_reset_request']))->getTimestamp();
 
-        if (($nowTs - $lastTs) < 300) { // Une demande toute les 5min
-            throw new Exception\PasswordResetRateLimitException();
+        if (!empty($user['last_reset_request'])) {
+            $lastTs = (new DateTime($user['last_reset_request']))->getTimestamp();
+            if (($nowTs - $lastTs) < 300) { // moins de 5 minutes
+                throw new Exception\PasswordResetRateLimitException();
+            }
         }
 
-
-        $token = $this->user->createTokenReset($email,$user['id']);
+        $token = $this->user->createTokenReset($email, $user['id']);
         return MailService::sendResetPasswordLink($email, $token);
     }
+
+    /**
+     * @throws Exception
+     */
+    public function resetPasswordToken($token, $password) {
+            $tokenInfos =  $this->user->getTokenInfos($token);
+            if(!$tokenInfos) {
+                throw new Exception("Invalid token");
+            }
+            if(strtotime($tokenInfos['expires_at']) < time()) {
+                throw new Exception("Token expired");
+            }
+            if(strlen($password) < 8){
+                throw new Exception('Password must be at least 8 characters long');
+            }
+
+            return $this->user->resetPassword($tokenInfos['email'], $password);
+    }
+
 }

@@ -116,8 +116,7 @@ class User {
     /**
      * @throws RandomException
      */
-    public function createTokenReset($email,$user_id): string
-    {
+    public function createTokenReset($email,$user_id): string {
         $sql = "UPDATE users SET last_reset_request = NOW() WHERE id = ?";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute([$user_id]);
@@ -128,6 +127,24 @@ class User {
         $stmt->execute([$email, $token, $expires]);
         return $token;
     }
+
+    public function getTokenInfos($token) {
+        $sql = "SELECT email, expires_at FROM password_resets WHERE token = ?";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([$token]);
+        return $stmt->fetch();
+    }
+
+     public function resetPassword($email,$password){
+        $sql = "UPDATE users set password = ? WHERE email = ?";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([ password_hash($password, PASSWORD_BCRYPT), $email]);
+
+        //Supprime tous les tokens de reset de l'utilisateur
+        $sql2 = "DELETE FROM password_resets WHERE email = ?";
+        $stmt2 = $this->pdo->prepare($sql2);
+        return $stmt2->execute([$email]);
+     }
 
 
 }

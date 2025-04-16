@@ -41,7 +41,7 @@ class AuthController
         if (!isset($data['email']) || !isset($data['password']) || !isset($data['name'])) {
             http_response_code(400);
             echo json_encode(['message' => "Missing required fields"]);
-            return;
+            exit;
         }
         try {
             $result = $this->authService->register($data['email'], $data['password'], $data['name']);
@@ -57,7 +57,7 @@ class AuthController
         if(!isset($data['email'])) {
             http_response_code(400);
             echo json_encode(['message' => "Missing required fields"]);
-            return;
+            exit;
         }
         try {
             $result = $this->authService->resetPasswordEmail($data['email']);
@@ -76,6 +76,22 @@ class AuthController
         } catch (\Exception $e){
             http_response_code(400);
             echo json_encode(['message' => "Error sending reset password links". $e->getMessage()]);
+        }
+    }
+
+    public function resetPasswordToken($data): void{
+        if(!isset($data['token']) || !isset($data['password'])) {
+            http_response_code(400);
+            echo json_encode(['message' => "Missing required fields"]);
+            exit;
+        }
+        try {
+            $result = $this->authService->resetPasswordToken($data['token'], $data['password']);
+            http_response_code(200);
+            echo json_encode(["message" => "Password reset successfully"]);
+        } catch (\Exception $e){
+            http_response_code(400);
+            echo json_encode(["message" => "Error reset password : ". $e->getMessage()]);
         }
     }
 }
