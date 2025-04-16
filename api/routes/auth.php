@@ -2,6 +2,7 @@
 // routes/auth.php
 
 global $pdo;
+global $path;
 
 use controllers\AuthController;
 use middleware\AuthMiddleware;
@@ -11,29 +12,59 @@ require_once 'middleware/AuthMiddleware.php';
 
 $authController = new AuthController($pdo);
 
-// Login
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_GET['action'] === 'login') {
-    $input = json_decode(file_get_contents('php://input'), true);
-    $authController->login($input);
-    exit;
+$subPath = substr($path, strlen('auth'));
+$subPath = trim($subPath, '/');
+
+switch (true) {
+    case $subPath === '':
+
+        // GET /api/auth?action=adminAccess
+        if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['action'] === 'adminAccess') {
+            $authUser = AuthMiddleware::verifyAdminAcces();
+            http_response_code(200);
+            echo json_encode(["message" => "Access granted!"]);
+        }
+
+        // POST /api/auth?action=login
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['action']) && $_GET['action'] === 'login') {
+            $input = json_decode(file_get_contents('php://input'), true);
+            $authController->login($input);
+            exit;
+        }
+
+        // POST /api/auth?register
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['action']) && $_GET['action'] === 'register') {
+            $input = json_decode(file_get_contents('php://input'), true);
+            $authController->register($input);
+            exit;
+        }
+
+        http_response_code(404);
+        echo json_encode(['error' => 'Invalid auth endpoint']);
+        break;
+
+    case $subPath === 'request-reset-password':
+
+        // POST /auth/request-reset-password
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $input = json_decode(file_get_contents('php://input'), true);
+            $authController->resetPasswordEmail($input);
+        }
+        break;
+
+    case $subPath === 'reset-password':
+        // POST /auth/reset-password
+        if($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $input = json_decode(file_get_contents('php://input'), true);
+            //TODO reset password controller
+        }
+        break;
+
+    default:
+        http_response_code(404);
+        echo json_encode(['error' => 'Invalid auth endpoint']);
+
 }
-// Create User
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_GET['action'] === 'register') {
-    $input = json_decode(file_get_contents('php://input'), true);
-    $authController->register($input);
-    exit;
-}
-
-/* MiddleWare Auth*/
-//Verif Admin
-if ($_SERVER['REQUEST_METHOD'] === 'GET' && $_GET['action'] === 'adminAccess') {
-    $authUser = AuthMiddleware::verifyAdminAcces();
-    http_response_code(200);
-    echo json_encode(["message" => "Access granted!"]);
-}
-
-
-
 
 
 

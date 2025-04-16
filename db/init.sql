@@ -80,3 +80,11 @@ CREATE TABLE IF NOT EXISTS reservations
     status VARCHAR(255) DEFAULT 'waiting' CHECK (status IN ('waiting', 'confirmed', 'cancelled')),
     created_at TIMESTAMPTZ DEFAULT NOW()
 );
+
+-- Table des token de réinitialisation de mot de passe
+CREATE TABLE IF NOT EXISTS password_resets (
+    email VARCHAR(255) NOT NULL,
+    token VARCHAR(255) NOT NULL,
+    expires_at TIMESTAMPTZ NOT NULL
+);
+

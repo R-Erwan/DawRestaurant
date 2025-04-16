@@ -6,9 +6,11 @@ namespace services;
 use Exception;
 use Firebase\JWT\JWT;
 use models\User;
+use Random\RandomException;
 
 require_once 'models/User.php';
 require_once 'config/config.php';
+require_once 'services/MailService.php';
 
 class AuthService
 {
@@ -58,5 +60,19 @@ class AuthService
         }
 
         return $this->user->create($name, $email, $password);
+    }
+
+    /**
+     * @throws RandomException
+     * @throws \PHPMailer\PHPMailer\Exception
+     */
+    public function resetPasswordEmail($email): bool
+    {
+        $user = $this->user->findByEmail($email);
+        if(!$user){
+            return false;
+        }
+        $token = $this->user->createTokenReset($email);
+        return MailService::sendResetPasswordLink($email, $token);
     }
 }

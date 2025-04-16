@@ -2,6 +2,8 @@
 
 namespace models;
 
+use Random\RandomException;
+
 require_once 'config/db.php';
 
 class User {
@@ -109,6 +111,18 @@ class User {
             return $roles;
         }
         return null;
+    }
+
+    /**
+     * @throws RandomException
+     */
+    public function createTokenReset($email): string
+    {
+        $token = bin2hex(random_bytes(32));
+        $expires = date('Y-m-d H:i:s', strtotime('+30 minutes'));
+        $stmt = $this->pdo->prepare("INSERT INTO password_resets (email, token, expires_at) VALUES (?, ?, ?)");
+        $stmt->execute([$email, $token, $expires]);
+        return $token;
     }
 
 

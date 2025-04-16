@@ -12,7 +12,7 @@ class MailService{
      * @throws Exception
      */
     public static function sendReservationConfirmed(string $toEmail, string $toName, string $date, string $time): bool {
-        if(!getenv("ACTIVE_MAIL")){
+        if(!ACTIVE_MAIL){
             return false;
         }
 
@@ -26,6 +26,27 @@ class MailService{
             À bientot !";
 
 
+            return $mail->send();
+        } catch (Exception $e) {
+            error_log("Erreur mail : " . $mail->ErrorInfo);
+            return false;
+        }
+    }
+
+    /**
+     * @throws Exception
+     */
+    public static function sendResetPasswordLink(string $toEmail, string $token): bool {
+        if(!ACTIVE_MAIL){
+            return false;
+        }
+
+        $mail = MailerConfig::getMailer();
+        try {
+            $resetLink = DOMAIN_NAME . "/reset-password.php?token=$token";
+            $mail->addAddress($toEmail);
+            $mail->Subject ='Réinialisation de votre mot de passe';
+            $mail->Body = "Cliquez sur ce lien pour réinitialiser votre mot de passe : <a href='$resetLink'>$resetLink</a><br>Ce lien expire dans 30 minutes.";
             return $mail->send();
         } catch (Exception $e) {
             error_log("Erreur mail : " . $mail->ErrorInfo);
