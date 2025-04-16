@@ -9,6 +9,7 @@
 <body>
 <?php include_once "includes/header/header.php" ?>
 <?php include_once "includes/login-form/login-form.php" ?>
+<?php include_once "includes/login-form/login-modal/login-modal.php" ?>
 <?php include_once "includes/footer/footer.php" ?>
 </body>
 </html>

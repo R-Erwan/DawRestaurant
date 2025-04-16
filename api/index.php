@@ -22,7 +22,7 @@ switch (true) {
         echo json_encode(["message" => "Api LeResto operational"]);
         break;
 
-    case $path === 'auth':
+    case str_starts_with($path, 'auth'):
         require_once 'routes/auth.php';
         break;
 

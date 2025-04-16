@@ -28,7 +28,7 @@
                 <span>ou utiliser votre compte</span>
                 <input type="email" placeholder="Email" name="email" id="login-email" required/>
                 <input type="password" placeholder="Mot de passe" name="password" id="login-password" required/>
-                <a href="#">Mot de passe oublié ?</a>
+                <p id="forget-pswd">Mot de passe oublié ?</p>
                 <button>Se connecter</button>
             </form>
         </div>

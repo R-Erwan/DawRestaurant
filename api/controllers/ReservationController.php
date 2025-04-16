@@ -3,32 +3,41 @@
 namespace controllers;
 
 use Exception;
+use services\MailService;
 use services\ReservationService;
+use services\UserService;
 
 require_once 'services/ReservationService.php';
+require_once 'services/MailService.php';
+require_once 'services/UserService.php';
 
 class ReservationController
 {
     private ReservationService $reservationService;
+    private UserService $userService;
 
     public function __construct($pdo)
     {
         $this->reservationService = new ReservationService($pdo);
+        $this->userService = new UserService($pdo);
     }
 
     public function createReservation($data,$requestedId): void
     {
-        $requiredFields = ["email", "date", "time", "guests"];
+        $requiredFields = ["date", "time", "guests"];
         $this->validateData($data, $requiredFields);
 
+
         try {
+            $user = $this->userService->getById($requestedId);
+
             $user_id = $requestedId;
-            $email = $data["email"];
+            $email = $user["email"];
             $date = $data["date"];
             $time = $data["time"];
             $guests = $data["guests"];
             $this->reservationService->createReservation($user_id, $email, $date, $time, $guests);
-
+            $mailResult = MailService::sendReservationConfirmed($email, $user['name'], $date, $time);
             http_response_code(200);
             echo json_encode(["message" => 'Reservation created successfully ']);
         } catch (Exception $e) {
