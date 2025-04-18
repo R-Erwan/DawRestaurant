@@ -52,11 +52,12 @@ document.addEventListener('DOMContentLoaded', async () => {
         const data = computeFormData();
 
         if(checkValidity(data)){
-            await fetchPostException(data);
-            setTimeout(()=>{
-                location.reload();
-
-            },1000);
+            const res = await fetchPostException(data);
+            if(res.success){
+                setTimeout(()=>{
+                    location.reload();
+                },1000);
+            }
         }
 
     })
@@ -377,6 +378,7 @@ async function fetchPostException(data){
             body: JSON.stringify(data)
         });
         const dataJson = await response.json();
+        console.log(response);
         if(response.ok){
             showBanner('success',dataJson.message)
             return dataJson;

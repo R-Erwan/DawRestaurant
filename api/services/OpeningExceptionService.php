@@ -47,7 +47,7 @@ class OpeningExceptionService
     /**
      * @throws Exception
      */
-    public function create(string $date, bool $open, string $comment, string $times = null): false|string
+    public function create(string $date, bool $open, string $comment, ?array $times = null): false|string
     {
         $d = DateTime::createFromFormat('Y-m-d', $date);
         if (!$d || $d->format("Y-m-d") !== $date) {

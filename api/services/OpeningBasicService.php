@@ -65,7 +65,7 @@ class OpeningBasicService{
      */
     public function create(int $id_day, string $time_start, string $time_end, int $nb_places): string
     {
-        if($id_day < 0 || $id_day > 6){
+        if($id_day < 1 || $id_day > 7){
             throw new Exception("Invalid ID day");
         }
         if($nb_places < 0){

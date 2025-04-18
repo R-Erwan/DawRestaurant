@@ -113,13 +113,14 @@ async function submitAnnounce() {
 
             const result = await response.json();
             if (response.ok) {
-                imageUrl = result.data.url;
+                imageUrl = result.url;
                 body.image_url = imageUrl;
             } else {
                 showBanner('error : ', result.message);
                 return;
             }
         } catch (e) {
+            console.log(e);
             showBanner('error', "Erreur lors de l'upload de l'image");
             return;
         }

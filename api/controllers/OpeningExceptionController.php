@@ -46,7 +46,7 @@ class OpeningExceptionController
                 $data['open'],
                 $data['comment'],
                 $data['times'] ?? null);
-            respond(true, "Opening rules created successfully", 200, $result);
+            respond(true, "Opening rules created successfully", 200, ["id" => $result]);
         } catch (Exception $e) {
             respond(false, "Could not create opening rules : " . $e->getMessage(), 400);
         }
