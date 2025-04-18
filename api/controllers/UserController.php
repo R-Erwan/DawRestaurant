@@ -2,41 +2,36 @@
 
 namespace controllers;
 
+use Exception;
+use PDO;
 use services\UserService;
 
 class UserController
 {
     private UserService $userService;
 
-    public function __construct(\PDO $pdo)
+    public function __construct(PDO $pdo)
     {
         $this->userService = new UserService($pdo);
     }
 
-    public function getUserInfoById($id): void
+    public function getUserInfoById(int $id): never
     {
         try {
             $result = $this->userService->getById($id);
-            http_response_code(200);
-            echo json_encode([
-                'message' => 'User found',
-                'user' => $result
-            ]);
-        } catch (\Exception $e) {
-            http_response_code(404);
-            echo json_encode(["message" => $e->getMessage()]);
+            respond(true, "User found", 200, $result);
+        } catch (Exception $e) {
+            respond(false, "Can't retrieve user : " . $e->getMessage(), 400);
         }
     }
 
-    public function updateUserById($requestedUserId, $input): void
+    public function updateUserById(int $requestedUserId, mixed $input): never
     {
         if (!isset($input['email']) || !isset($input['name'])) {
-            http_response_code(400);
-            echo json_encode(['message' => 'Email and name are required']);
-            exit;
+            respond(false, "Missing required fields", 400);
         }
         try {
-            $result = $this->userService->updateById(
+            $this->userService->updateById(
                 $requestedUserId,
                 $input['name'],
                 $input['email'],
@@ -44,24 +39,19 @@ class UserController
                 $input['password'] ?? null,
                 $input['phone_number'] ?? null
             );
-            echo json_encode(["message" => "User updated successfully"]);
-        } catch (\Exception $e) {
-            http_response_code(404);
-            echo json_encode(["message" => $e->getMessage()]);
+            respond(true, "User found");
+        } catch (Exception $e) {
+            respond(false, "Can't update user : " . $e->getMessage(), 400);
         }
     }
 
-    public function getUserRolesById(mixed $requestedUserId) : void{
+    public function getUserRolesById(int $requestedUserId): never
+    {
         try {
             $result = $this->userService->getRolesById($requestedUserId);
-            http_response_code(200);
-            echo json_encode([
-                "message" => "User roles found",
-                "roles" => $result
-            ]);
-        } catch (\Exception $e){
-            http_response_code(404);
-            echo json_encode(["message" => $e->getMessage()]);
+            respond(true, "User roles found", 200, $result);
+        } catch (Exception $e) {
+            respond(false, "Can't retrieved user : " . $e->getMessage(), 400);
         }
     }
 }

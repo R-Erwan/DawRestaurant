@@ -14,9 +14,7 @@ class AuthMiddleware
         $authHeader = $_SERVER['HTTP_AUTHORIZATION'] ?? getallheaders()['Authorization'] ?? null;
 
         if (!$authHeader) {
-            http_response_code(401);
-            echo json_encode(["message" => "Authorization header missing"]);
-            exit;
+            respond(false,"Missing authorization header",401);
         }
 
         $token = str_replace("Bearer ", "", $authHeader);
@@ -25,23 +23,21 @@ class AuthMiddleware
             $decoded = JWT::decode($token, new Key(JWT_SECRET, 'HS256'));
             return (array)$decoded;
         } catch (\Exception $e) {
-            http_response_code(401);
-            echo json_encode(["message" => "Invalid or expired token"]);
-            exit;
+            respond(false,"Invalid or expired token",401);
         }
     }
 
-    public static function verifyAdminAcces() {
+    public static function verifyAdminAcces(): ?array
+    {
         $authUser = self::verifyToken();
         if (!isset($authUser['roles']) || !in_array('admin', $authUser['roles'])) {
-            http_response_code(403);
-            echo json_encode(["message" => "Access denied. Admin role required."]);
-            exit;
+            respond(false,"Access denied admin role required",403);
         }
         return $authUser;
     }
 
-    public static function verifyAdminAccesWithoutExit() {
+    public static function verifyAdminAccesWithoutExit(): false|array
+    {
         $authUser = self::verifyToken();
         if (!isset($authUser['roles']) || !in_array('admin', $authUser['roles'])) {
            return false;
@@ -49,12 +45,11 @@ class AuthMiddleware
         return $authUser;
     }
 
-    public static function verifyUserAccess($requestedUserId) {
+    public static function verifyUserAccess($requestedUserId): ?array
+    {
         $authUser = self::verifyToken();
         if($authUser['user_id'] !== $requestedUserId) {
-            http_response_code(403);
-            echo json_encode(["message" => "Unauthorized"]);
-            exit;
+            respond(false,"Unauthorized",401);
         }
         return $authUser;
 

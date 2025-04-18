@@ -13,9 +13,9 @@ class Reservation
         $this->pdo = $pdo;
     }
 
-    public function create($user_id, $name, $email, $reservation_date, $reservation_time, $number_of_people): bool
+    public function create(int $user_id, string $name, string $email, string $reservation_date, string $reservation_time, int $number_of_people): bool
     {
-        $sql ="INSERT INTO reservations (user_id, name, email, reservation_date, reservation_time, number_of_people) 
+        $sql = "INSERT INTO reservations (user_id, name, email, reservation_date, reservation_time, number_of_people) 
                 VALUES (:user_id, :name, :email, :reservation_date, :reservation_time, :number_of_people)";
 
 
@@ -40,7 +40,7 @@ class Reservation
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function getByID($id)
+    public function getByID(int $id)
     {
         $sql = "SELECT * FROM reservations WHERE id = :id";
         $stmt = $this->pdo->prepare($sql);
@@ -49,7 +49,7 @@ class Reservation
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function getByUserID($user_id)
+    public function getByUserID(int $user_id): array
     {
         $sql = "SELECT * FROM reservations WHERE user_id = :user_id";
         $stmt = $this->pdo->prepare($sql);
@@ -58,7 +58,7 @@ class Reservation
         return $stmt->fetchall(PDO::FETCH_ASSOC);
     }
 
-    public function update($id, $reservation_time, $number_of_people,$status): bool
+    public function update(int $id, string $reservation_time, int $number_of_people, string $status): bool
     {
         $sql = "UPDATE reservations SET
                         reservation_time = :reservation_time,
@@ -75,24 +75,24 @@ class Reservation
         return $stmt->execute();
     }
 
-    public function updateAdmin($id, $reservation_date, $reservation_time, $number_of_people, $status): bool
+    public function updateAdmin(int $id, string $reservation_date, string $reservation_time, int $number_of_people, string $status): bool
     {
         $fields = [];
         $params = [];
 
-        if($reservation_date) {
+        if ($reservation_date) {
             $fields[] = "reservation_date = ?";
             $params[] = $reservation_date;
         }
-        if($reservation_time) {
+        if ($reservation_time) {
             $fields[] = "reservation_time = ?";
             $params[] = $reservation_time;
         }
-        if($number_of_people) {
+        if ($number_of_people) {
             $fields[] = "number_of_people = ?";
             $params[] = $number_of_people;
         }
-        if($status) {
+        if ($status) {
             $fields[] = "status = ?";
             $params[] = $status;
         }
@@ -103,7 +103,7 @@ class Reservation
         return $stmt->execute($params);
     }
 
-    public function delete($id): bool
+    public function delete(int $id): bool
     {
         $sql = "DELETE FROM reservations WHERE id = :reservation_id";
         $stmt = $this->pdo->prepare($sql);
@@ -111,14 +111,15 @@ class Reservation
         return $stmt->execute();
     }
 
-    public function getNbPeopleByDate($date,$timeS,$timeE) {
+    public function getNbPeopleByDate(string $date, string $timeS, string $timeE)
+    {
         $sql = "SELECT SUM(number_of_people) AS total_personnes
             FROM reservations
             WHERE reservation_date = ? AND reservation_time BETWEEN ? AND ?
             AND status IN ('confirmed', 'waiting')";
 
         $stmt = $this->pdo->prepare($sql);
-        $stmt->execute([$date,$timeS,$timeE]);
+        $stmt->execute([$date, $timeS, $timeE]);
 
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
 

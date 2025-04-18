@@ -1,87 +1,100 @@
 <?php
 
 namespace services;
+
 use DateTime;
+use Exception;
+use InvalidArgumentException;
 use models\OpeningException;
+use PDO;
 use PDOException;
 
+class OpeningExceptionService
+{
 
-class OpeningExceptionService {
+    private OpeningException $openingException;
 
-    private $openingException;
-    public function __construct($pdo) {
+    public function __construct(PDO $pdo)
+    {
         $this->openingException = new OpeningException($pdo);
     }
 
     /**
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      */
-    public function getByDate($date){
+    public function getByDate(string $date): array
+    {
         $d = DateTime::createFromFormat('Y-m-d', $date);
-        if(!$d || $d->format("Y-m-d") !== $date){
-            throw new \InvalidArgumentException("Invalid date format");
+        if (!$d || $d->format("Y-m-d") !== $date) {
+            throw new InvalidArgumentException("Invalid date format");
         }
         return $this->openingException->getByDate($date);
     }
 
-    public function getAll(){
+    /**
+     * @internal This function is not used yet but may be used in a future version.
+     */
+    public function getAll(): array
+    {
         return $this->openingException->getAll();
     }
 
-    public function getAllFutur(){
+    public function getAllFutur(): array
+    {
         return $this->openingException->getAllFutur();
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
-    public function create($date, $open, $comment, $times = null){
+    public function create(string $date, bool $open, string $comment, string $times = null): false|string
+    {
         $d = DateTime::createFromFormat('Y-m-d', $date);
-        if(!$d || $d->format("Y-m-d") !== $date){
-            throw new \InvalidArgumentException("Invalid date format");
+        if (!$d || $d->format("Y-m-d") !== $date) {
+            throw new InvalidArgumentException("Invalid date format");
         }
         $today = new DateTime();
-        if($d < $today){
-            throw new \InvalidArgumentException("Invalid date");
+        if ($d < $today) {
+            throw new InvalidArgumentException("Invalid date");
         }
 
-        if(strlen($comment) > 1024){
-            throw new \InvalidArgumentException("Comment cannot be longer than 1024 characters");
+        if (strlen($comment) > 1024) {
+            throw new InvalidArgumentException("Comment cannot be longer than 1024 characters");
         }
-        if($open){
+        if ($open) {
             if (!is_array($times)) {
-                throw new \InvalidArgumentException("Times must be an array");
+                throw new InvalidArgumentException("Times must be an array");
             }
 
             if (count($times) === 0) {
-                throw new \InvalidArgumentException("Times must contain at least one entry");
+                throw new InvalidArgumentException("Times must contain at least one entry");
             }
 
             foreach ($times as $time) {
                 if (!is_array($time)) {
-                    throw new \InvalidArgumentException("Each time entry must be an array");
+                    throw new InvalidArgumentException("Each time entry must be an array");
                 }
 
                 // Vérifier que les clés time_start, time_end et nb_places existent
                 if (!isset($time['time_start'], $time['time_end'], $time['nb_places'])) {
-                    throw new \InvalidArgumentException("Each time entry must have time_start, time_end, and nb_places");
+                    throw new InvalidArgumentException("Each time entry must have time_start, time_end, and nb_places");
                 }
 
                 // Vérifier que time_start et time_end sont des chaînes valides de type TIME
                 $timeStart = DateTime::createFromFormat('H:i', $time['time_start']);
                 $timeEnd = DateTime::createFromFormat('H:i', $time['time_end']);
                 if (!$timeStart || !$timeEnd) {
-                    throw new \InvalidArgumentException("Invalid time format");
+                    throw new InvalidArgumentException("Invalid time format");
                 }
 
                 // Vérifier que nb_places est un entier positif
                 if (!is_int($time['nb_places']) || $time['nb_places'] < 0) {
-                    throw new \InvalidArgumentException("nb_places must be a positive integer");
+                    throw new InvalidArgumentException("nb_places must be a positive integer");
                 }
             }
 
             // Vérification des chevauchements
-            $intervals = array_map(function($time) {
+            $intervals = array_map(function ($time) {
                 return [
                     'start' => DateTime::createFromFormat('H:i', $time['time_start']),
                     'end' => DateTime::createFromFormat('H:i', $time['time_end'])
@@ -89,14 +102,14 @@ class OpeningExceptionService {
             }, $times);
 
             // Tri des intervalles par heure de début
-            usort($intervals, function($a, $b) {
+            usort($intervals, function ($a, $b) {
                 return $a['start'] <=> $b['start'];
             });
 
             // Vérifie s'il y a chevauchement entre intervalles consécutifs
             for ($i = 0; $i < count($intervals) - 1; $i++) {
                 if ($intervals[$i]['end'] > $intervals[$i + 1]['start']) {
-                    throw new \InvalidArgumentException("Time intervals must not overlap");
+                    throw new InvalidArgumentException("Time intervals must not overlap");
                 }
             }
 
@@ -104,51 +117,54 @@ class OpeningExceptionService {
 
         try {
             $strbool = $open ? 'true' : 'false';
-            $exc_id = $this->openingException->createExc($date,$strbool,$comment);
-            if(!$open){
-                $this->openingException->createExcTimeRule($exc_id,"00:00","23:59",0); // A tester
+            $exc_id = $this->openingException->createExc($date, $strbool, $comment);
+            if (!$open) {
+                $this->openingException->createExcTimeRule($exc_id, "00:00", "23:59", 0); // A tester
                 return $exc_id;
             }
             try {
                 foreach ($times as $time) {
-                    $this->openingException->createExcTimeRule($exc_id,$time["time_start"],$time["time_end"],$time["nb_places"]);
+                    $this->openingException->createExcTimeRule($exc_id, $time["time_start"], $time["time_end"], $time["nb_places"]);
                 }
             } catch (PDOException $e) {
                 $this->openingException->deleteById($exc_id);
-                throw new \Exception("Database Error" . $e->getMessage());
+                throw new Exception("Database Error" . $e->getMessage());
             }
             return $exc_id;
-        } catch (\PDOException $e) {
-            throw new \Exception("Database Error" . $e->getMessage());
+        } catch (PDOException $e) {
+            throw new Exception("Database Error" . $e->getMessage());
         }
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
-    public function deleteById($id){
+    public function deleteById(int $id): true
+    {
         try {
             $result = $this->openingException->deleteById($id);
-            if(!$result){
-                throw new \Exception("No rule to delete");
+            if (!$result) {
+                throw new Exception("No rule to delete");
             }
             return true;
-        } catch (\PDOException $e) {
-            throw new \Exception("Database Error");
+        } catch (PDOException) {
+            throw new Exception("Database Error");
         }
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
+     * @internal This function is not used yet but may be used in a future version.
      */
-    public function deleteByDate($date) {
+    public function deleteByDate(string $date): true
+    {
         $d = DateTime::createFromFormat('Y-m-d', $date);
-        if(!$d || $d->format("Y-m-d") !== $date){
-            throw new \InvalidArgumentException("Invalid date format");
+        if (!$d || $d->format("Y-m-d") !== $date) {
+            throw new InvalidArgumentException("Invalid date format");
         }
         $id = $this->openingException->getIdByDate($date);
-        if(!$id){
-            throw new \Exception("No rule to delete");
+        if (!$id) {
+            throw new Exception("No rule to delete");
         }
         $this->openingException->deleteById($id);
         return true;

@@ -1,4 +1,4 @@
-FROM php:8.2-apache
+FROM php:8.3-apache
 
 # Installer les bibliothèques de développement PostgreSQL et curl
 RUN apt-get update && apt-get install -y libpq-dev curl

@@ -1,87 +1,77 @@
 <?php
 
 namespace controllers;
+
 use Exception;
 use PDO;
 use services\OpeningBasicService;
 
-class OpeningBasicController{
-
+class OpeningBasicController
+{
     private OpeningBasicService $openingBasicService;
 
-    public function __construct(PDO $pdo){
+    public function __construct(PDO $pdo)
+    {
         $this->openingBasicService = new OpeningBasicService($pdo);
     }
 
-    public function getOpeningBasicByDate($date): void {
+    public function getOpeningBasicByDate(mixed $data): never
+    {
         try {
-            $result = $this->openingBasicService->getByDate($date);
-            http_response_code(200);
-            echo json_encode(["message" => "Opening rules retrieved successfully", "result" => $result]);
-        } catch(Exception $e) {
-            http_response_code(400);
-            echo json_encode(['message' => $e->getMessage()]);
+            $result = $this->openingBasicService->getByDate($data);
+            respond(true, "Opening rules retrieved successfully", 200, $result);
+        } catch (Exception $e) {
+            respond(false, "Can't retrieve Opening rules" . $e->getMessage(), 400);
         }
     }
 
-    public function getAllOpeningsBasic(): void {
+    public function getAllOpeningsBasic(): never
+    {
         try {
             $result = $this->openingBasicService->getAll();
-            http_response_code(200);
-            echo json_encode(["message" => "Opening rules retrieved successfully", "result" => $result]);
+            respond(true, "Opening rules retrieved successfully", 200, $result);
         } catch (Exception $e) {
-            http_response_code(400);
-            echo json_encode(['message' => $e->getMessage()]);
+            respond(false, "Can't retrieve Opening rules" . $e->getMessage(), 400);
         }
     }
 
-    public function createOpeningBasicRule($data): void {
-        if(!isset($data['id_day']) || !isset($data['time_start']) || !isset($data['time_end']) || !isset($data['nb_places'])){
-            http_response_code(400);
-            echo json_encode(['message' => 'Missing fields']);
-            exit;
+    public function createOpeningBasicRule(mixed $data): never
+    {
+        if (!isset($data['id_day']) || !isset($data['time_start']) || !isset($data['time_end']) || !isset($data['nb_places'])) {
+            respond(false, "Missing required fields", 400);
         }
         try {
             $result = $this->openingBasicService->create($data['id_day'], $data['time_start'], $data['time_end'], $data['nb_places']);
-            http_response_code(200);
-            echo json_encode(["message" => "Opening rule created successfully", "result" => $result]);
+            respond(true, "Opening rules created successfully", 200, ["id" => $result]);
         } catch (Exception $e) {
-            http_response_code(400);
-            echo json_encode(['message' => $e->getMessage()]);
+            respond(false, "Can't create Opening rules" . $e->getMessage(), 400);
         }
     }
 
-    public function updateOpeningBasicRule($data): void {
-        if(!isset($data['id_time']) || !isset($data['time_start']) || !isset($data['time_end']) || !isset($data['nb_places'])){
-            http_response_code(400);
-            echo json_encode(['message' => 'Missing information']);
-            exit;
+    public function updateOpeningBasicRule(mixed $data): never
+    {
+        if (!isset($data['id_time']) || !isset($data['time_start']) || !isset($data['time_end']) || !isset($data['nb_places'])) {
+            respond(false, "Missing required fields", 400);
         }
         try {
-            $result = $this->openingBasicService->updateById($data['id_time'], $data['time_start'], $data['time_end'], $data['nb_places']);
-            http_response_code(200);
-            echo json_encode(["message" => "Opening rule updated successfully", "result" => $result]);
+            $this->openingBasicService->updateById($data['id_time'], $data['time_start'], $data['time_end'], $data['nb_places']);
+            respond(true, "Opening rules updated successfully");
         } catch (Exception $e) {
-            http_response_code(400);
-            echo json_encode(['message' => $e->getMessage()]);
+            respond(false, "Can't update Opening rules" . $e->getMessage(), 400);
         }
     }
 
-    public function deleteOpeningBasicRule(): void {
-        if(!isset($_GET['id_time'])) {
-            http_response_code(400);
-            echo json_encode(['message' => 'Parameter id_time is required']);
-            exit;
+    public function deleteOpeningBasicRule(): never
+    {
+        if (!isset($_GET['id_time'])) {
+            respond(false, "Missing required fields", 400);
         }
         try {
-            $result = $this->openingBasicService->deleteById($_GET['id_time']);
-            http_response_code(200);
-            echo json_encode(["message" => "Opening rule deleted successfully", "result" => $result]);
+            $this->openingBasicService->deleteById($_GET['id_time']);
+            respond(true, "Opening rules deleted successfully");
         } catch (Exception $e) {
-            http_response_code(400);
-            echo json_encode(['message' => $e->getMessage()]);
+            respond(true, "Can't delete Opening rules" . $e->getMessage(), 400);
         }
     }
-
 
 }

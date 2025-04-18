@@ -22,7 +22,6 @@ class MailerConfig{
         $mail->Username = 'contact.leresto@gmail.com';
         $mail->Password = "tjvxgwcrrkydemar";
         $mail->Port = 587;
-        $mail->isHTML(true);
         $mail->setFrom('contact.leresto@gmail.com', 'Le Resto');
 
         return $mail;

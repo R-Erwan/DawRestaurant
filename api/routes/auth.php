@@ -19,26 +19,22 @@ switch (true) {
         // GET /api/auth?action=adminAccess
         if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['action'] === 'adminAccess') {
             $authUser = AuthMiddleware::verifyAdminAcces();
-            http_response_code(200);
-            echo json_encode(["message" => "Access granted!"]);
+            respond(true,"Access granted");
         }
 
         // POST /api/auth?action=login
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['action']) && $_GET['action'] === 'login') {
             $input = json_decode(file_get_contents('php://input'), true);
             $authController->login($input);
-            exit;
         }
 
         // POST /api/auth?register
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['action']) && $_GET['action'] === 'register') {
             $input = json_decode(file_get_contents('php://input'), true);
             $authController->register($input);
-            exit;
         }
 
-        http_response_code(404);
-        echo json_encode(['error' => 'Invalid auth endpoint']);
+        respond(false,"Invalide auth endpoint",404);
         break;
 
     case $subPath === 'request-reset-password':
@@ -59,9 +55,7 @@ switch (true) {
         break;
 
     default:
-        http_response_code(404);
-        echo json_encode(['error' => 'Invalid auth endpoint']);
-
+        respond(false,"Invalid auth endpoint",404);
 }
 
 

@@ -3,11 +3,13 @@
 
 namespace services;
 
+use DateMalformedStringException;
 use DateTime;
 use Exception;
 use Exception\PasswordResetRateLimitException;
 use Firebase\JWT\JWT;
 use models\User;
+use PDO;
 use Random\RandomException;
 
 //require_once 'config/config.php';
@@ -16,7 +18,7 @@ class AuthService
 {
     private User $user;
 
-    public function __construct($pdo)
+    public function __construct(PDO $pdo)
     {
         $this->user = new User($pdo);
     }
@@ -24,7 +26,8 @@ class AuthService
     /**
      * @throws Exception
      */
-    public function login($email, $password): array {
+    public function login(string $email, string $password): array
+    {
         $user = $this->user->findByEmail($email);
         if ($user && password_verify($password, $user['password'])) {
             $roles = array_map(fn($role) => $role['name'], $this->user->findRolesById($user['id']));
@@ -45,7 +48,7 @@ class AuthService
     /**
      * @throws Exception
      */
-    public function register($email, $password, $name)
+    public function register(string $email, string $password, string $name): false|string
     {
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             throw new Exception('Invalid email format');
@@ -65,11 +68,11 @@ class AuthService
     /**
      * @throws RandomException
      * @throws \PHPMailer\PHPMailer\Exception
-     * @throws \DateMalformedStringException
+     * @throws DateMalformedStringException
      * @throws PasswordResetRateLimitException
      * @throws Exception
      */
-    public function resetPasswordEmail($email): bool
+    public function resetPasswordEmail(string $email): void
     {
 
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
@@ -91,25 +94,26 @@ class AuthService
         }
 
         $token = $this->user->createTokenReset($email, $user['id']);
-        return MailService::sendResetPasswordLink($email, $token);
+        MailService::sendResetPasswordLink($email, $token);
     }
 
     /**
      * @throws Exception
      */
-    public function resetPasswordToken($token, $password) {
-            $tokenInfos =  $this->user->getTokenInfos($token);
-            if(!$tokenInfos) {
-                throw new Exception("Invalid token");
-            }
-            if(strtotime($tokenInfos['expires_at']) < time()) {
-                throw new Exception("Token expired");
-            }
-            if(strlen($password) < 8){
-                throw new Exception('Password must be at least 8 characters long');
-            }
+    public function resetPasswordToken(string $token, string $password): bool
+    {
+        $tokenInfos = $this->user->getTokenInfos($token);
+        if (!$tokenInfos) {
+            throw new Exception("Invalid token");
+        }
+        if (strtotime($tokenInfos['expires_at']) < time()) {
+            throw new Exception("Token expired");
+        }
+        if (strlen($password) < 8) {
+            throw new Exception('Password must be at least 8 characters long');
+        }
 
-            return $this->user->resetPassword($tokenInfos['email'], $password);
+        return $this->user->resetPassword($tokenInfos['email'], $password);
     }
 
 }

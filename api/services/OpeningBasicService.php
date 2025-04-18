@@ -2,66 +2,74 @@
 
 namespace services;
 use DateTime;
+use Exception;
+use InvalidArgumentException;
 use models\OpeningBasic;
+use PDO;
+use PDOException;
 
 class OpeningBasicService{
 
-    private $openingBasic;
-    public function __construct($pdo){
+    private OpeningBasic $openingBasic;
+    public function __construct(PDO $pdo){
         $this->openingBasic = new OpeningBasic($pdo);
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
-    public function getByDate($date){
+    public function getByDate(string $date): array
+    {
         $timestamp = strtotime($date);
         if($timestamp === false){
-            throw new \Exception("Date format invalid");
+            throw new Exception("Date format invalid");
         }
         $dayWeek = date('w', $timestamp);
         if($dayWeek == 0){ $dayWeek = 7;}
         try {
             return $this->getById($dayWeek);
-        } catch (\Exception $e) {
+        } catch (Exception) {
             return [];
         }
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
-    public function getById($id_day){
+    public function getById(int $id_day): array
+    {
         if($id_day < 1 || $id_day > 7){
-            throw new \Exception("Invalid ID day");
+            throw new Exception("Invalid ID day");
         }
         $openingBasic = $this->openingBasic->getById($id_day);
         if($openingBasic){
             return $openingBasic;
         }
-        throw new \Exception("Opening Basic rules Not Found");
+        throw new Exception("Opening Basic rules Not Found");
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
-    public function getAll(){
+    public function getAll(): array
+    {
         $openingBasic = $this->openingBasic->getAll();
         if($openingBasic){
             return $openingBasic;
         }
-        throw new \Exception("Openings Basics rules Not Founds");
+        throw new Exception("Openings Basics rules Not Founds");
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
-    public function create($id_day, $time_start, $time_end, $nb_places){
+    public function create(int $id_day, string $time_start, string $time_end, int $nb_places): string
+    {
         if($id_day < 0 || $id_day > 6){
-            throw new \Exception("Invalid ID day");
+            throw new Exception("Invalid ID day");
         }
         if($nb_places < 0){
-            throw new \Exception("Bad number of places, can't be negative");
+            throw new Exception("Bad number of places, can't be negative");
         }
 
         $timeStart = DateTime::createFromFormat('H:i', $time_start);
@@ -71,11 +79,11 @@ class OpeningBasicService{
         $maxHour = new DateTime('24:00'); //Max
 
         if ($timeStart < $minHour || $timeEnd > $maxHour) {
-            throw new \InvalidArgumentException("Hours must be between 08:00 and 24:00");
+            throw new InvalidArgumentException("Hours must be between 08:00 and 24:00");
         }
 
         if (!$timeStart || !$timeEnd || $timeStart >= $timeEnd) {
-            throw new \InvalidArgumentException("Invalid or inconsistent time format");
+            throw new InvalidArgumentException("Invalid or inconsistent time format");
         }
 
         // Vérifie les conflits d'intervalles
@@ -85,69 +93,74 @@ class OpeningBasicService{
             $existingEnd = DateTime::createFromFormat('H:i:s', $range['time_end']);
 
             if ($timeStart < $existingEnd && $existingStart < $timeEnd) {
-                throw new \Exception("Time range conflicts with an existing range");
+                throw new Exception("Time range conflicts with an existing range");
             }
         }
 
         try {
-            return $this->openingBasic->create($id_day, $time_start, $time_end, $nb_places);
-        } catch (\PDOException $e) {
+            $result = $this->openingBasic->create($id_day, $time_start, $time_end, $nb_places);
+            if(!$result){
+                throw new Exception("Opening Basic rules Failed");
+            }
+            return $result;
+        } catch (PDOException $e) {
             $code = $e->getCode();
             if($code == '23505'){
-                throw new \Exception("Time range already exists for this day");
+                throw new Exception("Time range already exists for this day");
             } elseif ($code == '23514') {
-                throw new \Exception("End time must be after start time");
+                throw new Exception("End time must be after start time");
             } else {
-                throw new \Exception("Database Error: " . $e->getMessage());
+                throw new Exception("Database Error: " . $e->getMessage());
             }
         }
     }
 
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
-    public function updateById($id_time, $time_start, $time_end, $nb_places){
+    public function updateById(int $id_time, string $time_start, string $time_end, int $nb_places): true
+    {
         if($nb_places < 0){
-            throw new \Exception("Number of places must be greater than zero");
+            throw new Exception("Number of places must be greater than zero");
         }
 
         $timeStart = DateTime::createFromFormat('H:i', $time_start);
         $timeEnd = DateTime::createFromFormat('H:i', $time_end);
         if (!$timeStart || !$timeEnd) {
-            throw new \InvalidArgumentException("Invalid time format");
+            throw new InvalidArgumentException("Invalid time format");
         }
 
         try {
              $result = $this->openingBasic->updateByTimeId($id_time,$time_start,$time_end,$nb_places);
              if(!$result){
-                 throw new \Exception("No rules found to update");
+                 throw new Exception("No rules found to update");
              }
              return true;
-        } catch (\PDOException $e) {
+        } catch (PDOException $e) {
             $code = $e->getCode();
             if($code == '23505'){
-                throw new \Exception("Time range already exists for this day");
+                throw new Exception("Time range already exists for this day");
             } elseif ($code == '23514') {
-                throw new \Exception("End time must be after start time");
+                throw new Exception("End time must be after start time");
             } else {
-                throw new \Exception("Database Error");
+                throw new Exception("Database Error");
             }
         }
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
-    public function deleteById($id_time): bool {
+    public function deleteById(int $id_time): true {
         try {
             $result = $this->openingBasic->delete($id_time);
             if(!$result){
-                throw new \Exception("No rules to delete");
+                throw new Exception("No rules to delete");
             }
             return true;
-        } catch (\PDOException $e) {
-            throw new \Exception("Database Error");
+        } catch (PDOException) {
+            throw new Exception("Database Error");
         }
     }
 

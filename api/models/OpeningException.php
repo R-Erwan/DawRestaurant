@@ -2,15 +2,18 @@
 
 namespace models;
 
+use PDO;
+
 class OpeningException {
 
-    private $pdo;
+    private PDO $pdo;
 
-    public function __construct($pdo) {
+    public function __construct(PDO $pdo) {
         $this->pdo = $pdo;
     }
 
-    public function getAll() {
+    public function getAll(): array
+    {
         $sql = '
             SELECT * FROM exception_rules er
             JOIN exception_time_rules et ON er.id = et.id_exc
@@ -21,7 +24,8 @@ class OpeningException {
         return $stmt->fetchAll();
     }
 
-    public function getAllFutur() {
+    public function getAllFutur(): array
+    {
         $sql = '
             SELECT * FROM exception_rules er
             JOIN exception_time_rules etr on er.id = etr.id_exc
@@ -31,7 +35,8 @@ class OpeningException {
         return $stmt->fetchAll();
     }
 
-    public function getByDate($date){
+    public function getByDate(string $date): array
+    {
         $sql = '
             SELECT * FROM exception_rules er
             JOIN exception_time_rules et ON er.id = et.id_exc
@@ -41,28 +46,31 @@ class OpeningException {
         return $stmt->fetchAll();
     }
 
-    public function getIdByDate($date){
+    public function getIdByDate(string $date){
         $sql = 'SELECT id FROM exception_rules WHERE date = ?';
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute([$date]);
         return $stmt->fetchColumn();
     }
 
-    public function createExc($date, $open, $comment) {
+    public function createExc(string $date, bool $open, string $comment): false|string
+    {
         $sql = 'INSERT INTO exception_rules (date, open, comment) VALUES (?, ?, ?)';
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute([$date, $open, $comment]);
         return $this->pdo->lastInsertId();
     }
 
-    public function createExcTimeRule($id_exc, $time_start, $time_end, $nb_places) {
+    public function createExcTimeRule(int $id_exc, string $time_start, string $time_end, int $nb_places): false|string
+    {
         $sql = 'INSERT INTO exception_time_rules (id_exc, time_start, time_end, number_of_places) VALUES (?,?,?,?)';
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute([$id_exc, $time_start, $time_end, $nb_places]);
         return $this->pdo->lastInsertId();
     }
 
-    public function deleteById($id) {
+    public function deleteById(int $id): int
+    {
         $sql = 'DELETE FROM exception_rules WHERE id = ?';
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute([$id]);

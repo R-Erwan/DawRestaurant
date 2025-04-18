@@ -15,25 +15,24 @@ $reservationService = new ReservationService($pdo);
 $authUser = AuthMiddleware::verifyAdminAccesWithoutExit();
 
 /* Public routes */
+
 //  /api/reservation?id=
 if($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['id'])) {
     $requestedUserId = intval($_GET['id']);
     if(!$authUser){
-        $authUser = AuthMiddleware::verifyUserAccess($requestedUserId); // Vérifie que c'est le bon user qui demande cette id
+        $authUser = AuthMiddleware::verifyUserAccess($requestedUserId); // Vérifie que c'est le bon utilisateur qui demande cette id
     }
     $reservationController->getReservationByUser($_GET['id']);
-    exit;
 }
 
 // POST /api/reservation?id=
 if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_GET['id'])) {
     $requestedUserId = intval($_GET['id']);
     if(!$authUser){
-        $authUser = AuthMiddleware::verifyUserAccess($requestedUserId); // Vérifie que c'est le bon user qui demande cette id
+        $authUser = AuthMiddleware::verifyUserAccess($requestedUserId); // Vérifie que c'est le bon utilisateur qui demande cette id
     }
     $data = json_decode(file_get_contents('php://input'), true);
     $reservationController->createReservation($data,$requestedUserId);
-    exit;
 }
 
 // PUT /api/reservation?id=
@@ -42,20 +41,15 @@ if($_SERVER['REQUEST_METHOD'] == 'PUT' && isset($_GET['id_reservation'])) {
         $requestedReservation = $reservationService->getReservation($_GET['id_reservation']);
         $requestedUserId = $requestedReservation['user_id'];
     } catch (Exception $e) {
-        http_response_code(404);
-        echo json_encode(['error' => 'Invalid request']);
-        exit;
+        respond(false,"Invalid request : " . $e->getMessage(),404);
     }
     $data = json_decode(file_get_contents('php://input'), true);
-
     if(!$authUser){
         $authUser = AuthMiddleware::verifyUserAccess($requestedUserId);
         $reservationController->updateReservation($data,$_GET['id_reservation']);
     } else {
         $reservationController->updateReservationAdmin($data,$_GET['id_reservation']);
     }
-
-    exit;
 }
 
 /* PROTECTED ROUTE ADMIN ONLY */
@@ -63,12 +57,9 @@ if($_SERVER['REQUEST_METHOD'] == 'PUT' && isset($_GET['id_reservation'])) {
 // GET /api/reservation
 if($_SERVER['REQUEST_METHOD'] == 'GET') {
     if(!$authUser){
-        http_response_code(403);
-        echo json_encode(["message" => "Unauthorized"]);
-        exit;
+        respond(false,"Unauthorized", 403);
     }
     $reservationController->getAllReservations();
-    exit;
 }
 
 // DELETE /api/reservation?id=
@@ -78,20 +69,15 @@ if($_SERVER['REQUEST_METHOD'] == 'DELETE' && isset($_GET['id_reservation'])) {
         $requestedReservation = $reservationService->getReservation($_GET['id_reservation']);
         $requestedUserId = $requestedReservation['user_id'];
     } catch (Exception $e) {
-        http_response_code(404);
-        echo json_encode(['error' => 'Invalid request']);
-        exit;
+        respond(false,"Invalid request : " . $e->getMessage(),404);
     }
     if(!$authUser){
         $authUser = AuthMiddleware::verifyUserAccess($requestedUserId);
     }
-
     $reservationController->deleteReservation($_GET['id_reservation']);
-    exit;
 }
 
-http_response_code(404);
-echo json_encode(['error' => 'Invalid reservation endpoint']);
+respond(false,"Invalid reservation endpoint",404);
 
 
 

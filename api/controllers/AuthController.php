@@ -10,88 +10,66 @@ class AuthController
 {
     private AuthService $authService;
 
-    public function __construct($pdo)
+    public function __construct(\PDO $pdo)
     {
         $this->authService = new AuthService($pdo);
     }
 
-    public function login($input): void
+    public function login(mixed $input): never
     {
         if (!isset($input['email']) || !isset($input['password'])) {
-            http_response_code(400);
-            echo json_encode(['message' => 'Email and password are required']);
-            exit;
+            respond(false, "Email and password are required", 400);
         }
         try {
             $result = $this->authService->login($input['email'], $input['password']);
-            http_response_code(200);
-            echo json_encode([
-                'message' => 'Logged in successfully',
-                'token' => $result['token']
-            ]);
+            respond(true, "Logged in successfuly", 200, $result);
         } catch (\Exception $e) {
-            http_response_code(401);
-            echo json_encode(['message' => $e->getMessage()]);
+            respond(false, "Login failed : " . $e->getMessage(), 401);
         }
     }
 
-    public function register($data): void
+    public function register(mixed $data): never
     {
         if (!isset($data['email']) || !isset($data['password']) || !isset($data['name'])) {
-            http_response_code(400);
-            echo json_encode(['message' => "Missing required fields"]);
-            exit;
+            respond(false, "Missing required fields", 400);
         }
         try {
             $result = $this->authService->register($data['email'], $data['password'], $data['name']);
-            http_response_code(200);
-            echo json_encode(['message' => 'User created successfully']);
+            respond(true, "User created successfully", 200, ["id" => $result]);
         } catch (\Exception $e) {
-            http_response_code(400);
-            echo json_encode(['message' => $e->getMessage()]);
+            respond(false, "Failed to register user : " . $e->getMessage(), 400);
         }
     }
 
-    public function resetPasswordEmail($data): void{
-        if(!isset($data['email'])) {
-            http_response_code(400);
-            echo json_encode(['message' => "Missing required fields"]);
-            exit;
+    public function resetPasswordEmail(mixed $data): never
+    {
+        if (!isset($data['email'])) {
+            respond(false, "Missing required fields", 400);
         }
-
         try {
             $result = $this->authService->resetPasswordEmail($data['email']);
-            if($result){
-                http_response_code(200);
-                echo json_encode(['message' => 'Password reset links send successfully']);
+            if ($result) {
+                respond(true, "Password reset links send successfully", 200);
             } else {
-                http_response_code(400);
-                echo json_encode(['message' => 'Error sending reset links']);
+                respond(false, "Error sending reset links", 500);
             }
-
-        } catch (PasswordResetRateLimitException $e){
-            http_response_code($e->getCode());
-            echo json_encode(['message' => $e->getMessage()]);
-
-        } catch (\Exception $e){
-            http_response_code(400);
-            echo json_encode(['message' => "Error sending reset password links". $e->getMessage()]);
+        } catch (PasswordResetRateLimitException $e) {
+            respond(false, $e->getMessage(), $e->getCode());
+        } catch (\Exception $e) {
+            respond(false, "Error sending reset password links : " . $e->getMessage(), 400);
         }
     }
 
-    public function resetPasswordToken($data): void{
-        if(!isset($data['token']) || !isset($data['password'])) {
-            http_response_code(400);
-            echo json_encode(['message' => "Missing required fields"]);
-            exit;
+    public function resetPasswordToken(mixed $data): never
+    {
+        if (!isset($data['token']) || !isset($data['password'])) {
+            respond(false, "Missing required fields", 400);
         }
         try {
-            $result = $this->authService->resetPasswordToken($data['token'], $data['password']);
-            http_response_code(200);
-            echo json_encode(["message" => "Password reset successfully"]);
-        } catch (\Exception $e){
-            http_response_code(400);
-            echo json_encode(["message" => "Error reset password : ". $e->getMessage()]);
+            $this->authService->resetPasswordToken($data['token'], $data['password']);
+            respond(true, "Password reset successfully", 200);
+        } catch (\Exception $e) {
+            respond(false, "Error reset password : " . $e->getMessage(), 400);
         }
     }
 }

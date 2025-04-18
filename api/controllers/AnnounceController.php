@@ -1,115 +1,106 @@
 <?php
 
 namespace controllers;
+
+use Exception;
+use PDO;
 use services\AnnounceService;
 
-class AnnounceController{
+class AnnounceController
+{
 
-    private $annouceService;
-    public function __construct(\PDO $pdo){
-        $this->annouceService = new AnnounceService($pdo);
+    private AnnounceService $announceService;
+
+    public function __construct(PDO $pdo)
+    {
+        $this->announceService = new AnnounceService($pdo);
     }
 
-    public function createAnnounce($data): void {
-        if(!isset($data['type'])) {
-            http_response_code(400);
-            echo json_encode(['message' => 'Type is required']);
-            exit;
+    public function createAnnounce(mixed $data): never
+    {
+        if (!isset($data['type'])) {
+            respond(false, "Invalid type", 400);
         }
-
         try {
-            $result = $this->annouceService->create(
+            $result = $this->announceService->create(
                 $data['type'],
                 $data['title'] ?? null,
                 $data['description'] ?? null,
                 $data['image_url'] ?? null
             );
-            http_response_code(200);
-            echo json_encode(["message" => "Annouce created successfully", "result" => $result]);
-        } catch(\Exception $e) {
-            http_response_code(404);
-            echo json_encode(['message' => $e->getMessage()]);
+            respond(true, "Announce created successfully", 200, ["id" => $result]);
+        } catch (Exception $e) {
+            respond(false, "Can not create announce : " . $e->getMessage(), 400);
         }
     }
 
-    public function getAllAnnouces(): void {
+    public function getAllAnnounces(): never
+    {
         try {
-            $result = $this->annouceService->getAllAnnouncesOrderedByPosition();
-            http_response_code(200);
-            echo json_encode(["message" => "Annonces retrieved successfully", "result" => $result]);
-        } catch (\Exception $e) {
-            http_response_code(404);
-            echo json_encode(['message' => $e->getMessage()]);
+            $result = $this->announceService->getAllAnnouncesOrderedByPosition();
+            respond(true, "Annonces retrieved successfully", 200, $result);
+        } catch (Exception $e) {
+            respond(false, 400, "Can't retrieve announces : " . $e->getMessage());
         }
     }
 
-    public function updateAnnounce($data): void {
-        if(!isset($data['id'])) {
-            http_response_code(400);
-            echo json_encode(['message' => 'Id is required']);
-            exit;
+    public function updateAnnounce(mixed $data): never
+    {
+        if (!isset($data['id'])) {
+            respond(false, "Missing required field ID", 400);
         }
         try {
-            $result = $this->annouceService->updateById(
+            $this->announceService->updateById(
                 $data['id'],
                 $data['title'] ?? null,
                 $data['description'] ?? null,
                 $data['image_url'] ?? null
             );
-            http_response_code(200);
-            echo json_encode(["message" => "Annonce updated successfully"]);
-        } catch (\Exception $e){
-            http_response_code(404);
-            echo json_encode(['message' => $e->getMessage()]);
+            respond(true, "Announce updated successfully");
+        } catch (Exception $e) {
+            respond(false, "Can not update announce : " . $e->getMessage(), 400);
         }
     }
 
-    public function updatePositions($data) :void {
-        if(!isset($data['positions']) || !is_array($data['positions'])) {
-            http_response_code(400);
-            echo json_encode(['message' => 'Invalid positions format']);
-            exit;
+    public function updatePositions(mixed $data): never
+    {
+        if (!isset($data['positions']) || !is_array($data['positions'])) {
+            respond(false, "Missing required field, or invalid format", 400);
         }
         $positions = $data['positions'];
 
         // Vérifier que toutes les annonces existent
-        $allAnnounces = $this->annouceService->getAllAnnouncesOrderedByPosition();
+        $allAnnounces = $this->announceService->getAllAnnouncesOrderedByPosition();
         $announceIds = array_column($allAnnounces, 'id');
         if (count($positions) !== count($announceIds) || array_diff($announceIds, $positions)) {
-            http_response_code(400);
-            echo json_encode(['message' => 'Invalid positions array']);
-            exit;
+            respond(false, "Invalid positions array", 400);
         }
 
         // Mettre à jour les positions
         try {
             foreach ($positions as $newPosition => $announceId) {
-                $this->annouceService->changeAnnounceOrder($announceId, $newPosition + 1);
+                $this->announceService->changeAnnounceOrder($announceId, $newPosition + 1);
             }
-        } catch(\Exception $e) {
-            http_response_code(404);
-            echo json_encode(['message' => $e->getMessage()]);
+        } catch (Exception $e) {
+            respond(false, "Can not change positions : " . $e->getMessage(), 400);
         }
 
-        $this->annouceService->reorderAnnounces(); //Réordonne les positions
+        $this->announceService->reorderAnnounces(); //Réordonne les positions
 
-        http_response_code(200);
-        echo json_encode(['message' => 'Positions updated successfully']);
+        respond(true, "Announces updated successfully");
     }
 
-    public function deleteAnnounce(): void {
-        if(!isset($_GET['announce_id'])) {
-            http_response_code(400);
-            echo json_encode(['message' => 'announce_id is required']);
+    public function deleteAnnounce(): never
+    {
+        if (!isset($_GET['announce_id'])) {
+            respond(false, "Missing required field", 400);
         }
         try {
-            $this->annouceService->deleteAnnounce($_GET['announce_id']);
-            $this->annouceService->reorderAnnounces(); //Réordonne les positions
-            http_response_code(200);
-            echo json_encode(['message' => 'Announce deleted successfully']);
-        } catch(\Exception $e) {
-            http_response_code(404);
-            echo json_encode(['message' => $e->getMessage()]);
+            $this->announceService->deleteAnnounce($_GET['announce_id']);
+            $this->announceService->reorderAnnounces(); //Réordonne les positions
+            respond(true, "Announces deleted successfully");
+        } catch (Exception $e) {
+            respond(false, "Can not delete announce : " . $e->getMessage(), 400);
         }
     }
 }

@@ -2,16 +2,22 @@
 
 namespace models;
 
+use PDO;
 use Random\RandomException;
 
 require_once 'config/db.php';
 
-class User {
-    private $pdo;
-    public function __construct($pdo) {
+class User
+{
+    private PDO $pdo;
+
+    public function __construct($pdo)
+    {
         $this->pdo = $pdo;
     }
-    public function create($name, $email, $password, $role = 'user') {
+
+    public function create(string $name, string $email, int $password, string $role = 'user'): false|string
+    {
         // Insertion utilisateur
         $sql = "INSERT INTO users (name, email, password) VALUES (?, ?, ?)";
         $stmt = $this->pdo->prepare($sql);
@@ -32,13 +38,16 @@ class User {
 
         return $userId;
     }
-    public function findByEmail($email) {
+
+    public function findByEmail(string $email)
+    {
         $sql = "SELECT * FROM users WHERE email = ?";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute([$email]);
         return $stmt->fetch();
     }
-    public function emailExistsExceptCurrentUser($email, $id): bool
+
+    public function emailExistsExceptCurrentUser(string $email, int $id): bool
     {
         // Requête SQL pour vérifier si un autre utilisateur avec cet email existe
         $sql = "SELECT COUNT(*) FROM users WHERE email = ? AND id != ?";
@@ -48,20 +57,26 @@ class User {
         // Si le compte est supérieur à 0, cela signifie qu'il y a déjà un utilisateur avec cet email
         return $stmt->fetchColumn() > 0;
     }
-    public function findById($id) {
+
+    public function findById(int $id)
+    {
         $sql = "SELECT * FROM users WHERE id = ?";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute([$id]);
         return $stmt->fetch();
     }
-    private function getRoleIdByName($role){
+
+    private function getRoleIdByName(string $role)
+    {
         $sql = "SELECT id FROM roles WHERE name = ?";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute([$role]);
         $role = $stmt->fetch();
         return $role ? $role['id'] : null;
     }
-    public function updateById($id, $name, $email, $firstName = null,  $password = null, $phone = null, $role = 'user') {
+
+    public function updateById(int $id, string $name, string $email, string $firstName = null, string $password = null, string $phone = null): bool
+    {
         // Préparation des parties de la requête
         $fields = [];
         $params = [];
@@ -100,23 +115,21 @@ class User {
         return $stmt->execute($params);
     }
 
-    public function findRolesById(mixed $requestedUserId){
+    public function findRolesById(int $requestedUserId): ?array
+    {
         $sql = "SELECT r.name FROM roles r 
                 JOIN user_roles ur ON r.id = ur.role_id
                 WHERE ur.user_id = ?";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute([$requestedUserId]);
-        $roles = $stmt->fetchAll();
-        if($roles){
-            return $roles;
-        }
-        return null;
+        return $stmt->fetchAll();
     }
 
     /**
      * @throws RandomException
      */
-    public function createTokenReset($email,$user_id): string {
+    public function createTokenReset(string $email, int $user_id): string
+    {
         $sql = "UPDATE users SET last_reset_request = NOW() WHERE id = ?";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute([$user_id]);
@@ -128,23 +141,25 @@ class User {
         return $token;
     }
 
-    public function getTokenInfos($token) {
+    public function getTokenInfos(string $token)
+    {
         $sql = "SELECT email, expires_at FROM password_resets WHERE token = ?";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute([$token]);
         return $stmt->fetch();
     }
 
-     public function resetPassword($email,$password){
+    public function resetPassword(string $email, string $password): bool
+    {
         $sql = "UPDATE users set password = ? WHERE email = ?";
         $stmt = $this->pdo->prepare($sql);
-        $stmt->execute([ password_hash($password, PASSWORD_BCRYPT), $email]);
+        $stmt->execute([password_hash($password, PASSWORD_BCRYPT), $email]);
 
         //Supprime tous les tokens de reset de l'utilisateur
         $sql2 = "DELETE FROM password_resets WHERE email = ?";
         $stmt2 = $this->pdo->prepare($sql2);
         return $stmt2->execute([$email]);
-     }
+    }
 
 
 }

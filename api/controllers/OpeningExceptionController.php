@@ -1,43 +1,44 @@
 <?php
 
 namespace controllers;
+
 use Exception;
 use PDO;
 use services\OpeningExceptionService;
-class OpeningExceptionController{
-    private $openingExceptionService;
 
-    public function __construct(PDO $pdo){
+class OpeningExceptionController
+{
+    private OpeningExceptionService $openingExceptionService;
+
+    public function __construct(PDO $pdo)
+    {
         $this->openingExceptionService = new OpeningExceptionService($pdo);
     }
 
-    public function getOpeningExceptionByDate($date){
+    public function getOpeningExceptionByDate(mixed $data): never
+    {
         try {
-            $result = $this->openingExceptionService->getByDate($date);
-            http_response_code(200);
-            echo json_encode(["message" => "Opening rules retrieved successfully", "result" => $result]);
+            $result = $this->openingExceptionService->getByDate($data);
+            respond(true, "Opening rules retrieved successfully", 200, $result);
         } catch (Exception $e) {
-            http_response_code(400);
-            echo json_encode(["message" => $e->getMessage()]);
+            respond(false, "Could not retrieve opening rules : " . $e->getMessage(), 400);
         }
     }
 
-    public function getAllFuturOpeningsExceptions(){
+    public function getAllFuturOpeningsExceptions(): never
+    {
         try {
             $result = $this->openingExceptionService->getAllFutur();
-            http_response_code(200);
-            echo json_encode(["message" => "Opening rules retrieved successfully", "result" => $result]);
+            respond(true, "Opening rules retrieved successfully", 200, $result);
         } catch (Exception $e) {
-            http_response_code(400);
-            echo json_encode(["message" => $e->getMessage()]);
+            respond(false, "Could not retrieve opening rules : " . $e->getMessage(), 400);
         }
     }
 
-    public function createOpeningException($data){
-        if(!isset($data['date']) || !isset($data['open']) || !isset($data['comment'])){
-            http_response_code(400);
-            echo json_encode(["message" => "Missing fields"]);
-            exit;
+    public function createOpeningException(mixed $data): never
+    {
+        if (!isset($data['date']) || !isset($data['open']) || !isset($data['comment'])) {
+            respond(false, "Missing required fields", 400);
         }
         try {
             $result = $this->openingExceptionService->create(
@@ -45,27 +46,22 @@ class OpeningExceptionController{
                 $data['open'],
                 $data['comment'],
                 $data['times'] ?? null);
-            http_response_code(200);
-            echo json_encode(["message" => "Opening rules created successfully", "result" => $result]);
+            respond(true, "Opening rules created successfully", 200, $result);
         } catch (Exception $e) {
-            http_response_code(400);
-            echo json_encode(["message" => $e->getMessage()]);
+            respond(false, "Could not create opening rules : " . $e->getMessage(), 400);
         }
     }
 
-    public function deleteOpeningException(){
-        if(!isset($_GET['id_exc'])) {
-            http_response_code(400);
-            echo json_encode(['message' => 'Parameter id_exc is required']);
-            exit;
+    public function deleteOpeningException(): never
+    {
+        if (!isset($_GET['id_exc'])) {
+            respond(false, "Missing required fields", 400);
         }
         try {
-            $result = $this->openingExceptionService->deleteById($_GET['id_exc']);
-            http_response_code(200);
-            echo json_encode(["message" => "Opening Exception rule delted successfully", "result" => $result]);
+            $this->openingExceptionService->deleteById($_GET['id_exc']);
+            respond(true, "Opening exception rules deleted successfully");
         } catch (Exception $e) {
-            http_response_code(400);
-            echo json_encode(["message" => $e->getMessage()]);
+            respond(false, "Could not delete opening rules : " . $e->getMessage(), 400);
         }
     }
 

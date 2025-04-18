@@ -2,13 +2,17 @@
 
 namespace models;
 
+use Exception;
+use PDO;
+
 class Announce {
-    private $pdo;
-    public function __construct($pdo) {
+    private PDO $pdo;
+    public function __construct(PDO $pdo) {
         $this->pdo = $pdo;
     }
 
-    public function create(int $type, string $title = null, string $description = null, string $image_url = null) {
+    public function create(int $type, string $title = null, string $description = null, string $image_url = null): false|string
+    {
         $sql = "INSERT INTO announces (type, position, title, description, image_url) VALUES (?, (SELECT COALESCE(MAX(position), 0) + 1 FROM announces), ?, ?, ?)";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute([$type, $title, $description, $image_url]);
@@ -30,17 +34,19 @@ class Announce {
         return $stmt->fetch();
     }
 
-    public function findAll(){
-        $sql = "SELECT * FROM announces ORDER BY position ASC";
+    public function findAll(): array
+    {
+        $sql = "SELECT * FROM announces ORDER BY position ";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll();
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
-    public function updatePosition(int $id, int $newPosition) {
+    public function updatePosition(int $id, int $newPosition): ?bool
+    {
         // Récupérer la position actuelle
         $sql = "SELECT position FROM announces WHERE id = ?";
         $stmt = $this->pdo->prepare($sql);
@@ -48,11 +54,11 @@ class Announce {
         $currentPosition = $stmt->fetchColumn();
 
         if ($currentPosition === false) {
-            throw new \Exception("Announce not found.");
+            throw new Exception("Announce not found.");
         }
 
         if ($currentPosition == $newPosition) {
-            return; // Pas de changement
+            return null; // Pas de changement
         }
 
         // Décaler les autres annonces
@@ -71,7 +77,8 @@ class Announce {
         return $this->pdo->prepare($sql)->execute([$newPosition, $id]);
     }
 
-    public function reorderAll() {
+    public function reorderAll(): bool
+    {
         $sql = "WITH reordered AS (
                 SELECT id, ROW_NUMBER() OVER (ORDER BY position ASC) AS new_position
                 FROM announces
@@ -86,7 +93,8 @@ class Announce {
     }
 
 
-    public function updateById(int $id, string $title = null, string $description = null, string $image_url = null) {
+    public function updateById(int $id, string $title = null, string $description = null, string $image_url = null): bool
+    {
         $fields = [];
         $params = [];
 
