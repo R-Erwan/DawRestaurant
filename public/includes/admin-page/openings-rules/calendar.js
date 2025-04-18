@@ -434,5 +434,5 @@ function checkValidity(data){
 
     }
 
-    return false;
+    return true;
 }
