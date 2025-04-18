@@ -7,10 +7,6 @@ use services\MailService;
 use services\ReservationService;
 use services\UserService;
 
-require_once 'services/ReservationService.php';
-require_once 'services/MailService.php';
-require_once 'services/UserService.php';
-
 class ReservationController
 {
     private ReservationService $reservationService;

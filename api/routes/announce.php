@@ -3,8 +3,6 @@
 global $pdo;
 use middleware\AuthMiddleware;
 use controllers\AnnounceController;
-require_once 'controllers/AnnounceController.php';
-require_once 'middleware/AuthMiddleware.php';
 
 $announceController = new AnnounceController($pdo);
 

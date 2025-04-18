@@ -2,7 +2,6 @@
 
 namespace controllers;
 use services\AnnounceService;
-require_once "services/AnnounceService.php";
 
 class AnnounceController{
 

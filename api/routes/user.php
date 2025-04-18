@@ -5,9 +5,6 @@ use controllers\AuthController;
 use controllers\UserController;
 use middleware\AuthMiddleware;
 
-require_once 'controllers/UserController.php';
-require_once 'middleware/AuthMiddleware.php';
-
 $userController = new UserController($pdo);
 
 /* MiddleWare Auth*/

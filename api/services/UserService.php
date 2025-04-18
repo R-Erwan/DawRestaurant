@@ -3,7 +3,6 @@
 namespace services;
 use Exception;
 use models\User;
-require_once 'models/User.php';
 
 class UserService{
     private User $user;

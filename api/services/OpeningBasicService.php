@@ -3,7 +3,6 @@
 namespace services;
 use DateTime;
 use models\OpeningBasic;
-require_once 'models/OpeningBasic.php';
 
 class OpeningBasicService{
 

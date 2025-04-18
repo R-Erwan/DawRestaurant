@@ -5,7 +5,6 @@ namespace controllers;
 use Exception\PasswordResetRateLimitException;
 use services\AuthService;
 
-require_once 'services/AuthService.php';
 
 class AuthController
 {

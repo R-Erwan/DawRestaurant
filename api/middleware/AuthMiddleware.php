@@ -5,7 +5,7 @@ namespace middleware;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 
-require_once 'config/config.php';
+//require_once 'config/config.php';
 
 class AuthMiddleware
 {

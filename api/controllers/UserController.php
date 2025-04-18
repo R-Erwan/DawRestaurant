@@ -4,8 +4,6 @@ namespace controllers;
 
 use services\UserService;
 
-require_once 'services/UserService.php';
-
 class UserController
 {
     private UserService $userService;

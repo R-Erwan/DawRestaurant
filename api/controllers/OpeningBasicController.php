@@ -4,7 +4,6 @@ namespace controllers;
 use Exception;
 use PDO;
 use services\OpeningBasicService;
-require_once 'services/OpeningBasicService.php';
 
 class OpeningBasicController{
 

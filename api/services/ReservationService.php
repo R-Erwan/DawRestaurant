@@ -8,9 +8,6 @@ use models\Reservation;
 use models\User;
 use PDO;
 
-require_once 'models/Reservation.php';
-require_once 'models/User.php';
-require_once 'ReservationValidator.php';
 
 class ReservationService
 {

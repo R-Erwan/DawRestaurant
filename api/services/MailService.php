@@ -6,7 +6,6 @@ use config\MailerConfig;
 use Exception\PasswordResetRateLimitException;
 use PHPMailer\PHPMailer\Exception;
 
-require_once 'config/MailerConfig.php';
 
 class MailService{
     /**

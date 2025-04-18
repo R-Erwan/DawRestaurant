@@ -4,8 +4,6 @@ namespace controllers;
 use Exception;
 use PDO;
 use services\OpeningExceptionService;
-require_once 'services/OpeningExceptionService.php';
-
 class OpeningExceptionController{
     private $openingExceptionService;
 

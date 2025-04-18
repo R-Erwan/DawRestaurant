@@ -7,8 +7,6 @@ global $path;
 use controllers\AuthController;
 use middleware\AuthMiddleware;
 
-require_once 'controllers/AuthController.php';
-require_once 'middleware/AuthMiddleware.php';
 
 $authController = new AuthController($pdo);
 

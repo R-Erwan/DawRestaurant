@@ -5,7 +5,6 @@ use DateTime;
 use models\OpeningException;
 use PDOException;
 
-require_once 'models/OpeningException.php';
 
 class OpeningExceptionService {
 

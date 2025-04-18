@@ -5,5 +5,15 @@
     "ext-pdo": "*",
     "ext-ctype": "*",
     "phpmailer/phpmailer": "*"
+  },
+  "autoload" : {
+    "psr-4": {
+      "models\\": "models/",
+      "controllers\\" : "controllers/",
+      "services\\" : "services/",
+      "config\\" : "config/",
+      "Exception\\" : "Exception/",
+      "middleware\\" : "middleware/"
+    }
   }
 }

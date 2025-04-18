@@ -10,10 +10,7 @@ use Firebase\JWT\JWT;
 use models\User;
 use Random\RandomException;
 
-require_once 'models/User.php';
-require_once 'config/config.php';
-require_once 'services/MailService.php';
-require_once 'Exception/PasswordResetRateLimitException.php';
+//require_once 'config/config.php';
 
 class AuthService
 {

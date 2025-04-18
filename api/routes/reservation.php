@@ -7,9 +7,6 @@ use controllers\ReservationController;
 use middleware\AuthMiddleware;
 use services\ReservationService;
 
-require_once 'controllers/ReservationController.php';
-require_once 'middleware/AuthMiddleware.php';
-require_once 'services/ReservationService.php';
 
 $reservationController = new ReservationController($pdo);
 $reservationService = new ReservationService($pdo);

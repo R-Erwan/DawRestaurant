@@ -4,8 +4,6 @@ namespace services;
 use Exception;
 use models\Announce;
 use services\AnnounceType;
-require_once 'models/Announce.php';
-require_once 'services/AnnounceType.php';
 
 class AnnounceService{
 

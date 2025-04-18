@@ -5,9 +5,6 @@ global $path;
 use middleware\AuthMiddleware;
 use controllers\OpeningBasicController;
 use controllers\OpeningExceptionController;
-require_once 'middleware/AuthMiddleware.php';
-require_once 'controllers/OpeningBasicController.php';
-require_once 'controllers/OpeningExceptionController.php';
 
 $openingBasicController = new OpeningBasicController($pdo);
 $openingExceptionController = new OpeningExceptionController($pdo);
