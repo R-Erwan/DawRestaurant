@@ -32,7 +32,9 @@ function displayEvent(data){
     })
 }
 
-function displayModal(wid,data,oid){
+let listenersSet = false; // pour ne pas attacher les listeners plusieurs fois
+
+function displayModal(wid, data, oid) {
     const modal = document.querySelector('.modal-container');
     const modalTitle = document.querySelector('.modal-title');
     const timeStart = document.querySelector('#time-start');
@@ -42,82 +44,85 @@ function displayModal(wid,data,oid){
     const deleteBtn = document.querySelector('#modal-delete');
     const dataOid = data.find(obj => obj.id === parseInt(oid));
 
-    // Affichage de la modal
+    // Affichage de la modale
     modal.style.display = 'flex';
-    modalTitle.innerHTML = weekDays[wid-1];
+    modalTitle.innerHTML = weekDays[wid - 1];
 
-    // Creation des horaires
-    displayTimesSelect(timeStart,nbTimes);
-    timeStart.addEventListener('change', ()=>{
-        timeEnd.classList.remove('hidden');
-        const value = timeStart.value;
-        displayTimesSelect(timeEnd,value);
-    })
+    // Réinitialise la modale
+    nbPlaces.value = "";
+    deleteBtn.classList.add('hidden');
+    timeEnd.classList.add('hidden');
 
-    // Sortit par le clic
-    window.onclick = (e) => {
-        if(e.target === modal){
-            modal.style.display = 'none';
-            timeEnd.classList.add('hidden');
-            deleteBtn.classList.add('hidden');
-            nbPlaces.value = "";
-        }
-    }
+    // Création des horaires
+    displayTimesSelect(timeStart, nbTimes);
 
-    //Si de type update init
-    if(oid){
+    // Si mise à jour
+    if (oid) {
         deleteBtn.classList.remove('hidden');
-
-        displayTimesSelect(timeStart,nbTimes);
         timeStart.value = convertToFloatTime(dataOid.time_start);
-
-        displayTimesSelect(timeEnd,timeStart.value);
+        displayTimesSelect(timeEnd, timeStart.value);
         timeEnd.classList.remove('hidden');
         timeEnd.value = convertToFloatTime(dataOid.time_end);
         nbPlaces.value = dataOid.number_places;
     }
 
-    //Delete rules
-    deleteBtn.addEventListener('click', async (e) => {
-        e.stopPropagation();
-        e.preventDefault();
-        if(window.confirm("Supprimer la règle ?")){
-            const json = await fetchDeleteOpening(oid);
-            if(json){
+    // Gestion des listeners UNE SEULE FOIS
+    if (!listenersSet) {
+        timeStart.addEventListener('change', () => {
+            timeEnd.classList.remove('hidden');
+            const value = timeStart.value;
+            displayTimesSelect(timeEnd, value);
+        });
+
+        window.addEventListener('click', (e) => {
+            if (e.target === modal) {
                 modal.style.display = 'none';
                 timeEnd.classList.add('hidden');
                 deleteBtn.classList.add('hidden');
                 nbPlaces.value = "";
             }
-        }
-    })
+        });
 
-    // Confirm
-    confirm.addEventListener('click', async (e) => {
-        e.stopPropagation();
-        e.preventDefault();
-        let json;
-        if(oid){
-            json = await fetchPutOpening(
-                oid,
-                convertTimeValue(timeStart.value),
-                convertTimeValue(timeEnd.value),
-                nbPlaces.value
-            );
-        } else {
-            json = await fetchPostOpening(
-                wid,
-                convertTimeValue(timeStart.value),
-                convertTimeValue(timeEnd.value),
-                nbPlaces.value
-            );
-        }
-        if(json){
-            modal.style.display = 'none';
-            timeEnd.classList.add('hidden');
-            nbPlaces.value = "";
-        }
-    });
+        deleteBtn.addEventListener('click', async (e) => {
+            e.stopPropagation();
+            e.preventDefault();
+            if (window.confirm("Supprimer la règle ?")) {
+                const json = await fetchDeleteOpening(oid);
+                if (json) {
+                    modal.style.display = 'none';
+                    timeEnd.classList.add('hidden');
+                    deleteBtn.classList.add('hidden');
+                    nbPlaces.value = "";
+                    await refreshCalendar();
+                }
+            }
+        });
+
+        confirm.addEventListener('click', async (e) => {
+            e.stopPropagation();
+            e.preventDefault();
+            let json;
+            const wid = parseInt(modalTitle.innerHTML && weekDays.indexOf(modalTitle.innerHTML) + 1);
+            const time_s = convertTimeValue(timeStart.value);
+            const time_e = convertTimeValue(timeEnd.value);
+            const nb = nbPlaces.value;
+
+            if (oid) {
+                json = await fetchPutOpening(oid, time_s, time_e, nb);
+            } else {
+                json = await fetchPostOpening(wid, time_s, time_e, nb);
+            }
+
+            if (json) {
+                modal.style.display = 'none';
+                timeEnd.classList.add('hidden');
+                nbPlaces.value = "";
+                await refreshCalendar();
+            }
+        });
+
+        listenersSet = true;
+    }
 }
 
 async function fetchOpeningBasic(){
