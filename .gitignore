@@ -1,3 +1,4 @@
 /.idea/
 *.css
 *.css.map
+public/resources/uploads/*
