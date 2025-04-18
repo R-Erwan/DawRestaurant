@@ -75,7 +75,7 @@ class Reservation
         return $stmt->execute();
     }
 
-    public function updateAdmin(int $id, string $reservation_date, string $reservation_time, int $number_of_people, string $status): bool
+    public function updateAdmin(int $id, ?string $reservation_date, ?string $reservation_time, ?int $number_of_people, ?string $status): bool
     {
         $fields = [];
         $params = [];

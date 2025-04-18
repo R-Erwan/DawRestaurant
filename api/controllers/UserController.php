@@ -39,7 +39,7 @@ class UserController
                 $input['password'] ?? null,
                 $input['phone_number'] ?? null
             );
-            respond(true, "User found");
+            respond(true, "User updated successfully");
         } catch (Exception $e) {
             respond(false, "Can't update user : " . $e->getMessage(), 400);
         }

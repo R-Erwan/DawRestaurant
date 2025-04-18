@@ -6,7 +6,7 @@ async function fetchOpenings() {
         });
         const json = await response.json();
         if (response.ok) {
-            return json.result;
+            return json;
         } else {
             return null;
         }
@@ -81,7 +81,7 @@ function formContactsubmit(){
 document.addEventListener('DOMContentLoaded', async () => {
     const times = document.querySelector('#times-opening');
     const data = await fetchOpenings();
-    displayTimes(data,times);
+    displayTimes(data.data,times);
     const form = document.querySelector('.contact-form-content');
     form.addEventListener('submit', (e) => {
         e.preventDefault();

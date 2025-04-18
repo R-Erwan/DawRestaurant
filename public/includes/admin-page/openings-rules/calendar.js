@@ -4,7 +4,7 @@ let fieldsCount = 0;
 document.addEventListener('DOMContentLoaded', async () => {
     /* Calendar */
     const data = await fetchCalexc();
-    const events = convertExcToEvent(data);
+    const events = convertExcToEvent(data.data);
     const calEl = document.querySelector(".calendarExc")
     const calendar = new FullCalendar.Calendar(calEl, {
         initialView: 'dayGridMonth',
@@ -129,7 +129,11 @@ function convertExcToEvent(data) {
         closed: []
     };
 
-    data.result.forEach(item => {
+    if(data.length === 0){
+        return [];
+    }
+
+    data.forEach(item => {
         const event = {
             title: item.comment.split(" ")[0],
             start: item.date
@@ -227,13 +231,13 @@ async function displayExcForm(dateStr) {
     document.querySelector(".calendarExc-form").setAttribute("date",dateStr);
 
     const data = await fetchExcDate(dateStr);
-    const result = data.result;
+    const result = data.data;
     const title = document.querySelector("#calexc-date-title");
     let openState;
     const hasExepRul = result.length !== 0;
     if (!hasExepRul) {
         const openData = await fetchOpeningBasicDate(dateStr);
-        openState = openData.result.length !== 0;
+        openState = openData.data.length !== 0;
     } else {
         openState = !!result[0].open;
     }
@@ -434,5 +438,5 @@ function checkValidity(data){
 
     }
 
-    return false;
+    return true;
 }

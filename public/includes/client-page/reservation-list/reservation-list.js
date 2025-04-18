@@ -18,7 +18,7 @@ async function fetchReservation() {
         if (response.ok) {
             return dataJson;
         } else {
-            console.error('Failed to fetch reservations:', response.status, response.statusText);
+            console.error('Failed to fetch reservations : ', dataJson.message);
             return [];
         }
     } catch (error) {
@@ -47,7 +47,7 @@ async function displayReservations(state = 'all', type = 'current') {
         </li>
     `;
     let data = await fetchReservation();
-    data = data.reservation;
+    data = data.data;
     // Get the current date
     const currentDate = new Date();
 

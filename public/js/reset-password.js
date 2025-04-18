@@ -26,7 +26,6 @@ send.addEventListener("click", async (e) => {
         });
         const json = await response.json();
         if(response.ok){
-
             window.location.replace(window.location.origin+"/login.php");
         } else {
             error.innerText = "Une erreur c'est produite, veuillez réessayer";

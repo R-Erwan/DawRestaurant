@@ -40,9 +40,6 @@ export async function fetchUserData() {
         const dataJson = await response.json();
         if (response.ok) {
             return dataJson;
-            // showBanner('success',data.message);
-        } else {
-            // showBanner('error', data.message || "Une erreur est survenu");
         }
     } catch (e) {
         console.error(e);

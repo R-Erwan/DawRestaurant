@@ -162,25 +162,25 @@ async function fetchExcDate(date){
 
 async function dateChecker(date) {
     const excRules = await fetchExcDate(date);
-    if(excRules.result.length === 0) {
+    if(excRules.data.length === 0) {
         const basicsRules = await fetchOpeningBasicDate(date);
-        if(basicsRules.result.length === 0) {
+        if(basicsRules.data.length === 0) {
             displayMultipleTimeSlots(document.querySelector("#time"),[]);
             showBanner("info","Le restaurant est fermé le "+ getFrenchWeekdayName(date));
         } else {
             let times = [];
-            basicsRules.result.forEach(element => {
+            basicsRules.data.forEach(element => {
                 times.push(`${element.time_start.split(':')[0]}-${element.time_end.split(':')[0]}`)
             });
             displayMultipleTimeSlots(document.querySelector("#time"),times);
         }
     } else {
-        if(excRules.result[0].open === false){
+        if(excRules.data[0].open === false){
             displayMultipleTimeSlots(document.querySelector("#time"),[]);
             showBanner("info","Le restaurant est fermé exceptionnelement le  "+ date + " : " + excRules.result[0].comment, 5000);
         } else {
             let times = [];
-            excRules.result.forEach(element => {
+            excRules.data.forEach(element => {
                 times.push(`${element.time_start.split(':')[0]}-${element.time_end.split(':')[0]}`)
             });
             displayMultipleTimeSlots(document.querySelector("#time"),times);

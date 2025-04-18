@@ -10,7 +10,7 @@ async function fetchAnnounces(){
         if (response.ok) {
             return dataJson;
         } else {
-            //Page d'erreur
+            //Page d'erreur // Todo
         }
     } catch (e) {
         showBanner('error',"Erreur lors de la récupération des données");
@@ -113,10 +113,10 @@ async function submitAnnounce() {
 
             const result = await response.json();
             if (response.ok) {
-                imageUrl = result.url;
+                imageUrl = result.data.url;
                 body.image_url = imageUrl;
             } else {
-                showBanner('error', result.error);
+                showBanner('error : ', result.message);
                 return;
             }
         } catch (e) {
@@ -206,10 +206,10 @@ async function updateAnnounce(announceId){
 
             const result = await response.json();
             if (response.ok) {
-                imageUrl = result.url;
+                imageUrl = result.data.url;
                 body.image_url = imageUrl;
             } else {
-                showBanner('error', result.error);
+                showBanner('error', result.message);
                 return;
             }
         } catch (e) {
@@ -271,7 +271,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     /* Fetch data */
     const data = await fetchAnnounces();
-    const annonces = data.result;
+    const annonces = data.data;
     displayAnnouces(annonces);
 
     /* Button event */

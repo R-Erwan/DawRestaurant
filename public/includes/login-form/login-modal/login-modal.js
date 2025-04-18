@@ -57,7 +57,6 @@ async function fetchResetPasswd(email) {
             body: JSON.stringify({"email": email})
         });
         const dajaJson = await result.json();
-        console.log(dajaJson);
         return result.ok;
     } catch (error) {
         return false;

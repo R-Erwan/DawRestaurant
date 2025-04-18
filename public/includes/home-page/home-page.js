@@ -11,13 +11,13 @@ async function fetchAnnounces(){
             //Page d'erreur
         }
     } catch (e) {
-        console.error(e);
+        // Page d'erreur // Todo
     }
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
     const data = await fetchAnnounces();
-    const annonces = data.result;
+    const annonces = data.data;
     const container = document.querySelector('.announce-container');
     annonces.map(annonce => {
         if(annonce.type === 1){

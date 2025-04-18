@@ -84,7 +84,7 @@ class ReservationService
     /**
      * @throws Exception
      */
-    public function updateReservationAdmin(int $reservation_id, string $reservation_date, string $reservation_time, int $number_of_people, string $status): bool
+    public function updateReservationAdmin(int $reservation_id, ?string $reservation_date, ?string $reservation_time, ?int $number_of_people, ?string $status): bool
     {
         return $this->reservation->updateAdmin($reservation_id, $reservation_date, $reservation_time, $number_of_people, $status);
     }
@@ -126,14 +126,12 @@ class ReservationService
         return $result;
     }
 
-    /**
-     * @throws Exception
-     */
+
     public function getReservationByUser(int $user_id): array
     {
         $result = $this->reservation->getByUserID($user_id);
         if (!$result) {
-            throw new Exception('Réservation non trouvée');
+            return [];
         }
         return $result;
     }

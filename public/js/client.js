@@ -13,9 +13,9 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     const data = await fetchUserData();
     const admin = parseJwt(token).roles.includes("admin")
-    if (data) {
-        document.getElementById("header-username").innerText = data.user.name;
-        document.getElementById("header-email").innerText = data.user.email;
+    if (data.success) {
+        document.getElementById("header-username").innerText = data.data.name;
+        document.getElementById("header-email").innerText = data.data.email;
     }
 
     if(admin){

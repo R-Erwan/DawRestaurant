@@ -4,8 +4,10 @@ let currentTabFilter = "today";
 let currentDateFilter = "";
 let currentFilterFilter = "none";
 document.addEventListener('DOMContentLoaded', async () => {
-    const data = await fetchAllReservations();
-    const filter = filterData(data.reservations,"today")
+    const response = await fetchAllReservations();
+    console.log(response);
+    const data = response.data;
+    const filter = filterData(data,"today")
     displayReservations(filter.filteredData,filter.count);
 
     // Today tab
@@ -15,7 +17,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     const selectFilter = document.querySelector("#tabs-filter");
     selectFilter.addEventListener("change", (e) => {
-        const filter = filterData(data.reservations,currentTabFilter,selectFilter.value,currentDateFilter);
+        const filter = filterData(data,currentTabFilter,selectFilter.value,currentDateFilter);
         displayReservations(filter.filteredData,filter.count);
         currentFilterFilter = selectFilter.value;
     })
@@ -23,7 +25,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const datePicker = document.querySelector("#tabs-date");
     datePicker.addEventListener("change", (e) => {
         setActiveTab(e.target);
-        const filter = filterData(data.reservations,"date","none",datePicker.value);
+        const filter = filterData(data,"date","none",datePicker.value);
         displayReservations(filter.filteredData,filter.count);
         currentDateFilter = datePicker.value;
         currentTabFilter = "date";
@@ -35,7 +37,7 @@ function tabsFilterEvent(tab,filterType,data) {
     tab.addEventListener("click", (e) => {
         document.querySelector("#tabs-date").value="";
         setActiveTab(e.target);
-        const filter = filterData(data.reservations,filterType,currentFilterFilter,currentDateFilter);
+        const filter = filterData(data,filterType,currentFilterFilter,currentDateFilter);
         displayReservations(filter.filteredData,filter.count);
         currentTabFilter = filterType;
     })

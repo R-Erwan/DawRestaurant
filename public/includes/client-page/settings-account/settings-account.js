@@ -93,18 +93,17 @@ async function formPasswordSubmit(e, data) {
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
-    const dataUser = await fetchUserData();
-    let data = dataUser.user
-    displayUserInfo(data);
+    const data = await fetchUserData();
+    displayUserInfo(data.data);
     // Bouton modifier
     document.querySelector('#toggle-update').addEventListener('click', toggleUpdateForm);
     // Cancel button
     document.querySelector('#cancel-button').addEventListener('click', () => {
         toggleUpdateForm();
-        displayUserInfo(data);
+        displayUserInfo(data.data);
     });
     document.querySelector('#form-contact').addEventListener('submit', formContactSubmit);
     document.querySelector('#form-password').addEventListener('submit', (e) => {
-        formPasswordSubmit(e, data)
+        formPasswordSubmit(e, data.data)
     });
 })

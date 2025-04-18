@@ -130,7 +130,7 @@ async function fetchOpeningBasic(){
         if(response.ok){
             return dataJson;
         } else {
-            showBanner('error',data.message)
+            showBanner('error',dataJson.message)
         }
     } catch (e){
         showBanner('error',"Erreur lors de la récupération des données");
@@ -210,12 +210,12 @@ async function fetchDeleteOpening(id_time){
 document.addEventListener('DOMContentLoaded', async () => {
     displayCalendarTimes();
     const data = await fetchOpeningBasic();
-    displayEvent(data.result);
+    displayEvent(data.data);
     const calendarContents = document.querySelectorAll(".calendar-item-content");
     //Modal t1
     calendarContents.forEach((item) => {
         item.addEventListener("click", () => {
-            displayModal(item.getAttribute("weekid"),data.result);
+            displayModal(item.getAttribute("weekid"),data.data);
         });
     })
     //Modal t2
@@ -225,7 +225,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             e.stopPropagation();
             displayModal(
                 item.parentElement.getAttribute("weekid"),
-                data.result,
+                data.data,
                 item.getAttribute("oid"),
                 );
         })

@@ -32,8 +32,8 @@ document.addEventListener("DOMContentLoaded", () => {
             })
         });
         const data = await response.json();
-        if (response.ok && data.token) {
-            localStorage.setItem('jwt', data.token);
+        if (response.ok && data.data.token) {
+            localStorage.setItem('jwt', data.data.token);
             window.location.href = 'client.php'
             showBanner('success', data.message);
         } else {
