@@ -49,6 +49,9 @@
             </g>
         </g>
     </svg>
+    <div class="error-title">
+        Oups page non trouvé
+    </div>
 </div>
 </body>
 </html>

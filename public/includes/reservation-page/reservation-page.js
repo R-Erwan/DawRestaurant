@@ -114,11 +114,12 @@ async function submitReservation(userId, token, reservationData) {
         });
 
         const statusElement = document.getElementById("reservation-status");
+        const json = await response.json();
         if (response.ok) {
             statusElement.textContent = "Réservation réussie";
             window.location.href = 'client.php';
         } else {
-            statusElement.textContent = "La réservation a échoué. Veuillez réessayer.";
+            statusElement.textContent = "La réservation a échoué : " + json.message;
         }
     } catch (error) {
         console.error("Erreur lors de la réservation :", error);
