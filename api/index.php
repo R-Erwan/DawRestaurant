@@ -31,6 +31,9 @@ switch ($path) {
     case 'announce':
         require_once 'routes/announce.php';
         break;
+    case 'dish':
+        require_once 'routes/dish.php';
+        break;
     default:
         http_response_code(404);
         echo json_encode(['error' => 'Invalid request']);
