@@ -1,6 +1,6 @@
 @use "../../../css/const"
+@use "../../../css/reset"
 
-/* tabs menu*/
 .tabs-menu
   width: 100%
   border-bottom: 1px solid #555555
@@ -108,3 +108,90 @@
 
   &:before
     background-color: #881212
+
+
+.nb-couv
+  font-weight: bold
+
+#tabs-date
+  border: none
+  background-color: transparent
+  margin: 0 0.5rem
+  padding: 0.5rem
+  border-radius: 10px
+  &:focus
+    outline: 2px solid black
+  &:hover
+    outline: 2px solid black
+
+#tabs-filter
+  border: none
+  padding: 0.5rem
+  border-radius: 10px
+  background-color: transparent
+  margin: 0 0.5rem
+  &:hover
+    outline: 2px solid black
+
+.details-row
+  background-color: #f0f0f0
+  display: flex
+  flex-direction: row
+  padding: 1rem
+  border-bottom-left-radius: 10px
+  border-bottom-right-radius: 10px
+  justify-content: space-between
+
+.details-container
+  display: flex
+  flex-direction: column
+  justify-content: space-between
+
+
+#details-state
+  margin: 1rem 0
+  padding: 0.5rem 1rem
+  border-radius: 10px
+  border: none
+  background-color: #87B971
+  color: white
+  cursor: pointer
+  transition: all .2s ease-in-out
+  &:focus
+    outline: none
+    filter: brightness(110%)
+  &:hover
+    filter: brightness(110%)
+  option
+    color: black
+    background-color: #fff
+
+#d-created
+  font-weight: 200
+  font-style: italic
+
+
+.fa-solid
+  font-size: 1rem
+  margin-right: 10px
+
+.hidden
+  display: none
+
+.btn-delete-reservation
+  margin: 1rem 0
+  padding: 0.5rem 1rem
+  border-radius: 10px
+  border: none
+  background-color: #881212
+  color: white
+  cursor: pointer
+  transition: all .2s ease-in-out
+  &:focus
+    outline: none
+    filter: brightness(110%)
+  &:hover
+    filter: brightness(110%)
+  option
+    color: black
+    background-color: #fff

@@ -1,22 +1,23 @@
-import {capitalizeFirstLetter, parseJwt} from "../../../js/utils";
+import {formatDate, parseJwt} from "../../../js/utils";
+import {showBanner} from "../../popup/popup";
 
 async function fetchReservation() {
     const jwt = localStorage.getItem('jwt');
     if (!jwt) {
+        console.error('Pas de JWT');
         return [];
     }
     const token = parseJwt(jwt);
     const user_id = token.user_id;
     try {
-        const response = await fetch(`/api/reservation?&id=${user_id}`, {
+        const response = await fetch(`/api/reservation?action=User&id=${user_id}`, {
             headers: {
-                "Authorization": `Bearer ${jwt}`,
+                Authorization: `Bearer ${jwt}`,
                 'Content-Type': 'application/json',
             },
         });
-        const dataJson = await response.json();
         if (response.ok) {
-            return dataJson;
+            return await response.json();
         } else {
             console.error('Failed to fetch reservations:', response.status, response.statusText);
             return [];
@@ -24,6 +25,29 @@ async function fetchReservation() {
     } catch (error) {
         console.error('Error fetching reservations:', error);
         return [];
+    }
+}
+async function fetchUpdateReservationState(id,state){
+    const jwt = localStorage.getItem('jwt');
+    try {
+        const response = await fetch(`/api/reservation?id_reservation=${id}`, {
+            method: 'PUT',
+            headers: {
+                "Authorization": `Bearer ${jwt}`,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({status: state}),
+        });
+        const dataJson = await response.json();
+        if (response.ok) {
+            return true;
+        } else {
+            showBanner('error',"Failed to update state : " + dataJson.message);
+            return false;
+        }
+    } catch (error) {
+        showBanner('error',"Failed to update state");
+        return false
     }
 }
 
@@ -48,13 +72,10 @@ async function displayReservations(state = 'all', type = 'current') {
     `;
     let data = await fetchReservation();
     data = data.reservation;
-    // Get the current date
     const currentDate = new Date();
 
-    // Filter data based on state (confirmed, waiting, canceled, etc.)
     let filteredData = state === 'all' ? data : data.filter(item => item.status === state);
 
-    // Filter based on the type (current or history)
     filteredData = filteredData.filter(item => {
         const reservationDate = new Date(item.reservation_date + ' ' + item.reservation_time);
         if (type === 'current') {
@@ -65,7 +86,6 @@ async function displayReservations(state = 'all', type = 'current') {
         return false;
     });
 
-    // Generate rows for the filtered data
     filteredData.forEach(item => {
         const row = document.createElement('li');
         row.classList.add('table-row');
@@ -77,8 +97,61 @@ async function displayReservations(state = 'all', type = 'current') {
             <div class="col c5">Details</div>
         `;
 
+        const detailsRow = document.createElement('div');
+        detailsRow.classList.add('details-row', 'hidden');
+        detailsRow.innerHTML = `
+            <div class="details-header details-container">
+                <span class="details-elmt" id="d-name">${capitalizeFirstLetter(item.name)}</span>
+                <span class="details-elmt" id="d-fname">${capitalizeFirstLetter(item.first_name ?? "")}</span>
+            </div>
+            <div class="details-body details-container">
+                <span class="details-elmt" id="d-people">Changement du nombre d'invités</span> <br>
+                <input type="number" min="1" max="9" class="details-elmt" id="d-people-${item.id}" value="${item.number_of_people}">
+            </div>
+            <div class="details-body details-container">
+                <button class="modify-btn" data-id="${item.id}">Modifier</button>
+            </div>
+            <div class="details-body details-container">
+                <button class="cancel-btn" data-id="${item.id}">Annuler la commande</button>
+            </div>
+        `;
+
         tableContent.appendChild(row);
+        tableContent.appendChild(detailsRow);
+    console.log(item)
+        const detailsBtn = row.querySelector('.c5');
+        detailsBtn.addEventListener('click', (e) => {
+            detailsRow.classList.toggle('hidden');
+        });
+
+        const modifyBtn = detailsRow.querySelector('.modify-btn');
+        modifyBtn.addEventListener('click', async () => {
+            const newNumberOfPeople = parseInt(detailsRow.querySelector(`#d-people-${item.id}`).value, 10);
+            if (isNaN(newNumberOfPeople) || newNumberOfPeople < 1 || newNumberOfPeople > 9) {
+                showBanner('error', 'Please enter a valid number of people (1-9)');
+                return;
+            }
+            console.log('Updating number of people to:', newNumberOfPeople);
+            const success = await fetchUpdateReservationPeople(item.id, newNumberOfPeople);
+            if (success) {
+                showBanner('success', 'Réservation mise à jour avec succès');
+                displayReservations(state, type);
+            }
+        });
+
+        const cancelBtn = detailsRow.querySelector('.cancel-btn');
+        cancelBtn.addEventListener('click', async () => {
+            const success = await fetchUpdateReservationState(item.id, 'cancelled');
+            if (success) {
+                showBanner('success', 'Reservation cancelled successfully');
+                displayReservations(state, type);
+            }
+        });
     });
+}
+
+function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
 // Event listeners for the tabs
@@ -125,3 +198,34 @@ window.onload = () => {
     const type = getUrlParamType();
     displayReservations('all', type);
 };
+
+
+async function fetchUpdateReservationPeople(id, people) {
+    const jwt = localStorage.getItem('jwt');
+    if (!jwt) {
+        showBanner('error', 'No JWT found');
+        return false;
+    }
+    try {
+        const response = await fetch(`/api/reservation?id_reservation=${id}`, {
+            method: 'PUT',
+            headers: {
+                Authorization: `Bearer ${jwt}`,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ number_of_people: people }),
+        });
+        const dataJson = await response.json();
+        console.log('API Response:', response.status, dataJson);
+        if (response.ok) {
+            return true;
+        } else {
+            showBanner('error', `Failed to update number of people: ${dataJson.message || 'Unknown error'}`);
+            return false;
+        }
+    } catch (error) {
+        console.error('Error updating reservation:', error);
+        showBanner('error', 'Failed to update number of people');
+        return false;
+    }
+}

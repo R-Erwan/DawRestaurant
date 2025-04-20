@@ -7,10 +7,8 @@
             <span class="modal-elmt" id="m-firstName">Prenom</span>
         </div>
         <div class="modal-body">
-
             <div class="modal-elmt"><i class="fa-solid fa-envelope"></i> <span  id="m-mail">Mail</span></div>
             <div class="modal-elmt"><i class="fa-solid fa-phone"></i> <span id="m-phone">Téléphone</span></div>
-
             <span class="modal-elmt" id="m-created">Fait le : </span>
             <select id="modal-state" class="modal-elmt" >
                 <option value="confirmed">Confirmed</option>

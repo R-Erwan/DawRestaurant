@@ -105,13 +105,13 @@ class ReservationController
 
     public function updateReservation($data,$requestedId): void
     {
-        $requiredFields = ["time", "guests", "cancel"];
+        $requiredFields = ["time", "number_of_people", "cancel"];
         $this->validateData($data, $requiredFields);
 
         try {
             $reservation_id = $requestedId;
             $time = $data["time"];
-            $guests = $data["guests"];
+            $guests = $data["number_of_people"];
             $cancel = $data["cancel"];
             $this->reservationService->updateReservation($reservation_id, $time, $guests, $cancel);
             echo json_encode(['message' => 'Reservation updated successfully']);
