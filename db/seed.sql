@@ -48,10 +48,10 @@ VALUES (2,
 
 --insertions des plats du menu
 
-INSERT INTO categories(name) VALUES ('Entrée');
-INSERT INTO categories(name) VALUES ('Plats');
-INSERT INTO categories(name) VALUES ('Desserts');
-INSERT INTO categories(name) VALUES ('Boissons');
+INSERT INTO categories(name) VALUES ('starters');
+INSERT INTO categories(name) VALUES ('mainFood');
+INSERT INTO categories(name) VALUES ('desserts');
+INSERT INTO categories(name) VALUES ('drinks');
 
 INSERT INTO subcategories(name, category_id) VALUES ('Aperitifs', 1);
 INSERT INTO subcategories(name, category_id) VALUES ('Salades', 1);
