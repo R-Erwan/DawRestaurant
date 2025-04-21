@@ -1,5 +1,5 @@
-import { formatDate, parseJwt } from "../../../js/utils";
-import { showBanner } from "../../popup/popup";
+import {parseJwt} from "../../../js/utils";
+import {showBanner} from "../../popup/popup";
 
 async function fetchReservation() {
     const jwt = localStorage.getItem("jwt");
@@ -19,11 +19,11 @@ async function fetchReservation() {
         if (response.ok) {
             return await response.json();
         } else {
-            console.error("Failed to fetch reservations:", response.status, response.statusText);
+            console.error("Échec de la récupération des réservations :", response.status, response.statusText);
             return [];
         }
     } catch (error) {
-        console.error("Error fetching reservations:", error);
+        console.error("Erreur lors de la récupération des réservations :", error);
         return [];
     }
 }
@@ -37,17 +37,17 @@ async function fetchUpdateReservationState(id, state) {
                 Authorization: `Bearer ${jwt}`,
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({ status: state }),
+            body: JSON.stringify({status: state}),
         });
         const dataJson = await response.json();
         if (response.ok) {
             return true;
         } else {
-            showBanner("error", `Failed to update state: ${dataJson.message}`);
+            showBanner("error", `Échec de la mise à jour de l'état : ${dataJson.message}`);
             return false;
         }
     } catch (error) {
-        showBanner("error", "Failed to update state");
+        showBanner("error", "Échec de la mise à jour de l'état");
         return false;
     }
 }
@@ -63,8 +63,8 @@ async function displayReservations(state = "all", type = "current") {
       <li class="table-header">
         <div class="col c1">Date</div>
         <div class="col c2">Heure</div>
-        <div class="col c3">Nombres de couverts</div>
-        <div class="col c4">Status</div>
+        <div class="col c3">Nombre de couverts</div>
+        <div class="col c4">Statut</div>
         <div class="col c5"></div>
       </li>
     `;
@@ -85,101 +85,109 @@ async function displayReservations(state = "all", type = "current") {
         const row = document.createElement("li");
         row.classList.add("table-row");
 
-        const reservationDateTime = new Date(`${item.reservation_date}T${item.reservation_time}`);
-        const isMoreThan24h = reservationDateTime - new Date() > 24 * 60 * 60 * 1000;
+        // Vérification de l'heure pour ne pas que ce soit une modification à - 24h
+        const reservationDateTime = new Date(`${item.reservation_date.trim()}T${item.reservation_time.trim()}`);
+        const isMoreThan24h = !isNaN(reservationDateTime) && reservationDateTime - new Date() > 24 * 60 * 60 * 1000;
+        const isCancelled = item.status.trim().toLowerCase() === "cancelled";
 
         row.innerHTML = `
-      <div class="col c1">${item.reservation_date}</div>
-      <div class="col c2">${item.reservation_time}</div>
-      <div class="col c3">${item.number_of_people}</div>
-      <div class="col c4 state-${item.status}">${capitalizeFirstLetter(item.status)}</div>
-      <div class="col c5">${isMoreThan24h ? "Détails" : "<span class='locked-details'>Indisponible</span>"}</div>
-    `;
+          <div class="col c1">${item.reservation_date}</div>
+          <div class="col c2">${item.reservation_time}</div>
+          <div class="col c3">${item.number_of_people}</div>
+          <div class="col c4 state-${item.status}">${capitalizeFirstLetter(item.status)}</div>
+          <div class="col c5">${isMoreThan24h && !isCancelled ? "Détails" : "<span class='locked-details'>Indisponible</span>"}</div>
+        `;
 
         tableContent.appendChild(row);
 
-        if (!isMoreThan24h) return;
+        if (!isMoreThan24h) {
+            return;
+        }
+        if (!isCancelled)
+        {
+            const detailsRow = document.createElement("div");
+            detailsRow.classList.add("details-row", "hidden");
+            detailsRow.innerHTML = `
+          <div class="details-header details-container">
+              <span class="details-elmt" id="d-name-${uniqueSuffix}">${capitalizeFirstLetter(item.name)}</span>
+              <span class="details-elmt" id="d-fname-${uniqueSuffix}">${capitalizeFirstLetter(item.first_name ?? "")}</span>
+          </div>
+          <div class="details-body details-container">
+              <span class="details-elmt" id="d-people-${uniqueSuffix}">
+                  <label for="input-people-${uniqueSuffix}">Nombre de couverts :</label>
+                  <button id="decrease-btn-${uniqueSuffix}" class="change-people-btn">-</button>
+                  <span id="people-count-${uniqueSuffix}">${item.number_of_people}</span>
+                  <button id="increase-btn-${uniqueSuffix}" class="change-people-btn">+</button>
+                  <button class="modify-btn" id="modify-btn-${uniqueSuffix}">Modifier</button>
+              </span>
+          </div>
+          <button id="details-state-${uniqueSuffix}" class="btn-delete-reservation details-container" value="cancelled">Annuler la réservation</button>
+        `;
 
-        const detailsRow = document.createElement("div");
-        detailsRow.classList.add("details-row", "hidden");
+            tableContent.appendChild(detailsRow);
 
-        detailsRow.innerHTML = `
-      <div class="details-header details-container">
-          <span class="details-elmt" id="d-name-${uniqueSuffix}">${capitalizeFirstLetter(item.name)}</span>
-          <span class="details-elmt" id="d-fname-${uniqueSuffix}">${capitalizeFirstLetter(item.first_name ?? "")}</span>
-      </div>
-      <div class="details-body details-container">
-          <span class="details-elmt" id="d-people-${uniqueSuffix}">
-              <label for="input-people-${uniqueSuffix}">Nombre de couverts :</label>
-              <button id="decrease-btn-${uniqueSuffix}" class="change-people-btn">-</button>
-              <span id="people-count-${uniqueSuffix}">${item.number_of_people}</span>
-              <button id="increase-btn-${uniqueSuffix}" class="change-people-btn">+</button>
-              <button class="modify-btn" id="modify-btn-${uniqueSuffix}">Modifier</button>
-          </span>
-      </div>
-      <button id="details-state-${uniqueSuffix}" class="btn-delete-reservation details-container" value="cancelled">Annuler la réservation</button>
-    `;
+            // Bouton de déroulement des détails
+            const detailsBtn = row.querySelector('.c5');
+            detailsBtn.addEventListener('click', () => {
+                detailsRow.classList.toggle("hidden");
+            });
 
-        tableContent.appendChild(detailsRow);
+            // Gestion des boutons d'ajout et de réduction
+            const decreaseBtn = detailsRow.querySelector(`#decrease-btn-${uniqueSuffix}`);
+            const increaseBtn = detailsRow.querySelector(`#increase-btn-${uniqueSuffix}`);
+            const peopleCount = detailsRow.querySelector(`#people-count-${uniqueSuffix}`);
 
-        // Déroule détails
-        const detailsBtn = row.querySelector('.c5');
-        detailsBtn.addEventListener('click', () => {
-            detailsRow.classList.toggle("hidden");
-        });
+            // Gestion de la diminution des invités
+            decreaseBtn.addEventListener("click", () => {
+                let newCount = parseInt(peopleCount.innerText, 10) - 1;
+                if (newCount < 1) newCount = 1;
+                peopleCount.innerText = newCount;
+                peopleCount.style.color
+            });
 
-        // Gestion des boutons d'ajout et de réduction
-        const decreaseBtn = detailsRow.querySelector(`#decrease-btn-${uniqueSuffix}`);
-        const increaseBtn = detailsRow.querySelector(`#increase-btn-${uniqueSuffix}`);
-        const peopleCount = detailsRow.querySelector(`#people-count-${uniqueSuffix}`);
+            // Gestion de l'augmentation des invités
+            increaseBtn.addEventListener("click", () => {
+                let newCount = parseInt(peopleCount.innerText, 10) + 1;
+                if (newCount > 9) {
+                    newCount = 9;
+                }
+                peopleCount.innerText = newCount;
+            });
 
-        decreaseBtn.addEventListener("click", () => {
-            let newCount = parseInt(peopleCount.innerText, 10) - 1;
-            if (newCount < 1) newCount = 1;
-            peopleCount.innerText = newCount;
-        });
+            console.log(item);
+            // Bouton et écouteur pour l'annulation
+            const detailsState = detailsRow.querySelector(`#details-state-${uniqueSuffix}`);
+            detailsState.addEventListener("click", async () => {
+                const ok = await fetchUpdateReservationState(item.id, "cancelled");
+                if (ok) {
+                    const rowState = row.querySelector('.c4');
+                    rowState.className = `col c4 state-${detailsState.value}`;
+                    rowState.innerText = capitalizeFirstLetter(detailsState.value);
+                    item.status = 'cancelled';
+                }
+            });
 
-        increaseBtn.addEventListener("click", () => {
-            let newCount = parseInt(peopleCount.innerText, 10) + 1;
-            if (newCount > 9) newCount = 9;
-            peopleCount.innerText = newCount;
-        });
-
-        // Changement de statut
-        const detailsState = detailsRow.querySelector(`#details-state-${uniqueSuffix}`);
-
-        detailsState.addEventListener("click", async () => {
-            const ok = await fetchUpdateReservationState(item.id, "cancelled");
-            if (ok) {
-                const rowState = row.querySelector('.c4');
-                rowState.className = `col c4 state-${detailsState.value}`;
-                rowState.innerText = capitalizeFirstLetter(detailsState.value);
-                item.status = 'cancelled';
-            }
-        });
-
-        // Modifier nombre de couverts
-        const modifyBtn = detailsRow.querySelector(`#modify-btn-${uniqueSuffix}`);
-
-        modifyBtn.addEventListener("click", async () => {
-            const newNumberOfPeople = parseInt(peopleCount.innerText, 10);
-            const success = await fetchUpdateReservationPeople(item.id, newNumberOfPeople, item.reservation_time, item.status);
-            if (success) {
-                showBanner("success", "Nombre de couverts mis à jour avec succès");
-                const mainRowPeople = row.querySelector('.c3');
-                mainRowPeople.innerText = newNumberOfPeople;
-                item.number_of_people = newNumberOfPeople;
-            }
-        });
+            // Bouton et écouteur pour la modification
+            const modifyBtn = detailsRow.querySelector(`#modify-btn-${uniqueSuffix}`);
+            modifyBtn.addEventListener("click", async () => {
+                const n_nop = peopleCount.innerText;
+                const success = await fetchUpdateReservationPeople(item.id, n_nop);
+                if (success) {
+                    showBanner("success", "Nombre de couverts mis à jour avec succès");
+                    const mainRowPeople = row.querySelector('.c3');
+                    mainRowPeople.innerText = n_nop;
+                    item.number_of_people = n_nop;
+                }
+            });
+        }
     });
-
 }
 
 function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
-// Event listeners for the tabs
+// Écouteurs d'événements pour les onglets
 tabsAll.addEventListener("click", () => {
     setActiveTab(tabsAll);
     const type = getUrlParamType();
@@ -221,10 +229,10 @@ window.onload = () => {
     displayReservations("all", type);
 };
 
-async function fetchUpdateReservationPeople(id, people, time, status) {
+async function fetchUpdateReservationPeople(id, people) {
     const jwt = localStorage.getItem("jwt");
     if (!jwt) {
-        showBanner("error", "No JWT found");
+        showBanner("error", "Aucun JWT trouvé");
         return false;
     }
 
@@ -236,35 +244,20 @@ async function fetchUpdateReservationPeople(id, people, time, status) {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                reservation_time: time,
-                status: status,
-                number_of_people: people
+                guests: people
             }),
         });
         const dataJson = await response.json();
+        console.info(dataJson);
         if (response.ok) {
             return true;
         } else {
-            showBanner("error", `Failed to update number of people: ${dataJson.message || "Unknown error"}`);
+            showBanner("error", `Échec de la mise à jour du nombre de personnes : ${dataJson.message || "Erreur inconnue"}`);
             return false;
         }
     } catch (error) {
-        console.error("Error updating reservation:", error);
-        showBanner("error", "Failed to update number of people");
+        console.error("Erreur lors de la mise à jour de la réservation :", error);
+        showBanner("error", "Échec de la mise à jour du nombre de personnes");
         return false;
-    }
-}
-
-function setDatePickerColor(status,statePicker){
-    switch (status) {
-        case "confirmed":
-            statePicker.style.backgroundColor = "#87B971";
-            break;
-        case "waiting":
-            statePicker.style.backgroundColor = "#FAB36A";
-            break;
-        case "cancelled":
-            statePicker.style.backgroundColor = "#881112";
-            break;
     }
 }

@@ -103,7 +103,6 @@ function displayReservations(data, couv = "") {
                 <option value="waiting">Waiting</option>
                 <option value="cancelled">Cancelled</option>
             </select> 
-            <button class="btn-delete-reservation">🗑️ Supprimer</button>
         `
 
         tableContent.appendChild(row);
@@ -125,20 +124,6 @@ function displayReservations(data, couv = "") {
                 item.status=detailsState.value;
             }
         })
-        const deleteBtn = detailsRow.querySelector('.btn-delete-reservation');
-        deleteBtn.addEventListener("click", async () => {
-            const confirmDelete = confirm(`Supprimer la réservation de ${item.name} ?`);
-            if (!confirmDelete) {
-                return;
-            }
-
-            const success = await fetchDeleteReservation(item.id);
-            if (success) {
-                row.remove();
-                detailsRow.remove();
-                showBanner("success", "Réservation supprimée avec succès");
-            }
-        });
 
         setDatePickerColor(item.status,detailsState);
     });
@@ -268,25 +253,3 @@ async function fetchUpdateReservationState(id,state){
     }
 }
 
-async function fetchDeleteReservation(id) {
-    const jwt = localStorage.getItem('jwt');
-    try {
-        const response = await fetch(`/api/reservation?id_reservation=${id}`, {
-            method: 'DELETE',
-            headers: {
-                "Authorization": `Bearer ${jwt}`,
-                'Content-Type': 'application/json',
-            }
-        });
-        if (response.ok) {
-            return true;
-        } else {
-            const err = await response.json();
-            showBanner('error', "Erreur lors de la suppression : " + err.message);
-            return false;
-        }
-    } catch (error) {
-        showBanner('error', "Erreur réseau lors de la suppression");
-        return false;
-    }
-}
