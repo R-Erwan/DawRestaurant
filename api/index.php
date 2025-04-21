@@ -42,6 +42,9 @@ switch (true) {
         require_once 'routes/opening.php';
         break;
 
+    case $path === 'dish':
+        require_once 'routes/dish.php';
+        break;
     default:
         http_response_code(404);
         echo json_encode(['error' => 'Invalid request']);
