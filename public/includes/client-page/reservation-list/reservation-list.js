@@ -58,7 +58,6 @@ const tabsWaiting = document.querySelector("#tabs-waiting");
 const tabsCanceled = document.querySelector("#tabs-cancelled");
 const tableContent = document.querySelector("#table-content");
 
-
 async function displayReservations(state = "all", type = "current") {
     tableContent.innerHTML = `
       <li class="table-header">
@@ -90,39 +89,36 @@ async function displayReservations(state = "all", type = "current") {
         const isMoreThan24h = reservationDateTime - new Date() > 24 * 60 * 60 * 1000;
 
         row.innerHTML = `
-          <div class="col c1">${item.reservation_date}</div>
-          <div class="col c2">${item.reservation_time}</div>
-          <div class="col c3">${item.number_of_people}</div>
-          <div class="col c4 state-${item.status}">${capitalizeFirstLetter(item.status)}</div>
-          <div class="col c5">${isMoreThan24h ? "Détails" : "<span class='locked-details'>Indispo</span>"}</div>
-        `;
+      <div class="col c1">${item.reservation_date}</div>
+      <div class="col c2">${item.reservation_time}</div>
+      <div class="col c3">${item.number_of_people}</div>
+      <div class="col c4 state-${item.status}">${capitalizeFirstLetter(item.status)}</div>
+      <div class="col c5">${isMoreThan24h ? "Détails" : "<span class='locked-details'>Indisponible</span>"}</div>
+    `;
 
         tableContent.appendChild(row);
 
-        if (!isMoreThan24h){
-            return;
-        }
+        if (!isMoreThan24h) return;
 
         const detailsRow = document.createElement("div");
         detailsRow.classList.add("details-row", "hidden");
 
         detailsRow.innerHTML = `
-          <div class="details-header details-container">
-              <span class="details-elmt" id="d-name-${uniqueSuffix}">${capitalizeFirstLetter(item.name)}</span>
-              <span class="details-elmt" id="d-fname-${uniqueSuffix}">${capitalizeFirstLetter(item.first_name ?? "")}</span>
-          </div>
-          <div class="details-body details-container">
-              <span class="details-elmt" id="d-people-${uniqueSuffix}">
-                  <label for="input-people-${uniqueSuffix}">Nombre de couverts :</label>
-                  <input type="number" id="input-people-${uniqueSuffix}" class="people-input" min="1" max="9" value="${item.number_of_people}" />
-                  <button class="modify-btn" id="modify-btn-${uniqueSuffix}">Modifier</button>
-              </span>
-          </div>
-          <select id="details-state-${uniqueSuffix}" class="details-container">
-              <option value="waiting">Waiting</option>
-              <option value="cancelled">Cancelled</option>
-          </select>
-        `;
+      <div class="details-header details-container">
+          <span class="details-elmt" id="d-name-${uniqueSuffix}">${capitalizeFirstLetter(item.name)}</span>
+          <span class="details-elmt" id="d-fname-${uniqueSuffix}">${capitalizeFirstLetter(item.first_name ?? "")}</span>
+      </div>
+      <div class="details-body details-container">
+          <span class="details-elmt" id="d-people-${uniqueSuffix}">
+              <label for="input-people-${uniqueSuffix}">Nombre de couverts :</label>
+              <button id="decrease-btn-${uniqueSuffix}" class="change-people-btn">-</button>
+              <span id="people-count-${uniqueSuffix}">${item.number_of_people}</span>
+              <button id="increase-btn-${uniqueSuffix}" class="change-people-btn">+</button>
+              <button class="modify-btn" id="modify-btn-${uniqueSuffix}">Modifier</button>
+          </span>
+      </div>
+      <button id="details-state-${uniqueSuffix}" class="btn-delete-reservation details-container" value="cancelled">Annuler la réservation</button>
+    `;
 
         tableContent.appendChild(detailsRow);
 
@@ -132,33 +128,41 @@ async function displayReservations(state = "all", type = "current") {
             detailsRow.classList.toggle("hidden");
         });
 
+        // Gestion des boutons d'ajout et de réduction
+        const decreaseBtn = detailsRow.querySelector(`#decrease-btn-${uniqueSuffix}`);
+        const increaseBtn = detailsRow.querySelector(`#increase-btn-${uniqueSuffix}`);
+        const peopleCount = detailsRow.querySelector(`#people-count-${uniqueSuffix}`);
+
+        decreaseBtn.addEventListener("click", () => {
+            let newCount = parseInt(peopleCount.innerText, 10) - 1;
+            if (newCount < 1) newCount = 1;
+            peopleCount.innerText = newCount;
+        });
+
+        increaseBtn.addEventListener("click", () => {
+            let newCount = parseInt(peopleCount.innerText, 10) + 1;
+            if (newCount > 9) newCount = 9;
+            peopleCount.innerText = newCount;
+        });
+
         // Changement de statut
         const detailsState = detailsRow.querySelector(`#details-state-${uniqueSuffix}`);
-        detailsState.value = item.status;
-        setDatePickerColor(item.status, detailsState);
 
-        detailsState.addEventListener("change", async () => {
-            setDatePickerColor(detailsState.value, detailsState);
-            const ok = await fetchUpdateReservationState(item.id, detailsState.value);
+        detailsState.addEventListener("click", async () => {
+            const ok = await fetchUpdateReservationState(item.id, "cancelled");
             if (ok) {
                 const rowState = row.querySelector('.c4');
                 rowState.className = `col c4 state-${detailsState.value}`;
                 rowState.innerText = capitalizeFirstLetter(detailsState.value);
-                item.status = detailsState.value;
+                item.status = 'cancelled';
             }
         });
 
         // Modifier nombre de couverts
         const modifyBtn = detailsRow.querySelector(`#modify-btn-${uniqueSuffix}`);
-        const inputPeople = detailsRow.querySelector(`#input-people-${uniqueSuffix}`);
 
         modifyBtn.addEventListener("click", async () => {
-            const newNumberOfPeople = parseInt(inputPeople.value, 10);
-            if (isNaN(newNumberOfPeople) || newNumberOfPeople < 1 || newNumberOfPeople > 9) {
-                showBanner("error", "Veuillez entrer un nombre de couverts valide (entre 1 et 9)");
-                return;
-            }
-
+            const newNumberOfPeople = parseInt(peopleCount.innerText, 10);
             const success = await fetchUpdateReservationPeople(item.id, newNumberOfPeople, item.reservation_time, item.status);
             if (success) {
                 showBanner("success", "Nombre de couverts mis à jour avec succès");
@@ -168,6 +172,7 @@ async function displayReservations(state = "all", type = "current") {
             }
         });
     });
+
 }
 
 function capitalizeFirstLetter(string) {
@@ -232,7 +237,7 @@ async function fetchUpdateReservationPeople(id, people, time, status) {
             },
             body: JSON.stringify({
                 reservation_time: time,
-                status:status,
+                status: status,
                 number_of_people: people
             }),
         });
