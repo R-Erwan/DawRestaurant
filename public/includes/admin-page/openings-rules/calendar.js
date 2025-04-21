@@ -378,7 +378,6 @@ async function fetchPostException(data){
             body: JSON.stringify(data)
         });
         const dataJson = await response.json();
-        console.log(response);
         if(response.ok){
             showBanner('success',dataJson.message)
             return dataJson;

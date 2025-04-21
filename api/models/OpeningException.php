@@ -53,7 +53,7 @@ class OpeningException {
         return $stmt->fetchColumn();
     }
 
-    public function createExc(string $date, bool $open, string $comment): false|string
+    public function createExc(string $date, string $open, string $comment): false|string
     {
         $sql = 'INSERT INTO exception_rules (date, open, comment) VALUES (?, ?, ?)';
         $stmt = $this->pdo->prepare($sql);
