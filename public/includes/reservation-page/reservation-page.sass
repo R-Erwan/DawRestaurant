@@ -93,96 +93,6 @@ button[type="submit"]
   font-size: 12px
   margin-top: 5px
 
-/* Modal (details-row) Styling */
-.details-row
-  background: const.$third-color
-  padding: 20px
-  margin: 10px 0
-  border-radius: 8px
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1)
-  transition: all 0.3s ease
-  display: none
-
-  &.hidden
-    display: none
-
-  &:not(.hidden)
-    display: block
-    animation: slideDown 0.3s ease-in-out
-
-.details-content
-  display: flex
-  flex-direction: column
-  gap: 15px
-
-  label
-    color: const.$title-color
-    font-weight: 600
-    margin-bottom: 5px
-
-  input, select
-    padding: 10px
-    border: 2px solid const.$primary-color-light
-    border-radius: 5px
-    font-size: 1rem
-    transition: border-color 0.3s ease
-
-    &:focus
-      border-color: const.$primary-color
-      box-shadow: 0 0 5px rgba(const.$primary-color, 0.3)
-
-  select
-    background: white
-    color: const.$title-color
-    cursor: pointer
-
-/* Animation for modal appearance */
-@keyframes slideDown
-  from
-    opacity: 0
-    transform: translateY(-10px)
-  to
-    opacity: 1
-    transform: translateY(0)
-
-/* Styling for table rows to ensure consistency */
-.table-row
-  display: flex
-  align-items: center
-  padding: 10px 0
-  border-bottom: 1px solid rgba(const.$primary-color-light, 0.2)
-  cursor: pointer
-
-  .c5
-    color: const.$primary-color
-    font-weight: 600
-    transition: color 0.3s ease
-
-    &:hover
-      color: const.$primary-color-dark
-      text-decoration: underline
-
-/* Status colors for select dropdown */
-.state-confirmed
-  background-color: #87B971
-  color: white
-  padding: 5px 10px
-  border-radius: 5px
-  text-align: center
-
-.state-waiting
-  background-color: #FAB36A
-  color: white
-  padding: 5px 10px
-  border-radius: 5px
-  text-align: center
-
-.state-cancelled
-  background-color: #881112
-  color: white
-  padding: 5px 10px
-  border-radius: 5px
-  text-align: center
 
 @media (max-width: 768px)
   .container
@@ -191,11 +101,3 @@ button[type="submit"]
 
   h1
     font-size: 2rem
-
-  .details-row
-    padding: 15px
-
-  .table-row
-    flex-direction: column
-    align-items: flex-start
-    gap: 10px
