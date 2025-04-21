@@ -23,11 +23,30 @@ class Dish {
         return $stmt->fetchAll();
     }
 
-    public function findBySubcategory($subcategory) {
-        $sql = "SELECT * FROM dishes WHERE subcategory_id = ?";
+    public function updateById(int $id, string $name = null, string $description = null, float $price = null, int $subcategory_id = null) {
+        $fields = [];
+        $params = [];
+
+        if($name) {
+            $fields[] = "name = ?";
+            $params[] = $name;
+        }
+        if($description) {
+            $fields[] = "description = ?";
+            $params[] = $description;
+        }
+        if($price) {
+            $fields[] = "price = ?";
+            $params[] = $price;
+        }
+        if($subcategory_id) {
+            $fields[] = "subcategory_id = ?";
+            $params[] = $subcategory_id;
+        }
+        $params[] = $id;
+        $sql = "UPDATE dishes SET " . implode(", ", $fields) . " WHERE id = ?";
         $stmt = $this->pdo->prepare($sql);
-        $stmt->execute([$subcategory]);
-        return $stmt->fetch();
+        return $stmt->execute($params);
     }
 
     public function deleteById(int $id) : bool {

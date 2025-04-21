@@ -37,12 +37,14 @@ class DishService
     /**
      * @throws \Exception
      */
-    public function getBySubcategoryId($subcategoryId){
-        $dish = $this->dish->findBySubcategory($subcategoryId);
-        if($dish){
-            return $dish;
+    public function updateById(int $id, string $name = null, string $description = null, float $price = null, int $subcategory_id = null){
+        if(!$name === null && strlen($name) > 100) {
+            throw new \Exception("Invalid coherence A smaller name is required");
         }
-        throw new \Exception("Dish not found");
+        if(!$price === null && $price <= 0) {
+            throw new \Exception("Invalid coherence price is required");
+        }
+        return $this->dish->updateById($id, $name, $description, $price, $subcategory_id);
     }
 
     public function deleteDish($id): void

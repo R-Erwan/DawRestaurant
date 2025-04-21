@@ -21,6 +21,12 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
     $dishController->createDish($input);
 }
 
+if($_SERVER['REQUEST_METHOD'] == 'PUT') {
+    $input = json_decode(file_get_contents('php://input'), true);
+    $dishController->updateDish($input);
+    exit;
+}
+
 if($_SERVER['REQUEST_METHOD'] == 'DELETE') {
     $dishController->deleteDish();
     exit;
