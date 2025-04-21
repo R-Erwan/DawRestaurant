@@ -121,11 +121,12 @@ function displayReservations(data, couv = "") {
             const ok = await fetchUpdateReservationState(item.id,detailsState.value);
             if(ok) {
                 const rowState = row.querySelector('.c4');
-                rowState.className = `col c4 state-${detailsState.value}` // Met à jour tout de suite si la requête est ok
+                rowState.className = `col c4 state-${detailsState.value}`
                 rowState.innerText=capitalizeFirstLetter(detailsState.value);
                 item.status=detailsState.value;
             }
         })
+
         setDatePickerColor(item.status,detailsState);
     });
 }
@@ -253,3 +254,4 @@ async function fetchUpdateReservationState(id,state){
         return false
     }
 }
+
