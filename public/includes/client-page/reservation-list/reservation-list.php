@@ -1,3 +1,4 @@
+<?php include_once "includes/popup/popup.php"?>
 <link rel="stylesheet" href="includes/client-page/reservation-list/reservation-list.css">
 <div class="tabs-menu">
     <button class="tabs-button tabs-selected" id="tabs-all">Tous</button>
