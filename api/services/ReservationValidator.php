@@ -53,7 +53,7 @@ class ReservationValidator {
             }
 
             // Vérification règles de bases
-            $time = DateTime::createFromFormat('H:i', $reservation_time);
+            $time = DateTime::createFromFormat('H:i:s', $reservation_time);
             foreach ($basicRules as $basicRule) {
                 $timeS = DateTime::createFromFormat('H:i:s',$basicRule['time_start']);
                 $timeE = DateTime::createFromFormat('H:i:s',$basicRule['time_end']);

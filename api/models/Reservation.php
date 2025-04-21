@@ -58,10 +58,9 @@ class Reservation
         return $stmt->fetchall(PDO::FETCH_ASSOC);
     }
 
-    public function update(int $id, string $reservation_time, int $number_of_people, string $status): bool
+    public function update(int $id, ?int $number_of_people, string $status): bool
     {
         $sql = "UPDATE reservations SET
-                        reservation_time = :reservation_time,
                         number_of_people = :number_of_people,
                         status = :status
                     WHERE id = :id";
@@ -69,7 +68,6 @@ class Reservation
         $stmt = $this->pdo->prepare($sql);
         $stmt->bindParam(':id', $id);
         $stmt->bindParam(':status', $status);
-        $stmt->bindParam(':reservation_time', $reservation_time);
         $stmt->bindParam(':number_of_people', $number_of_people);
 
         return $stmt->execute();

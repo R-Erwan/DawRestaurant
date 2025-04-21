@@ -59,27 +59,50 @@ class ReservationService
     /**
      * @throws Exception
      */
-    public function updateReservation(int $reservation_id, string $reservation_time, int $number_of_people, bool $cancel): bool
+    public function updateReservation(int $reservation_id, ?int $number_of_people, ?bool $cancel): bool
     {
         $ancientReservation = $this->reservation->getById($reservation_id);
         $ancientNumber = $ancientReservation['number_of_people'];
         $newNumberCompute = 0;
+
         if ($number_of_people > $ancientNumber) {
             // Si on rajoute des gens à la réservation, on ne passe que les rajouts.
             $newNumberCompute = $number_of_people - $ancientNumber;
         }
+
+        if($number_of_people === null){
+            $number_of_people = $ancientNumber;
+        }
+
+
         if ($cancel) {
             $status = "cancelled";
         } else {
             $status = "waiting";
         }
-        $valid = $this->reservationValidator->isValidReservation($ancientReservation['reservation_date'], $reservation_time, $newNumberCompute);
+
+        // Vérification que la réservation est modifiable plus de 24h à l'avance
+        $reservationDateTime = new DateTime($ancientReservation["reservation_date"]);
+        $now = new DateTime();
+        $hoursDifference = ($reservationDateTime->getTimestamp() - $now->getTimestamp()) / 3600;
+
+        if ($hoursDifference < 24) {
+            throw new Exception("Can't update reservation less than 24 hours before");
+        }
+
+        $valid = $this->reservationValidator->isValidReservation(
+            $ancientReservation['reservation_date'],
+            $ancientReservation["reservation_time"],
+            $newNumberCompute
+        );
+
         if (!$valid) {
             throw new Exception("Invalid Reservation");
         }
 
-        return $this->reservation->update($reservation_id, $reservation_time, $number_of_people, $status);
+        return $this->reservation->update($reservation_id, $number_of_people, $status);
     }
+
 
     /**
      * @throws Exception

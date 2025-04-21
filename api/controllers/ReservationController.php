@@ -84,18 +84,14 @@ class ReservationController
 
     public function updateReservation(mixed $data, int $requestedId): never
     {
-        $requiredFields = ["time", "guests", "cancel"];
-        $this->validateData($data, $requiredFields);
-
         try {
             $reservation_id = $requestedId;
-            $time = $data["time"];
-            $guests = $data["guests"];
-            $cancel = $data["cancel"];
-            $this->reservationService->updateReservation($reservation_id, $time, $guests, $cancel);
+            $guests = $data["guests"] ?? null;
+            $status = $data["status"] ?? null;
+            $this->reservationService->updateReservation($reservation_id, $guests, $status);
             respond(true, "Reservation updated successfully");
         } catch (Exception $e) {
-            respond(false, "Error updating reservation " . $e->getMessage(), 400);
+            respond(false, "Error updating reservation : " . $e->getMessage(), 400);
         }
     }
 
