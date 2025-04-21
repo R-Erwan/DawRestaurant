@@ -42,7 +42,6 @@ function parseData(data) {
 let data;
 
 document.addEventListener('DOMContentLoaded', async () => {
-    console.log("ok");
     const datas = await fetchDishes();
     const plats = datas.result;
     data = parseData(plats);

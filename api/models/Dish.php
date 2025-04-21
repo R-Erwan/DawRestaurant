@@ -29,4 +29,11 @@ class Dish {
         $stmt->execute([$subcategory]);
         return $stmt->fetch();
     }
+
+    public function deleteById(int $id) : bool {
+        $sql = "DELETE FROM dishes WHERE id = ?";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([$id]);
+        return $stmt->rowCount() > 0;
+    }
 }
