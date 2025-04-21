@@ -11,7 +11,7 @@ async function fetchAnnounces(){
             //Page d'erreur
         }
     } catch (e) {
-        // Page d'erreur // Todo
+        // Page d'erreur
     }
 }
 

@@ -17,7 +17,11 @@ class Dish {
     }
 
     public function getAllDishesOrderedBySubcategory() {
-        $sql = "SELECT d.name, d.description, d.price, s.name AS subcategory_name, c.name AS category_name FROM dishes d JOIN subcategories s on s.id = d.subcategory_id JOIN categories c on c.id = s.category_id ORDER BY d.subcategory_id";
+        $sql = "SELECT d.id, d.name, d.description, d.price, s.name AS subcategory_name, c.name AS category_name 
+                FROM dishes d 
+                RIGHT JOIN subcategories s on s.id = d.subcategory_id 
+                JOIN categories c on c.id = s.category_id 
+                ORDER BY d.subcategory_id";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll();

@@ -68,7 +68,9 @@
                 include_once "includes/admin-page/openings-rules/openings-rules.php";
             } else if($type =='manageBookings') {
                 include_once "includes/admin-page/manage-bookings/manage-bookings.php";
-            } else echo "Not developed";
+            } else if ($type == 'manageFoods' ) {
+                include_once "includes/admin-page/manage-dishes/manage-dishes.php";
+            } else echo "Not developed or Not found";
             ?>
         </div>
     </div>

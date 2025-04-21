@@ -10,7 +10,7 @@ async function fetchAnnounces(){
         if (response.ok) {
             return dataJson;
         } else {
-            //Page d'erreur // Todo
+            //Page d'erreur
         }
     } catch (e) {
         showBanner('error',"Erreur lors de la récupération des données");

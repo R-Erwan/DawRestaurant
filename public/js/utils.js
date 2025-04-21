@@ -146,3 +146,29 @@ export function formatDate(dateString) {
 
     return `${jour} ${moisTexte} ${annee} à ${heures}h${minutes}`;
 }
+
+
+export function parseData(data) {
+    const structured = {};
+
+    data.forEach(item => {
+        const category = item.category_name;
+        const subcategory = item.subcategory_name;
+
+        if (!structured[category]) {
+            structured[category] = {};
+        }
+
+        if (!structured[category][subcategory]) {
+            structured[category][subcategory] = [];
+        }
+
+        structured[category][subcategory].push({
+            id: item.id,
+            title: item.name,
+            desc: item.description,
+            price: parseFloat(item.price)
+        });
+    });
+    return structured;
+}

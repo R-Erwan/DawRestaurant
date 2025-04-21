@@ -1,3 +1,5 @@
+import {parseData} from "../../js/utils";
+
 async function fetchDishes(){
     try {
         const response = await fetch(`/api/dish`,{
@@ -15,29 +17,6 @@ async function fetchDishes(){
     }
 }
 
-function parseData(data) {
-    const structured = {};
-
-    data.forEach(item => {
-        const category = item.category_name;
-        const subcategory = item.subcategory_name;
-
-        if (!structured[category]) {
-            structured[category] = {};
-        }
-
-        if (!structured[category][subcategory]) {
-            structured[category][subcategory] = [];
-        }
-
-        structured[category][subcategory].push({
-            title: item.name,
-            desc: item.description,
-            price: parseFloat(item.price)
-        });
-    });
-    return structured;
-}
 
 let data;
 
