@@ -99,7 +99,9 @@ async function displayReservations(state = "all", type = "current") {
 
         tableContent.appendChild(row);
 
-        if (!isMoreThan24h) return;
+        if (!isMoreThan24h){
+            return;
+        }
 
         const detailsRow = document.createElement("div");
         detailsRow.classList.add("details-row", "hidden");
@@ -117,7 +119,6 @@ async function displayReservations(state = "all", type = "current") {
               </span>
           </div>
           <select id="details-state-${uniqueSuffix}" class="details-container">
-              <option value="confirmed">Confirmed</option>
               <option value="waiting">Waiting</option>
               <option value="cancelled">Cancelled</option>
           </select>

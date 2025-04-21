@@ -1,6 +1,7 @@
 @use "../../../css/const"
 @use "../../../css/reset"
 
+/* Tabs menu styles */
 .tabs-menu
   width: 100%
   border-bottom: 1px solid #555555
@@ -27,12 +28,13 @@
       background-color: const.$primary-color-dark
       transform: translateY(2.15vh)
 
-/* tabs content */
+/* Tabs content styles */
 .tabs-content
   width: 100%
-  margin: 0 auto 0 auto
+  margin: 0 auto
   padding: 20px
 
+/* Table styles */
 .table
   li
     border-radius: 5px
@@ -90,33 +92,33 @@
     .c5
       flex-basis: 10%
 
-.state-confirmed
-  color: const.$primary-color
+    .state-confirmed
+      color: const.$primary-color
 
-  &:before
-    background-color: const.$primary-color
+      &:before
+        background-color: const.$primary-color
 
-.state-waiting
-  color: const.$secondary-color
+    .state-waiting
+      color: const.$secondary-color
 
-  &:before
-    background-color: const.$secondary-color
+      &:before
+        background-color: const.$secondary-color
 
-.state-cancelled
-  color: #881212
+    .state-cancelled
+      color: #881212
 
-  &:before
-    background-color: #881212
+      &:before
+        background-color: #881212
 
 .nb-couv
   font-weight: bold
 
-#tabs-date
+#tabs-date, #tabs-filter
   border: none
   background-color: transparent
-  margin: 0 0.5rem
   padding: 0.5rem
   border-radius: 10px
+  margin: 0 0.5rem
 
   &:focus
     outline: 2px solid black
@@ -124,17 +126,7 @@
   &:hover
     outline: 2px solid black
 
-#tabs-filter
-  border: none
-  padding: 0.5rem
-  border-radius: 10px
-  background-color: transparent
-  margin: 0 0.5rem
-
-  &:hover
-    outline: 2px solid black
-
-/* Details Row Styles */
+/* Details row styles */
 .details-row
   background-color: #f0f0f0
   display: flex
@@ -192,7 +184,7 @@
     font-weight: 400
     margin-bottom: 0.5rem
 
-.modify-btn
+.modify-btn, .cancel-btn, .btn-delete-reservation
   padding: 0.5rem 1rem
   border: none
   border-radius: 10px
@@ -200,7 +192,6 @@
   cursor: pointer
   transition: all 0.2s ease-in-out
   font-size: 1rem
-  background-color: const.$primary-color
 
   &:focus
     outline: none
@@ -208,24 +199,17 @@
 
   &:hover
     filter: brightness(110%)
+
+.modify-btn
+  background-color: const.$primary-color
+
+  &:hover
     background-color: const.$primary-color-dark
 
 .cancel-btn
-  padding: 0.5rem 1rem
-  border: none
-  border-radius: 10px
-  color: white
-  cursor: pointer
-  transition: all 0.2s ease-in-out
-  font-size: 1rem
   background-color: #881212
 
-  &:focus
-    outline: none
-    filter: brightness(110%)
-
   &:hover
-    filter: brightness(110%)
     background-color: darken(#881212, 10%)
 
 #details-state
@@ -256,27 +240,6 @@
 .fa-solid
   font-size: 1rem
   margin-right: 10px
-
-.btn-delete-reservation
-  margin: 1rem 0
-  padding: 0.5rem 1rem
-  border-radius: 10px
-  border: none
-  background-color: #881212
-  color: white
-  cursor: pointer
-  transition: all 0.2s ease-in-out
-
-  &:focus
-    outline: none
-    filter: brightness(110%)
-
-  &:hover
-    filter: brightness(110%)
-
-  option
-    color: black
-    background-color: #fff
 
 #d-people
   display: flex
@@ -321,7 +284,7 @@
       outline: none
       box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1)
 
-
+/* Locked details styles */
 .locked-details
   display: inline-block
   padding: 0.3rem 0.8rem
