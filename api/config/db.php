@@ -3,8 +3,8 @@
 
 $host = 'db'; // Nom du service de la DB dans docker-compose
 $dbname = 'daw_db';
-$user = 'admin';
-$pass = 'admin';
+$user = DB_USER;
+$pass = DB_PASS;
 $charset = 'utf8';
 
 $dsn = "pgsql:host=$host;port=5432;dbname=$dbname;user=$user;password=$pass";
