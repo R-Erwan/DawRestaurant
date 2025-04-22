@@ -1,0 +1,254 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+.horizontal-bar, .horizontal-bar-XL, .horizontal-bar-L {
+  width: 50%;
+  height: 3px;
+  background: #fab369;
+  margin: 60px auto;
+}
+
+.horizontal-bar-L {
+  width: 75%;
+}
+
+.horizontal-bar-XL {
+  margin: 10px auto;
+  width: 100%;
+}
+
+.vertical-bar, .vertical-bar-XL, .vertical-bar-L {
+  width: 3px;
+  height: 5vh;
+  background: #FFF;
+}
+
+.vertical-bar-L {
+  width: 3px;
+  height: 10vh;
+}
+
+.vertical-bar-XL {
+  width: 3px;
+  height: 100vh;
+}
+
+/* RESET CSS */
+/* 1. Use a more-intuitive box-sizing model */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+/* 2. Remove default margin */
+* {
+  font-family: poppins, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  width: 100%;
+}
+
+body {
+  /* 3. Add accessible line-height */
+  line-height: 1.5;
+  /* 4. Improve text rendering */
+  -webkit-font-smoothing: antialiased;
+}
+
+/* 5. Improve media defaults */
+img, picture, video, canvas, svg {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* 6. Inherit fonts for form controls */
+input, button, textarea, select {
+  font: inherit;
+}
+
+/* 7. Avoid text overflows */
+p, h1, h2, h3, h4, h5, h6 {
+  overflow-wrap: break-word;
+}
+
+/* 8. Improve line wrapping */
+p {
+  text-wrap: pretty;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  text-wrap: balance;
+}
+
+/* 9. Create a root stacking context */
+#root, #__next {
+  isolation: isolate;
+}
+
+li {
+  list-style: none;
+}
+
+/* Default styles */
+body {
+  min-height: 100vh;
+}
+
+.cal-exc-explanation {
+  margin-bottom: 1em;
+}
+
+.calendarExc-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.calendarExc {
+  width: 45%;
+}
+
+.calendarExc-form {
+  width: 50%;
+  border-radius: 10px;
+  padding: 2em;
+  background-color: #fff;
+}
+
+.date-info .date-title {
+  font-size: 2em;
+}
+
+.date-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.sub-form {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  margin: 1em 0;
+}
+
+.time-select {
+  border: none;
+  border-radius: 5px;
+  padding: 5px;
+}
+
+#calexc-comment {
+  margin: 1em 0;
+  border: none;
+  border-radius: 5px;
+  padding: 10px;
+  background-color: #fbfbfb;
+  resize: none;
+}
+
+#calExc-nb-places {
+  border: none;
+  border-radius: 5px;
+  padding: 5px;
+}
+
+.add-rule {
+  padding: 0 0.4em;
+  border-radius: 10px;
+  font-size: 1.5em;
+  margin: 0 auto;
+  background-color: #fab369;
+  border: 2px solid transparent;
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.add-rule:hover {
+  background-color: #fff;
+  border: 2px solid #fab369;
+  color: #fab369;
+}
+
+.calexc-btn {
+  margin: 1em auto;
+  width: 40%;
+  border: none;
+  padding: 10px;
+  color: #FFFFFF;
+  background-color: #86B971;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.calexc-btn:hover {
+  filter: brightness(110%);
+  transform: scale(1.05);
+}
+
+#calexc-delete {
+  background-color: #8c1111;
+}
+
+/* SWITCH */
+.switch {
+  font-size: 0.4em;
+  position: relative;
+  display: inline-block;
+  width: 3.7em;
+  height: 1.8em;
+}
+
+.switch input {
+  display: none;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #454545;
+  transition: 0.2s;
+  border-radius: 30px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 1.4em;
+  width: 1.4em;
+  border-radius: 20px;
+  left: 0.2em;
+  bottom: 0.2em;
+  background-color: #7a7a7a;
+  transition: 0.4s;
+}
+
+input:checked + .slider::before {
+  background-color: #DEE8C2;
+}
+
+input:checked + .slider {
+  background-color: #86B971;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #86B971;
+}
+
+input:checked + .slider:before {
+  transform: translateX(1.9em);
+}
+
+/*# sourceMappingURL=calendar.css.map */

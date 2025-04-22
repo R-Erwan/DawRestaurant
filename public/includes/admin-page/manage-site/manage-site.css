@@ -1,0 +1,358 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+.horizontal-bar, .horizontal-bar-XL, .horizontal-bar-L {
+  width: 50%;
+  height: 3px;
+  background: #fab369;
+  margin: 60px auto;
+}
+
+.horizontal-bar-L {
+  width: 75%;
+}
+
+.horizontal-bar-XL {
+  margin: 10px auto;
+  width: 100%;
+}
+
+.vertical-bar, .vertical-bar-XL, .vertical-bar-L {
+  width: 3px;
+  height: 5vh;
+  background: #FFF;
+}
+
+.vertical-bar-L {
+  width: 3px;
+  height: 10vh;
+}
+
+.vertical-bar-XL {
+  width: 3px;
+  height: 100vh;
+}
+
+/* RESET CSS */
+/* 1. Use a more-intuitive box-sizing model */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+/* 2. Remove default margin */
+* {
+  font-family: poppins, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  width: 100%;
+}
+
+body {
+  /* 3. Add accessible line-height */
+  line-height: 1.5;
+  /* 4. Improve text rendering */
+  -webkit-font-smoothing: antialiased;
+}
+
+/* 5. Improve media defaults */
+img, picture, video, canvas, svg {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* 6. Inherit fonts for form controls */
+input, button, textarea, select {
+  font: inherit;
+}
+
+/* 7. Avoid text overflows */
+p, h1, h2, h3, h4, h5, h6 {
+  overflow-wrap: break-word;
+}
+
+/* 8. Improve line wrapping */
+p {
+  text-wrap: pretty;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  text-wrap: balance;
+}
+
+/* 9. Create a root stacking context */
+#root, #__next {
+  isolation: isolate;
+}
+
+li {
+  list-style: none;
+}
+
+/* Default styles */
+body {
+  min-height: 100vh;
+}
+
+.manager-container {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+}
+.manager-container .desc {
+  font-size: 0.8rem;
+  font-weight: 200;
+}
+
+.manager-title {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px 20px 0;
+  width: 60%;
+}
+
+.validate-button {
+  padding: 0.7rem 1.5rem;
+  border-radius: 10px;
+  border: none;
+  background-color: #86B971;
+  color: #fff;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  cursor: pointer;
+}
+.validate-button:hover {
+  transform: scale(1.2);
+}
+
+.manager-annouces-container {
+  width: 60%;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  border-radius: 15px;
+  padding: 2rem;
+  background-color: #fff;
+}
+
+.drag-drop-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+.drag-drop-container .dropzone {
+  width: 40%;
+  height: 20vh;
+  margin: 1rem;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(246, 246, 246, 0.55);
+  border-radius: 10px;
+  overflow: hidden;
+  transition: background-color 0.3s ease-in-out;
+}
+.drag-drop-container .dropzone:hover {
+  background-color: rgba(225, 225, 225, 0.55);
+}
+
+.dragElement {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.dragElement img {
+  pointer-events: none;
+}
+.dragElement:hover {
+  cursor: pointer;
+}
+
+.content-text h3 {
+  font-size: 1rem;
+}
+.content-text p {
+  font-size: 0.7rem;
+}
+.content-text.draggin {
+  background-color: #FFF;
+  padding: 1rem;
+  border-radius: 10px;
+}
+
+.content-img {
+  height: 100%;
+  overflow: hidden;
+}
+.content-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.hoverOver {
+  border: 2px solid #505050;
+}
+
+/* ===== Form ===== */
+.annouces-form-container {
+  width: 35%;
+  max-height: 90vh;
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 2rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+.annouces-form-container form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  height: 100%;
+}
+
+label {
+  width: 100%;
+  margin: 0.5rem 0;
+}
+
+#type {
+  appearance: none;
+  padding: 7px 40px 7px 12px;
+  width: 100%;
+  border: 1px solid #E8EAED;
+  border-radius: 5px;
+  background: white;
+  box-shadow: 0 1px 3px -2px #9098A9;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 16px;
+  transition: all 150ms ease;
+}
+#type:required:invalid {
+  color: #5A667F;
+}
+
+input[type=text], textarea {
+  display: none;
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #888888;
+  border-radius: 5px;
+  margin: 0.5rem 0;
+}
+
+input[type=submit] {
+  margin: 30px 0;
+  justify-self: flex-end;
+  align-self: center;
+}
+
+/* ===== Image drop zone ===== */
+.drop-container {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  height: 200px;
+  padding: 20px;
+  border: 2px dashed #fab369;
+  color: #5a7c38;
+  cursor: pointer;
+  transition: background 0.2s ease-in-out, border 0.2s ease-in-out;
+  border-radius: 5px;
+}
+
+.drop-container:hover {
+  background: rgba(250, 179, 105, 0.14);
+}
+
+.drop-title {
+  color: #fab369;
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.drop-container.drag-active {
+  background: #eee;
+}
+
+input[type=file] {
+  width: 350px;
+  max-width: 100%;
+  border-radius: 5px;
+  color: #fab369;
+  padding: 8px;
+  background-color: #fff;
+  border: 1px solid #fab369;
+}
+
+input[type=file]:focus {
+  outline: 2px dashed #fab369;
+  outline-offset: 2px;
+}
+
+input[type=file]::file-selector-button {
+  margin-right: 8px;
+  border: none;
+  background: #fab369;
+  padding: 8px 12px;
+  color: #fff;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+input[type=file]::file-selector-button:hover {
+  background: #bc6c25;
+}
+
+/* ===== Update Form ===== */
+.hidden {
+  display: none;
+}
+
+.fa-arrow-left {
+  cursor: pointer;
+  font-size: 2rem;
+  transition: all 0.1s ease-in-out;
+}
+.fa-arrow-left:hover {
+  transform: scale(1.2);
+  color: #fab369;
+}
+
+.update-form-title {
+  margin-top: 10px;
+  width: 100%;
+  text-align: center;
+}
+
+#del-announce {
+  float: right;
+  padding: 0.5rem 1rem;
+  border-radius: 10px;
+  background-color: #c11a1a;
+  color: #FFFFFF;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+#del-announce:hover {
+  transform: scale(1.2);
+}
+
+/*# sourceMappingURL=manage-site.css.map */

@@ -1,0 +1,290 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+.horizontal-bar, .horizontal-bar-XL, .horizontal-bar-L {
+  width: 50%;
+  height: 3px;
+  background: #fab369;
+  margin: 60px auto;
+}
+
+.horizontal-bar-L {
+  width: 75%;
+}
+
+.horizontal-bar-XL {
+  margin: 10px auto;
+  width: 100%;
+}
+
+.vertical-bar, .vertical-bar-XL, .vertical-bar-L {
+  width: 3px;
+  height: 5vh;
+  background: #FFF;
+}
+
+.vertical-bar-L {
+  width: 3px;
+  height: 10vh;
+}
+
+.vertical-bar-XL {
+  width: 3px;
+  height: 100vh;
+}
+
+/* RESET CSS */
+/* 1. Use a more-intuitive box-sizing model */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+/* 2. Remove default margin */
+* {
+  font-family: poppins, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  width: 100%;
+}
+
+body {
+  /* 3. Add accessible line-height */
+  line-height: 1.5;
+  /* 4. Improve text rendering */
+  -webkit-font-smoothing: antialiased;
+}
+
+/* 5. Improve media defaults */
+img, picture, video, canvas, svg {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* 6. Inherit fonts for form controls */
+input, button, textarea, select {
+  font: inherit;
+}
+
+/* 7. Avoid text overflows */
+p, h1, h2, h3, h4, h5, h6 {
+  overflow-wrap: break-word;
+}
+
+/* 8. Improve line wrapping */
+p {
+  text-wrap: pretty;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  text-wrap: balance;
+}
+
+/* 9. Create a root stacking context */
+#root, #__next {
+  isolation: isolate;
+}
+
+li {
+  list-style: none;
+}
+
+/* Default styles */
+body {
+  min-height: 100vh;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.tabs-menu {
+  width: 100%;
+  border-bottom: 1px solid #555555;
+  padding-bottom: 2vh;
+}
+.tabs-menu button {
+  border: none;
+  cursor: pointer;
+  background-color: transparent;
+  margin: 0 60px;
+}
+.tabs-menu button:hover {
+  color: #5a7c38;
+}
+.tabs-menu .tabs-selected {
+  color: #5a7c38;
+  font-weight: 500;
+}
+.tabs-menu .tabs-selected:after {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 2px;
+  background-color: #5a7c38;
+  transform: translateY(2.15vh);
+}
+
+/* sub-categories */
+.sub-categories {
+  margin: 1rem 0;
+}
+
+.sub-cat-select {
+  margin: 0 1rem;
+  border: none;
+  background-color: transparent;
+}
+
+.add-sub-cat-btn {
+  border: 2px solid #86B971;
+  background-color: transparent;
+  color: #86B971;
+  font-weight: 500;
+  padding: 0 5px;
+  border-radius: 5px;
+  transition: all 0.2s ease-in-out;
+}
+.add-sub-cat-btn:hover {
+  border: 2px solid transparent;
+  background-color: #86B971;
+  color: #fff;
+}
+
+.sub-cat-name-input {
+  border: none;
+  margin: 0 1rem;
+  padding: 5px 10px;
+  border-radius: 10px;
+}
+
+/* Liste */
+.tabs-content {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.dish-item-cat {
+  width: 100%;
+  background-color: #fab369;
+  padding: 0.5rem;
+  border-radius: 10px;
+  color: #fff;
+  margin-bottom: 0.5rem;
+}
+.dish-item-cat h2 {
+  font-weight: 500;
+  font-size: 1rem;
+}
+
+.dish-item {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0.5rem 0;
+  background-color: #fff;
+  padding: 0.5rem;
+  border-radius: 10px;
+}
+.dish-item input[type=number] {
+  width: 7%;
+}
+.dish-item textarea {
+  width: 40%;
+  resize: none;
+}
+
+.item-input {
+  border: none;
+  background-color: #f8f8f8;
+  padding: 0.5rem;
+  border-radius: 10px;
+}
+.item-input.disabled {
+  background-color: transparent;
+}
+
+.update-btn {
+  padding: 0.25rem 0.5rem;
+  border-radius: 10px;
+  border: 2px solid #fab369;
+  background-color: #fff;
+  color: #fab369;
+  transition: 0.2s ease-in-out;
+  cursor: pointer;
+}
+.update-btn:hover {
+  border: 2px solid transparent;
+  background-color: #fab369;
+  color: #fff;
+}
+
+.valid-btn {
+  padding: 0.25rem 0.5rem;
+  border-radius: 10px;
+  border: 2px solid #86B971;
+  background-color: #fff;
+  color: #86B971;
+  transition: 0.2s ease-in-out;
+  cursor: pointer;
+}
+.valid-btn:hover {
+  border: 2px solid transparent;
+  background-color: #86B971;
+  color: #fff;
+}
+
+.fa-trash-can {
+  cursor: pointer;
+  color: #c61515;
+  font-size: 1.5rem;
+  transition: all 0.2s ease-in-out;
+}
+.fa-trash-can:hover {
+  filter: brightness(80%);
+  transform: scale(1.1);
+}
+
+.spacer {
+  width: 2rem;
+}
+
+.new-div-btn {
+  margin: 0.5rem 0;
+  padding: 0 0.5rem;
+  border-radius: 10px;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+.new-div-btn:hover {
+  filter: brightness(80%);
+}
+
+.new-btn {
+  padding: 0.25rem 0.5rem;
+  border-radius: 10px;
+  border: 2px solid #86B971;
+  background-color: #fff;
+  color: #86B971;
+  transition: 0.2s ease-in-out;
+  cursor: pointer;
+}
+.new-btn:hover {
+  border: 2px solid transparent;
+  background-color: #86B971;
+  color: #fff;
+}
+
+/*# sourceMappingURL=manage-dishes.css.map */

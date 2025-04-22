@@ -1,0 +1,108 @@
+.horizontal-bar, .horizontal-bar-XL, .horizontal-bar-L {
+  width: 50%;
+  height: 3px;
+  background: #fab369;
+  margin: 60px auto;
+}
+
+.horizontal-bar-L {
+  width: 75%;
+}
+
+.horizontal-bar-XL {
+  margin: 10px auto;
+  width: 100%;
+}
+
+.vertical-bar, .vertical-bar-XL, .vertical-bar-L {
+  width: 3px;
+  height: 5vh;
+  background: #FFF;
+}
+
+.vertical-bar-L {
+  width: 3px;
+  height: 10vh;
+}
+
+.vertical-bar-XL {
+  width: 3px;
+  height: 100vh;
+}
+
+/* Modal */
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0);
+  display: none;
+  z-index: 1000;
+}
+
+.modal-content {
+  position: absolute;
+  background: #fff;
+  border-radius: 10px;
+  width: 15%;
+  opacity: 0;
+  transform: scale(0);
+  transition: all 0.4s ease;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.show {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Modal style  */
+.modal-header {
+  background-color: #bc6c25;
+  width: 100%;
+  padding: 2rem 1rem;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  color: #fff;
+  text-align: center;
+  font-size: 1.3rem;
+  font-weight: 500;
+}
+
+.modal-body {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 2rem;
+}
+
+.modal-elmt {
+  margin: 0.5rem 0;
+}
+
+#m-created {
+  font-weight: 200;
+  font-style: italic;
+}
+
+#modal-state {
+  align-self: center;
+  padding: 0.5rem 1rem;
+  border-radius: 10px;
+  border: none;
+  background-color: #87B971;
+  color: white;
+}
+#modal-state option {
+  color: black;
+  background-color: #fff;
+}
+
+.fa-solid {
+  font-size: 1rem;
+  margin-right: 10px;
+}
+
+/*# sourceMappingURL=modal-reservation.css.map */
