@@ -1,57 +1,64 @@
 <?php
 
 namespace services;
+
+use Exception;
 use models\Dish;
-require_once 'models/Dish.php';
+use PDO;
 
 class DishService
 {
     private Dish $dish;
 
-    public function __construct($pdo)
+    public function __construct(PDO $pdo)
     {
         $this->dish = new Dish($pdo);
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
-    public function create($name, $price, $subcategory_id, $description = null){
+    public function create(string $name, float $price, int $subcategory_id, ?string $description = null)
+    {
 
-        if($name === null || strlen($name) > 100) {
-            throw new \Exception("Invalid coherence Name is required");
+        if (strlen($name) > 100) {
+            throw new Exception("Dish name should be less than 100 characters");
         }
-        if($price === null || $price <= 0) {
-            throw new \Exception("Invalid coherence price is required");
+
+        if ($price <= 0) {
+            throw new Exception("Price can't be negative");
         }
-        if($subcategory_id === null) {
-            throw new \Exception("Invalid coherence subcategory is required");
-        }
+
         return $this->dish->create($name, $description, $price, $subcategory_id);
     }
 
-    public function getAllDishes() {
+    public function getAllDishes()
+    {
         return $this->dish->getAllDishesOrderedBySubcategory();
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
-    public function updateById(int $id, string $name = null, string $description = null, float $price = null, int $subcategory_id = null){
-        if(!$name === null && strlen($name) > 100) {
-            throw new \Exception("Invalid coherence A smaller name is required");
+    public function updateById(int $id, ?string $name = null, ?string $description = null, ?float $price = null, ?int $subcategory_id = null)
+    {
+        if (strlen($name) > 100) {
+            throw new Exception("Dish name should be less than 100 characters");
         }
-        if(!$price === null && $price <= 0) {
-            throw new \Exception("Invalid coherence price is required");
+        if (!$price === null && $price <= 0) {
+            throw new Exception("Price can't  be negative");
         }
         return $this->dish->updateById($id, $name, $description, $price, $subcategory_id);
     }
 
-    public function deleteDish($id): void
+    /**
+     * @throws Exception
+     */
+    public function deleteDish(int $id): void
     {
         $deleted = $this->dish->deleteById($id);
-        if(!$deleted){
-            throw new \Exception("Dish not found");
+        if (!$deleted) {
+            throw new Exception("Dish not found");
         }
     }
 }

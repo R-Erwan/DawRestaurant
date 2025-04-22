@@ -2,35 +2,23 @@
 
 namespace controllers;
 
+use Exception;
+use PDO;
 use services\DishService;
-require_once 'services/DishService.php';
 
 class DishController
 {
     private DishService $dishService;
 
-    public function __construct(\PDO $pdo)
+    public function __construct(PDO $pdo)
     {
         $this->dishService = new DishService($pdo);
     }
 
-    public function createDish($data): void {
-        if(!isset($data['name'])) {
-            http_response_code(400);
-            echo json_encode(['message' => 'Name is required']);
-            exit;
-        }
-
-        if(!isset($data['price'])) {
-            http_response_code(400);
-            echo json_encode(['message' => 'Price is required']);
-            exit;
-        }
-
-        if(!isset($data['subcategory_id'])) {
-            http_response_code(400);
-            echo json_encode(['message' => 'Subcategory is required']);
-            exit;
+    public function createDish(mixed $data): never
+    {
+        if (!isset($data['name']) || !isset($data['price']) || !isset($data['subcategory_id'])) {
+            respond(false, "Missing required fields", 400);
         }
 
         try {
@@ -40,59 +28,51 @@ class DishController
                 $data['subcategory_id'],
                 $data['description'] ?? null
             );
-            http_response_code(200);
-            echo json_encode(["message" => "Dish created successfully", "result" => $result]);
-        } catch(\Exception $e) {
-            http_response_code(404);
-            echo json_encode(['message' => $e->getMessage()]);
+            respond(true, "Dish created successfully", 200, ["id" => $result]);
+        } catch (Exception $e) {
+            respond(false, "Failed to create dish" . $e->getMessage(), 400);
         }
     }
 
-    public function getAllDishes(): void {
+    public function getAllDishes(): never
+    {
         try {
             $result = $this->dishService->getAllDishes();
-            http_response_code(200);
-            echo json_encode(["message" => "Dishes retrieved successfully", "result" => $result]);
-        } catch (\Exception $e) {
-            http_response_code(404);
-            echo json_encode(['message' => $e->getMessage()]);
+            respond(true, "Dish retrieved successfully", 200, $result);
+        } catch (Exception $e) {
+            respond(false, "Failed to retrieved all dishes" . $e->getMessage(), 400);
         }
     }
 
-    public function updateDish($data): void {
-        if(!isset($data['id'])) {
-            http_response_code(400);
-            echo json_encode(['message' => 'Id is required']);
-            exit;
+    public function updateDish(mixed $data): never
+    {
+        if (!isset($data['id'])) {
+            respond(false, "Missing required fields id", 400);
         }
         try {
-            $result = $this->dishService->updateById(
+            $this->dishService->updateById(
                 $data['id'],
                 $data['name'] ?? null,
                 $data['description'] ?? null,
                 $data['price'] ?? null,
                 $date['subcategory_id'] ?? null
             );
-            http_response_code(200);
-            echo json_encode(["message" => "Dish updated successfully"]);
-        } catch (\Exception $e){
-            http_response_code(404);
-            echo json_encode(['message' => $e->getMessage()]);
+            respond(true, "Dish updated successfully");
+        } catch (Exception $e) {
+            respond(false, "Failed to update dish" . $e->getMessage(), 400);
         }
     }
 
-    public function deleteDish(): void {
-        if(!isset($_GET['dish_id'])) {
-            http_response_code(400);
-            echo json_encode(['message' => 'dish_id is required']);
+    public function deleteDish(): never
+    {
+        if (!isset($_GET['dish_id'])) {
+            respond(false, "Missing required field dish_id", 400);
         }
         try {
             $this->dishService->deleteDish($_GET['dish_id']);
-            http_response_code(200);
-            echo json_encode(['message' => 'Dish deleted successfully']);
-        } catch(\Exception $e) {
-            http_response_code(404);
-            echo json_encode(['message' => $e->getMessage()]);
+            respond(true, "Dish deleted successfully");
+        } catch (Exception $e) {
+            respond(false, "Failed to delete dish" . $e->getMessage(), 400);
         }
     }
 }

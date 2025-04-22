@@ -42,12 +42,10 @@ switch (true) {
         require_once 'routes/opening.php';
         break;
 
-    case $path === 'dish':
+    case str_starts_with($path, 'dish'):
         require_once 'routes/dish.php';
         break;
-    case 'subcategory':
-        require_once 'routes/subcategory.php';
-        break;
+
     default:
         http_response_code(404);
         echo json_encode(['error' => 'Invalid request']);

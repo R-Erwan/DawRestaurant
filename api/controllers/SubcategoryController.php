@@ -2,30 +2,23 @@
 
 namespace controllers;
 
-use models\Subcategory;
+use Exception;
+use PDO;
 use services\SubcategoryService;
-require_once 'services/SubcategoryService.php';
 
 class SubcategoryController
 {
     private SubcategoryService $subcategoryService;
 
-    public function __construct(\PDO $pdo)
+    public function __construct(PDO $pdo)
     {
         $this->subcategoryService = new SubcategoryService($pdo);
     }
 
-    public function createSubcategory($data): void {
-        if(!isset($data['name'])) {
-            http_response_code(400);
-            echo json_encode(['message' => 'Name is required']);
-            exit;
-        }
-
-        if(!isset($data['category_id'])) {
-            http_response_code(400);
-            echo json_encode(['message' => 'Category is required']);
-            exit;
+    public function createSubcategory(mixed $data): never
+    {
+        if (!isset($data['name']) || !isset($data['category_id'])) {
+            respond(false, "Missing required fields", 400);
         }
 
         try {
@@ -33,57 +26,49 @@ class SubcategoryController
                 $data['name'],
                 $data['category_id']
             );
-            http_response_code(200);
-            echo json_encode(["message" => "Subcategory created successfully", "result" => $result]);
-        } catch(\Exception $e) {
-            http_response_code(404);
-            echo json_encode(['message' => $e->getMessage()]);
+            respond(true, "Subcategory created successfully", 200, ["id" => $result]);
+        } catch (Exception $e) {
+            respond(false, "Subcategory creation failed" . $e->getMessage(), 400);
         }
     }
 
-    public function getAllSubcategories(): void {
+    public function getAllSubcategories(): never
+    {
         try {
             $result = $this->subcategoryService->getAllSubcategories();
-            http_response_code(200);
-            echo json_encode(["message" => "Subcategories retrieved successfully", "result" => $result]);
-        } catch (\Exception $e) {
-            http_response_code(404);
-            echo json_encode(['message' => $e->getMessage()]);
+            respond(true, "Subcategories retrieved", 200, $result);
+        } catch (Exception $e) {
+            respond(false, "Subcategories retrieval failed" . $e->getMessage(), 400);
         }
     }
 
-    public function updateSubcategory($data): void {
-        if(!isset($data['id'])) {
-            http_response_code(400);
-            echo json_encode(['message' => 'Id is required']);
-            exit;
+    public function updateSubcategory(mixed $data): never
+    {
+        if (!isset($data['id'])) {
+            respond(false, "Missing required field id", 400);
         }
         try {
-            $result = $this->subcategoryService->updateById(
+            $this->subcategoryService->updateById(
                 $data['id'],
                 $data['name'] ?? null,
                 $date['category_id'] ?? null
             );
-            http_response_code(200);
-            echo json_encode(["message" => "Subcategory updated successfully"]);
-        } catch (\Exception $e){
-            http_response_code(404);
-            echo json_encode(['message' => $e->getMessage()]);
+            respond(true, "Subcategory updated successfully", 200);
+        } catch (Exception $e) {
+            respond(false, "Subcategory update failed" . $e->getMessage(), 400);
         }
     }
 
-    public function deleteSubcategory(): void {
-        if(!isset($_GET['subcategory_id'])) {
-            http_response_code(400);
-            echo json_encode(['message' => 'subcategory_id is required']);
+    public function deleteSubcategory(): never
+    {
+        if (!isset($_GET['subcategory_id'])) {
+            respond(false, "Missing required field subcategory_id", 400);
         }
         try {
             $this->subcategoryService->deleteSubcategory($_GET['subcategory_id']);
-            http_response_code(200);
-            echo json_encode(['message' => 'Subcategory deleted successfully']);
-        } catch(\Exception $e) {
-            http_response_code(404);
-            echo json_encode(['message' => $e->getMessage()]);
+            respond(true, "Subcategory deleted successfully");
+        } catch (Exception $e) {
+            respond(false, "Subcategory deletion failed" . $e->getMessage(), 400);
         }
     }
 }
