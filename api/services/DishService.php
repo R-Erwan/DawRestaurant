@@ -13,6 +13,23 @@ class DishService
         $this->dish = new Dish($pdo);
     }
 
+    /**
+     * @throws \Exception
+     */
+    public function create($name, $price, $subcategory_id, $description = null){
+
+        if($name === null || strlen($name) > 100) {
+            throw new \Exception("Invalid coherence Name is required");
+        }
+        if($price === null || $price <= 0) {
+            throw new \Exception("Invalid coherence price is required");
+        }
+        if($subcategory_id === null) {
+            throw new \Exception("Invalid coherence subcategory is required");
+        }
+        return $this->dish->create($name, $description, $price, $subcategory_id);
+    }
+
     public function getAllDishes() {
         return $this->dish->getAllDishesOrderedBySubcategory();
     }
@@ -20,11 +37,21 @@ class DishService
     /**
      * @throws \Exception
      */
-    public function getBySubcategoryId($subcategoryId){
-        $dish = $this->dish->findBySubcategory($subcategoryId);
-        if($dish){
-            return $dish;
+    public function updateById(int $id, string $name = null, string $description = null, float $price = null, int $subcategory_id = null){
+        if(!$name === null && strlen($name) > 100) {
+            throw new \Exception("Invalid coherence A smaller name is required");
         }
-        throw new \Exception("Dish not found");
+        if(!$price === null && $price <= 0) {
+            throw new \Exception("Invalid coherence price is required");
+        }
+        return $this->dish->updateById($id, $name, $description, $price, $subcategory_id);
+    }
+
+    public function deleteDish($id): void
+    {
+        $deleted = $this->dish->deleteById($id);
+        if(!$deleted){
+            throw new \Exception("Dish not found");
+        }
     }
 }

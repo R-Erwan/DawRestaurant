@@ -1,17 +1,16 @@
 <?php
 
 global $pdo;
-use controllers\DishController;
+use controllers\SubcategoryController;
 use middleware\AuthMiddleware;
-require_once 'controllers/DishController.php';
+require_once 'controllers/SubcategoryController.php';
 require_once 'middleware/AuthMiddleware.php';
 
-$dishController = new DishController($pdo);
+$subcategoryController = new SubcategoryController($pdo);
 
 /* Routes */
-// GET /api/dish
 if($_SERVER['REQUEST_METHOD'] == 'GET') {
-    $dishController->getAllDishes();
+    $subcategoryController->getAllSubcategories();
     exit;
 }
 
@@ -19,16 +18,16 @@ $authUser = AuthMiddleware::verifyAdminAcces();
 
 if($_SERVER['REQUEST_METHOD'] == 'POST') {
     $input = json_decode(file_get_contents('php://input'), true);
-    $dishController->createDish($input);
+    $subcategoryController->createSubcategory($input);
 }
 
 if($_SERVER['REQUEST_METHOD'] == 'PUT') {
     $input = json_decode(file_get_contents('php://input'), true);
-    $dishController->updateDish($input);
+    $subcategoryController->updateSubcategory($input);
     exit;
 }
 
 if($_SERVER['REQUEST_METHOD'] == 'DELETE') {
-    $dishController->deleteDish();
+    $subcategoryController->deleteSubcategory();
     exit;
 }
