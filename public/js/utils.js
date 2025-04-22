@@ -147,28 +147,44 @@ export function formatDate(dateString) {
     return `${jour} ${moisTexte} ${annee} à ${heures}h${minutes}`;
 }
 
+export function parseData(categories, data) {
+    const categoryMap = {};
 
-export function parseData(data) {
-    const structured = {};
-
-    data.forEach(item => {
-        const category = item.category_name;
-        const subcategory = item.subcategory_name;
-
-        if (!structured[category]) {
-            structured[category] = {};
+    // Regrouper les sous-catégories par catégorie
+    categories.data.forEach(({ category_id, category_name, subcategory_id, subcategory_name }) => {
+        if (!categoryMap[category_id]) {
+            categoryMap[category_id] = {
+                category_id,
+                category_name,
+                subcategories: []
+            };
         }
 
-        if (!structured[category][subcategory]) {
-            structured[category][subcategory] = [];
+        // Ajouter la sous-catégorie à la catégorie si elle n'y est pas encore
+        const subExists = categoryMap[category_id].subcategories.find(sc => sc.subcategory_id === subcategory_id);
+        if (!subExists) {
+            categoryMap[category_id].subcategories.push({
+                subcategory_id,
+                subcategory_name,
+                dishes: []
+            });
         }
-
-        structured[category][subcategory].push({
-            id: item.id,
-            title: item.name,
-            desc: item.description,
-            price: parseFloat(item.price)
-        });
     });
-    return structured;
+
+    // Ajouter les plats dans la bonne sous-catégorie
+    data.data.forEach(dish => {
+        const { category_name, subcategory_id } = dish;
+
+        // Trouver la catégorie qui correspond
+        const category = Object.values(categoryMap).find(cat => cat.category_name === category_name);
+        if (!category) return;
+
+        // Trouver la sous-catégorie correspondante
+        const subcat = category.subcategories.find(sc => sc.subcategory_id === subcategory_id);
+        if (subcat) {
+            subcat.dishes.push(dish);
+        }
+    });
+
+    return Object.values(categoryMap);
 }

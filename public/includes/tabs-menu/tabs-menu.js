@@ -1,4 +1,5 @@
 import {parseData} from "../../js/utils";
+import {showBanner} from "../popup/popup";
 
 async function fetchDishes(){
     try {
@@ -17,13 +18,12 @@ async function fetchDishes(){
     }
 }
 
-
 let data;
 
 document.addEventListener('DOMContentLoaded', async () => {
     const datas = await fetchDishes();
-    const plats = datas.result;
-    data = parseData(plats);
+    const categories = await fetchCategories();
+    data = parseData(categories,datas);
     displayTabs("starters", data);
 });
 
@@ -46,6 +46,7 @@ tabsDrinks.onclick = function () {
 }
 
 function displayTabs(category, data) {
+    console.log(data);
     const tabsContent = document.querySelector(".tabs-content");
     const tabsButtons = document.querySelectorAll(".tabs-button");
 
@@ -58,36 +59,50 @@ function displayTabs(category, data) {
         activeButton.classList.add("tabs-selected");
     }
 
-    if (!data[category]) {
-        console.error("Category not found");
-        return;
-    }
+    const filteredData = data.find(cat => cat.category_name === category);
 
     tabsContent.innerHTML = "";
-    Object.keys(data[category]).forEach(subCategory => {
-        // Ajout du titre de la sous-catégorie
-        const subCategoryTitle = document.createElement("div");
-        subCategoryTitle.classList.add("tabs-item-title");
-        subCategoryTitle.textContent = subCategory.charAt(0).toUpperCase() + subCategory.slice(1);
-        tabsContent.appendChild(subCategoryTitle);
+    filteredData.subcategories.forEach(subCategory => {
+        if(subCategory.dishes.length > 0){
+            const subCategoryTitle = document.createElement("div");
+            subCategoryTitle.classList.add("tabs-item-title");
+            subCategoryTitle.textContent = subCategory.subcategory_name;
+            tabsContent.appendChild(subCategoryTitle);
+        }
 
-        // Ajout des items de la sous-catégorie
-        data[category][subCategory].forEach(item => {
+        subCategory.dishes.forEach((item) => {
             const tabItem = document.createElement("div");
             tabItem.classList.add("tab-item");
 
             const title = document.createElement("div");
             title.classList.add("title");
-            title.textContent = item.title;
+            title.textContent = item.name;
 
             const desc = document.createElement("div");
             desc.classList.add("desc");
-            desc.innerHTML = `${item.desc} <span class="price">${item.price}€</span>`;
+            desc.innerHTML = `${item.description} <span class="price">${item.price}€</span>`;
 
             tabItem.appendChild(title);
             tabItem.appendChild(desc);
             tabsContent.appendChild(tabItem);
         });
     });
+
 }
 
+async function fetchCategories(){
+    try {
+        const response = await fetch("/api/dish/subcategory", {
+            method: "GET",
+            headers: {'Content-Type': 'application/json'},
+        });
+        const dataJson = await response.json();
+        if(response.ok){
+            return dataJson;
+        } else {
+            showBanner('error',"Failed to fetch : "+dataJson.message);
+        }
+    } catch (e){
+        showBanner('error', "Failed to fetch : " + e);
+    }
+}

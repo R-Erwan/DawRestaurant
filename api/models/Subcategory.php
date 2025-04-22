@@ -17,7 +17,7 @@ class Subcategory {
     }
 
     public function getAllSubcategories() {
-        $sql = "SELECT s.name AS subcategory_name, c.name AS category_name FROM subcategories s JOIN categories c on c.id = s.category_id ORDER BY s.id";
+        $sql = "SELECT s.name AS subcategory_name, s.id AS subcategory_id ,c.name AS category_name, c.id AS category_id FROM subcategories s JOIN categories c on c.id = s.category_id ORDER BY s.id";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll();

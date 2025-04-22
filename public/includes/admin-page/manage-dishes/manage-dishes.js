@@ -3,11 +3,14 @@ import {parseData} from "../../../js/utils";
 
 document.addEventListener("DOMContentLoaded", async () => {
     const data = await fetchDishes();
-    const dishes = await data.result;
-    const parsedDishes = parseData(dishes);
+    const categories = await fetchCategories();
+    const parsedDishes = parseData(categories,data);
+
     displayDishes(parsedDishes,'starters','all');
     displayCatSelect(parsedDishes,"starters");
+
     let activeCat = "starters";
+    const categoryMap = {"starters":1,"mainFood":2,"desserts":3,"drinks":4}
 
     /* ===== Tabs btn ===== */
     const tabStarters = document.getElementById("tabs-starters");
@@ -42,25 +45,25 @@ document.addEventListener("DOMContentLoaded", async () => {
     /* ===== Select sub-category ===== */
     document.querySelector('#sub-cat').addEventListener("change", (e) => {
         displayDishes(parsedDishes,activeCat,e.target.value);
-
     })
 
     /* ===== Add sub-category ===== */
 
-    document.querySelector("#add-sub-cat").addEventListener("click", (e) => {
-            const newCatNameInput = document.querySelector('#sub-cat-name');
-        newCatNameInput.classList.toggle("hidden",false);
-        const validNewCat = document.querySelector('#valid-sub-cat');
-        validNewCat.classList.toggle("hidden",false);
+    const newCatNameInput = document.querySelector('#sub-cat-name');
+    const validNewCat = document.querySelector('#valid-sub-cat');
 
-        validNewCat.addEventListener('click', (e2) => {
-            newCatNameInput.classList.toggle("hidden",true);
-            validNewCat.classList.toggle("hidden",true);
-            //TODO Fetch add new category
-        });
+    document.querySelector("#add-sub-cat").addEventListener("click", () => {
+        newCatNameInput.classList.remove("hidden");
+        validNewCat.classList.remove("hidden");
     });
 
-    console.log(parsedDishes);
+    validNewCat.addEventListener('click', () => {
+        const name = newCatNameInput.value;
+        newCatNameInput.classList.add("hidden");
+        validNewCat.classList.add("hidden");
+        fetchNewCategory(categoryMap[activeCat],name);
+    });
+
 })
 
 async function fetchDishes() {
@@ -81,49 +84,58 @@ async function fetchDishes() {
 }
 
 function displayDishes(dishes, category, subcategory) {
+    console.log(dishes);
     const container = document.querySelector(".tabs-content");
     container.innerHTML = '';
-    let toDisplay = dishes[category];
 
-    Object.keys(toDisplay).forEach((subCat) => {
-        if (subCat === subcategory || subcategory === 'all') {
-            // Création du titre de sous-catégorie
+    dishes.forEach((categoryItem) => {
+        // Filtre que la catégorie demandée
+        if(categoryItem.category_name !== category) {
+            return ;
+        }
+
+        // Filtre la sous-catégorie ou alors 'all'
+        categoryItem.subcategories.forEach((subcategoryItem) => {
+            if(subcategoryItem.subcategory_name !== subcategory && subcategory !== 'all') {
+                return;
+            }
+
+            // Sous-catégorie
             const subCatTitle = document.createElement("div");
             subCatTitle.classList.add("dish-item-cat");
 
             const h2 = document.createElement("h2");
-            h2.textContent = subCat.charAt(0).toUpperCase() + subCat.slice(1);
+            h2.textContent = subcategoryItem.subcategory_name.charAt(0).toUpperCase() + subcategoryItem.subcategory_name.slice(1);
             subCatTitle.appendChild(h2);
 
             container.appendChild(subCatTitle);
 
-            // Création des éléments plats
-            toDisplay[subCat].forEach(item => {
-                if (item.id === null) return;
-                const div = createItem(item.id,item.title,item.desc,item.price);
+            // Plats de la sous-catégorie
+            subcategoryItem.dishes.forEach((dishItem) => {
+                if(dishItem.id === null) return;
+                const div = createItem(dishItem.id,dishItem.name,dishItem.description,dishItem.price);
                 container.appendChild(div);
-            }); //END For each item
+            })
 
             const newDivBtn = document.createElement("button");
             newDivBtn.innerText = '+';
             newDivBtn.classList.add("new-div-btn");
 
-            const newDiv = createItem(null,null,null,null,subCat,category);
+            const newDiv = createItem(null,null,null,null,subcategoryItem.subcategory_id);
             newDiv.classList.add("hidden");
 
             newDivBtn.addEventListener("click", (e) => {
                 newDiv.classList.toggle("hidden",false);
                 newDivBtn.classList.toggle("hidden",true);
-            })
+            });
 
             container.appendChild(newDivBtn);
             container.appendChild(newDiv);
-        }
-
-    }); // END For each sub-cat
+        });
+    });
 }
 
-function createItem(id,title,desc,price,subCategory,category){
+function createItem(id,title,desc,price,subCategoryId){
     const div = document.createElement("div");
     div.classList.add("dish-item");
 
@@ -182,7 +194,7 @@ function createItem(id,title,desc,price,subCategory,category){
                 button.classList.add("valid-btn")
                 button.innerText = "Valider"
             } else {
-                const res = await fetchUpdate(id, inputTitle.value, textarea.value, inputPrice.value);
+                const res = await fetchUpdate(id, inputTitle.value, textarea.value, inputPrice.value,subCategoryId);
                 div.querySelectorAll(".item-input").forEach(item => {
                     item.readOnly = true;
                     item.classList.toggle("disabled",true);
@@ -202,7 +214,7 @@ function createItem(id,title,desc,price,subCategory,category){
         button.innerText = "Ajouter";
         div.appendChild(button);
         button.addEventListener("click", async (e) => {
-            const res = await fetchPost(inputTitle.value, textarea.value, inputPrice.value,subCategory,category);
+            const res = await fetchPost(inputTitle.value, textarea.value, inputPrice.value,subCategoryId);
         });
         const space = document.createElement("span");
         space.classList.add("spacer");
@@ -219,27 +231,137 @@ function toggleTabs(tab){
     tab.classList.add("tabs-selected");
 }
 
-function displayCatSelect(dishes, category) {
+function displayCatSelect(parsedData, category) {
     const subCatSelect = document.querySelector('#sub-cat');
-    const catDishes = dishes[category];
     subCatSelect.innerHTML = '<option value="all" selected>Tous</option>';
-    Object.keys(catDishes).forEach((subCat) => {
-        const subCatStr = subCat.charAt(0).toUpperCase() + subCat.slice(1)
-        subCatSelect.innerHTML += `<option value="${subCatStr}">${subCatStr}</option>`;
-    })
+    parsedData.forEach((categoryItem) => {
+        if(categoryItem.category_name === category){
+            categoryItem.subcategories.forEach(subCategory => {
+                const subCatStr = subCategory.subcategory_name;
+                subCatSelect.innerHTML += `<option value="${subCatStr}">${subCatStr}</option>`;
+            });
+        }
+    });
 }
 
-async function fetchUpdate(id,title,desc,price){
-    console.log(id,title,desc,price);
-    // Todo
+async function fetchUpdate(id,title,desc,price,subcategoryId){
+    const jwt = localStorage.getItem('jwt');
+    try {
+        const result = await fetch("/api/dish", {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${jwt}`
+            },
+            body: JSON.stringify({
+                "id" : id,
+                "name" : title,
+                "description" : desc,
+                "price" : price,
+                "subcategory_id" : subcategoryId,
+            })
+        });
+        const dataJson = await result.json();
+        if(result.ok){
+            showBanner('success',"Plat ajouté ");
+        } else {
+            showBanner('error', "Erreur lors de l'ajout : " + dataJson.message);
+        }
+
+    } catch (error) {
+        showBanner('error',"Erreur lors de l'ajout : " + error);
+    }
 }
 
 async function fetchDelete(id){
-    console.log(id);
-    // Todo
+    const jwt = localStorage.getItem('jwt');
+    try {
+        const result = await fetch("/api/dish?dish_id="+id, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${jwt}`
+            }
+        });
+        const dataJson = await result.json();
+        if(result.ok){
+            showBanner('success',"Plat supprimé");
+        } else {
+            showBanner('error', "Erreur lors de la suppression : " + dataJson.message);
+        }
+
+    } catch (error) {
+        showBanner('error',"Erreur lors de la suppression : " + error);
+    }
 }
 
-async function fetchPost(title,desc,price,subcategory,category){
-    console.log(title,desc,price,subcategory,category);
-    // Todo
+async function fetchPost(title,desc,price,subcategoryId,){
+    const jwt = localStorage.getItem('jwt');
+    try {
+        const result = await fetch("/api/dish", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${jwt}`
+            },
+            body: JSON.stringify({
+                "name" : title,
+                "price" : price,
+                "subcategory_id" : subcategoryId,
+                "description" : desc,
+            })
+        });
+        const dataJson = await result.json();
+        if(result.ok){
+            showBanner('success',"Plat ajouté ");
+        } else {
+            showBanner('error', "Erreur lors de l'ajout : " + dataJson.message);
+        }
+
+    } catch (error) {
+        showBanner('error',"Erreur lors de l'ajout : " + error);
+    }
+}
+
+async function fetchNewCategory(categoryId,name){
+    const jwt = localStorage.getItem('jwt');
+    try {
+        const result = await fetch("/api/dish/subcategory", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${jwt}`
+            },
+            body: JSON.stringify({
+                "name" : name,
+                "category_id" : categoryId
+            })
+        });
+        const dataJson = await result.json();
+        if(result.ok){
+            showBanner('success',"Catégorie créer");
+        } else {
+            showBanner('error', "Erreur lors de la création de la catégorie: " + dataJson.message);
+        }
+
+    } catch (error) {
+        showBanner('error',"Erreur lors de la création de la catégorie : " + error);
+    }
+}
+
+async function fetchCategories(){
+    try {
+        const response = await fetch("/api/dish/subcategory", {
+            method: "GET",
+            headers: {'Content-Type': 'application/json'},
+        });
+        const dataJson = await response.json();
+        if(response.ok){
+            return dataJson;
+        } else {
+            showBanner('error',"Failed to fetch : "+dataJson.message);
+        }
+    } catch (e){
+        showBanner('error', "Failed to fetch : " + e);
+    }
 }
