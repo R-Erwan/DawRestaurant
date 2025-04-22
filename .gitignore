@@ -1,5 +1,6 @@
 /.idea/
 *.css
 *.css.map
+/api/config/config.php
 public/resources/uploads/*
 /api/vendor/

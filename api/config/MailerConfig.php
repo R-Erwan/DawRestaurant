@@ -14,15 +14,15 @@ class MailerConfig{
         $mail = new PHPMailer(true);
 
         $mail->isSMTP();
-        $mail->Host = 'smtp.gmail.com';
+        $mail->Host = MAIL_HOST;
         $mail->CharSet = 'UTF-8';
-        $mail->Encoding = 'base64'; // optionnel mais conseillé
+        $mail->Encoding = 'base64';
         $mail->SMTPAuth = true;
         $mail->SMTPSecure = 'tls';
-        $mail->Username = 'contact.leresto@gmail.com';
-        $mail->Password = "tjvxgwcrrkydemar";
+        $mail->Username = MAIL_USER;
+        $mail->Password = MAIL_PASS;
         $mail->Port = 587;
-        $mail->setFrom('contact.leresto@gmail.com', 'Le Resto');
+        $mail->setFrom(MAIL_USER, 'Le Resto');
 
         return $mail;
     }
