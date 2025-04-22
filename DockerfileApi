@@ -22,11 +22,11 @@ COPY ./config/000-default.conf /etc/apache2/sites-available/000-default.conf
 # Copier le code de l'API
 COPY ./api /var/www/html/
 
-# Copier les fichiers composer.json et composer.lock
-COPY ./api/composer.json ./api/composer.lock ./
+# Copier les fichiers composer.json et composer.lock (avant d'installer les dépendances)
+COPY ./api/composer.json ./api/composer.lock /var/www/html/
 
-# Installer les dépendances PHP via Composer
-RUN composer install --no-dev --prefer-dist
+# Exécuter composer install seulement si les fichiers composer.json ou composer.lock changent
+RUN composer install --no-dev --prefer-dist --working-dir=/var/www/html/
 
 # Activer les modules Apache nécessaires
 RUN a2enmod rewrite
@@ -34,5 +34,3 @@ RUN a2enmod headers
 
 # Exposer le port 80 pour le serveur Apache
 EXPOSE 80
-
-# Test
