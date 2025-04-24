@@ -19,6 +19,8 @@ COPY ./public /var/www/html/
 # Se placer dans le répertoire de ton front-end (si tu l'as)
 WORKDIR /var/www/html
 
+RUN chmod 777 -R resources
+
 # Installer les dépendances npm (assurez-vous que package.json existe dans ce répertoire)
 #RUN npm install
 

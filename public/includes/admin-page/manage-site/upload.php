@@ -1,4 +1,9 @@
 <?php
+ini_set("display_errors", "0");
+ini_set("log_errors", "1");
+ini_set("error_log", "/var/log/php_errors.log");
+
+
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: POST");
 header("Access-Control-Allow-Headers: Authorization, Content-Type");
