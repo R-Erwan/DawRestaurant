@@ -167,6 +167,7 @@ async function dateChecker(date) {
         const basicsRules = await fetchOpeningBasicDate(date);
         if(basicsRules.data.length === 0) {
             displayMultipleTimeSlots(document.querySelector("#time"),[]);
+            document.getElementById("date").value = "";
             showBanner("info","Le restaurant est fermé le "+ getFrenchWeekdayName(date));
         } else {
             let times = [];
@@ -178,7 +179,8 @@ async function dateChecker(date) {
     } else {
         if(excRules.data[0].open === false){
             displayMultipleTimeSlots(document.querySelector("#time"),[]);
-            showBanner("info","Le restaurant est fermé exceptionnelement le  "+ date + " : " + excRules.result[0].comment, 5000);
+            document.getElementById("date").value = "";
+            showBanner("info","Le restaurant est fermé exceptionnellement le  "+ date + " : " + excRules.data[0].comment, 5000);
         } else {
             let times = [];
             excRules.data.forEach(element => {

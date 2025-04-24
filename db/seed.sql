@@ -13,7 +13,7 @@ VALUES (1,
     NULL);
 INSERT INTO announces(type, position, title, description, image_url)
 VALUES (1,
-        3,
+        4,
         'Le végétarien sublimé',
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec interdum lorem sollicitudin purus mattis semper. Phasellus convallis, velit a placerat tempor, magna velit egestas neque, et placerat metus metus ut justo. Etiam urna metus, euismod rutrum elit eu, feugiat finibus eros. Integer a egestas nulla, vitae varius tellus. Nam feugiat nibh at pellentesque posuere. Nunc ac molestie ex. Nullam sed tempus mi. Sed non ante posuere, placerat ex eget, tempus erat. Maecenas quis nulla in justo aliquam luctus. Etiam tincidunt gravida ligula sit amet accumsan. Aenean in magna sed sem faucibus varius.',
     NULL);
@@ -33,7 +33,7 @@ VALUES (2,
         );
 INSERT INTO announces(type, position, title, description, image_url)
 VALUES (2,
-        4,
+        3,
         NULL,
         NULL,
         '/resources/static/vege.jpg'

@@ -121,16 +121,12 @@ function displayDishes(dishes, category, subcategory) {
             newDivBtn.innerText = '+';
             newDivBtn.classList.add("new-div-btn");
 
-            const newDiv = createItem(null,null,null,null,subcategoryItem.subcategory_id);
-            newDiv.classList.add("hidden");
-
             newDivBtn.addEventListener("click", (e) => {
-                newDiv.classList.toggle("hidden",false);
-                newDivBtn.classList.toggle("hidden",true);
+                const newDiv = createItem(null,null,null,null,subcategoryItem.subcategory_id);
+                newDivBtn.parentNode.insertBefore(newDiv,newDivBtn);
             });
 
             container.appendChild(newDivBtn);
-            container.appendChild(newDiv);
         });
     });
 }
