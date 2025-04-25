@@ -20,7 +20,7 @@ if (!isset($headers["Authorization"])) {
 $token = str_replace("Bearer ", "", $headers["Authorization"]);
 
 // Vérification via API
-$apiUrl = "http://host.docker.internal:8000/auth?action=adminAccess";
+$apiUrl = "http://api/auth?action=adminAccess";
 $ch = curl_init($apiUrl);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 curl_setopt($ch, CURLOPT_HTTPHEADER, ["Authorization: Bearer $token"]);
