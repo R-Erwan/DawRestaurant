@@ -14,7 +14,7 @@ Modifier le fichier `/api/config/config.exemple.php` en `config.php` et modifier
 ```php
 define('JWT_SECRET', getenv('JWT_SECRET') ?: 'secret'); // Mot de passe de cryptage
 define('ACTIVE_MAIL', getenv('ACTIVE_MAIL') ?: false); // Activer tous les mails
-define('DOMAIN_NAME', getenv('DOMAIN_NAME') ?: 'http://localhost:8080'); // Domain Name a matcher avec Docker
+define('DOMAIN_NAME', getenv('DOMAIN_NAME') ?: 'http://localhost:8080'); // Domain Name macher le port avec Docker
 define('MAIL_USER', getenv('MAIL_USER') ?: 'adresse@mail'); // Mail de contact
 define('MAIL_PASS', getenv('MAIL_PASS') ?: '**********'); // Mot de passe d'application SMTP
 define('MAIL_HOST', getenv('MAIL_HOST') ?: 'smtp.****.***'); // Host SMTP
