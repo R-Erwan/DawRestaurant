@@ -14,6 +14,16 @@ function displayCalendarTimes(){
 }
 
 function displayEvent(data){
+    const days = document.querySelectorAll('.calendar-item-content');
+    days.forEach(day => {
+        day.classList.add("dayoff");
+        day.innerHTML = `
+        <div class="cal-event off-day-event">
+            <p>Fermer</p>
+        </div>
+        `
+    });
+
     data.forEach((item) => {
         const calItem = document.querySelector(`#cal-item-${item.id_days}`);
         if(calItem.classList.contains('dayoff')){
@@ -28,12 +38,21 @@ function displayEvent(data){
         event.style.gridRowStart = `${timeStart - nbTimes}`;
         event.style.gridRowEnd= `${timeEnd - nbTimes}`;
         event.innerHTML = `<p class="nb-places">${item.number_places}</p>`
+        event.addEventListener("click",(e) =>{
+            e.stopPropagation();
+            displayModal(
+                item.id_days,
+                data,
+                item.id
+            );
+        })
         calItem.appendChild(event);
-    })
+    });
 }
 
-let listenersSet = false; // pour ne pas attacher les listeners plusieurs fois
-
+let confirmHandler = null;
+let deleteHandler = null;
+let timeStartHandler = null;
 function displayModal(wid, data, oid) {
     const modal = document.querySelector('.modal-container');
     const modalTitle = document.querySelector('.modal-title');
@@ -44,19 +63,22 @@ function displayModal(wid, data, oid) {
     const deleteBtn = document.querySelector('#modal-delete');
     const dataOid = data.find(obj => obj.id === parseInt(oid));
 
-    // Affichage de la modale
     modal.style.display = 'flex';
     modalTitle.innerHTML = weekDays[wid - 1];
 
-    // Réinitialise la modale
     nbPlaces.value = "";
     deleteBtn.classList.add('hidden');
     timeEnd.classList.add('hidden');
 
-    // Création des horaires
+
+    // Supprimer les anciens listeners s'ils existent
+    if (confirmHandler) confirm.removeEventListener('click', confirmHandler);
+    if (deleteHandler) deleteBtn.removeEventListener('click', deleteHandler);
+    if (timeStartHandler) timeStart.removeEventListener('change', timeStartHandler);
+
+    // Recréation des horaires
     displayTimesSelect(timeStart, nbTimes);
 
-    // Si mise à jour
     if (oid) {
         deleteBtn.classList.remove('hidden');
         timeStart.value = convertToFloatTime(dataOid.time_start);
@@ -66,63 +88,78 @@ function displayModal(wid, data, oid) {
         nbPlaces.value = dataOid.number_places;
     }
 
-    // Gestion des listeners UNE SEULE FOIS
-    if (!listenersSet) {
-        timeStart.addEventListener('change', () => {
-            timeEnd.classList.remove('hidden');
-            const value = timeStart.value;
-            displayTimesSelect(timeEnd, value);
-        });
+    // Créer des nouveaux handlers spécifiques
+    timeStartHandler = () => {
+        timeEnd.classList.remove('hidden');
+        const value = timeStart.value;
+        displayTimesSelect(timeEnd, value);
+    };
 
-        window.addEventListener('click', (e) => {
-            if (e.target === modal) {
+    deleteHandler = async (e) => {
+        e.stopPropagation();
+        e.preventDefault();
+        if (window.confirm("Supprimer la règle ?")) {
+            const json = await fetchDeleteOpening(oid);
+            if (json.success) {
                 modal.style.display = 'none';
                 timeEnd.classList.add('hidden');
                 deleteBtn.classList.add('hidden');
                 nbPlaces.value = "";
+                data = data.filter(item => item.id !== parseInt(oid));
+                displayEvent(data);
             }
-        });
+        }
+    };
 
-        deleteBtn.addEventListener('click', async (e) => {
-            e.stopPropagation();
-            e.preventDefault();
-            if (window.confirm("Supprimer la règle ?")) {
-                const json = await fetchDeleteOpening(oid);
-                if (json) {
-                    modal.style.display = 'none';
-                    timeEnd.classList.add('hidden');
-                    deleteBtn.classList.add('hidden');
-                    nbPlaces.value = "";
-                    await refreshCalendar();
-                }
-            }
-        });
+    confirmHandler = async (e) => {
+        e.stopPropagation();
+        e.preventDefault();
+        let json;
+        const wid = parseInt(modalTitle.innerHTML && weekDays.indexOf(modalTitle.innerHTML) + 1);
+        const time_s = convertTimeValue(timeStart.value);
+        const time_e = convertTimeValue(timeEnd.value);
+        const nb = nbPlaces.value;
 
-        confirm.addEventListener('click', async (e) => {
-            e.stopPropagation();
-            e.preventDefault();
-            let json;
-            const wid = parseInt(modalTitle.innerHTML && weekDays.indexOf(modalTitle.innerHTML) + 1);
-            const time_s = convertTimeValue(timeStart.value);
-            const time_e = convertTimeValue(timeEnd.value);
-            const nb = nbPlaces.value;
-
-            if (oid) {
-                json = await fetchPutOpening(oid, time_s, time_e, nb);
-            } else {
-                json = await fetchPostOpening(wid, time_s, time_e, nb);
-            }
-
-            if (json) {
+        if (oid) {
+            json = await fetchPutOpening(oid, time_s, time_e, nb);
+            if(json.success) {
                 modal.style.display = 'none';
                 timeEnd.classList.add('hidden');
                 nbPlaces.value = "";
-                await refreshCalendar();
-            }
-        });
 
-        listenersSet = true;
-    }
+                dataOid.time_start = time_s;
+                dataOid.time_end = time_e;
+                dataOid.number_places = parseInt(nb);
+                displayEvent(data);
+            }
+        } else {
+            json = await fetchPostOpening(wid, time_s, time_e, nb);
+            if(json.success) {
+                modal.style.display = 'none';
+                timeEnd.classList.add('hidden');
+                nbPlaces.value = "";
+
+                const newRules = {
+                    id: parseInt(json.data.id),
+                    id_days: wid,
+                    name: weekDays[wid],
+                    number_places: parseInt(nb),
+                    open: true,
+                    time_end: time_e,
+                    time_start: time_s,
+                };
+                data.push(newRules);
+                displayEvent(data);
+            }
+        }
+
+    };
+
+    // Ajouter les nouveaux event listeners
+    timeStart.addEventListener('change', timeStartHandler);
+    deleteBtn.addEventListener('click', deleteHandler);
+    confirm.addEventListener('click', confirmHandler);
+
 }
 
 async function fetchOpeningBasic(){
@@ -212,30 +249,26 @@ async function fetchDeleteOpening(id_time){
         showBanner('error',e);
     }
 }
+
 document.addEventListener('DOMContentLoaded', async () => {
     displayCalendarTimes();
     const data = await fetchOpeningBasic();
     displayEvent(data.data);
     const calendarContents = document.querySelectorAll(".calendar-item-content");
     //Modal t1
-    calendarContents.forEach((item) => {
+    await calendarContents.forEach((item) => {
         item.addEventListener("click", () => {
-            displayModal(item.getAttribute("weekid"),data.data);
+            displayModal(item.getAttribute("weekid"), data.data);
         });
-    })
-    //Modal t2
-    const events = document.querySelectorAll(".cal-event");
-    events.forEach((item) => {
-        item.addEventListener("click", (e) => {
-            e.stopPropagation();
-            displayModal(
-                item.parentElement.getAttribute("weekid"),
-                data.data,
-                item.getAttribute("oid"),
-                );
-        })
-    })
+    });
 
-
+    window.addEventListener('click', (e) => {
+        if (e.target === document.querySelector('.modal-container')) {
+            document.querySelector('.modal-container').style.display = 'none';
+            document.querySelector('#time-end').classList.add('hidden');
+            document.querySelector('#modal-delete').classList.add('hidden');
+            document.querySelector('#nb-places').value = "";
+        }
+    });
 });
 
